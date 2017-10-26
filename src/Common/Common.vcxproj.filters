@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="CTree.h">
+      <Filter>数据结构</Filter>
+    </ClInclude>
+    <ClInclude Include="CThread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeDef.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="CShader.h">
+      <Filter>Opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="CCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="数据结构">
+      <UniqueIdentifier>{8b4c31f4-bc1a-4756-8b26-2904a494f2c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{b3c2fb47-9f2b-4691-a224-e8ede2ef2c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{66c12564-8065-47fc-9409-ecf45826c457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Opengl">
+      <UniqueIdentifier>{03cb83c8-aa8b-42ed-9e2e-0edf68e8c88c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{ade9314b-3770-404c-b919-5fb7ada59202}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CTree.cpp">
+      <Filter>数据结构</Filter>
+    </ClCompile>
+    <ClCompile Include="CThread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="CShader.cpp">
+      <Filter>Opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="common.h">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

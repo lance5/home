@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="code6.1.cpp">
+      <Filter>6.1</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="6.1">
+      <UniqueIdentifier>{d2629649-a5d2-4bdd-97dc-a8ad26e3c30b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="6.1.coordinate_systems.vs">
+      <Filter>6.1</Filter>
+    </None>
+    <None Include="6.1.coordinate_systems.fs">
+      <Filter>6.1</Filter>
+    </None>
+  </ItemGroup>
+</Project>
