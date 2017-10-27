@@ -2,24 +2,41 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="code6.1.cpp">
-      <Filter>6.1</Filter>
+      <Filter>1</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="code2.cpp">
+      <Filter>2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="6.1">
+    <Filter Include="1">
       <UniqueIdentifier>{d2629649-a5d2-4bdd-97dc-a8ad26e3c30b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2">
+      <UniqueIdentifier>{2dc796c3-a6cf-49f4-b7b6-390bdf0e3e8a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="6.1.coordinate_systems.vs">
-      <Filter>6.1</Filter>
+      <Filter>1</Filter>
     </None>
     <None Include="6.1.coordinate_systems.fs">
-      <Filter>6.1</Filter>
+      <Filter>1</Filter>
+    </None>
+    <None Include="colos.fs">
+      <Filter>2</Filter>
+    </None>
+    <None Include="colos.vs">
+      <Filter>2</Filter>
+    </None>
+    <None Include="lamp.fs">
+      <Filter>2</Filter>
     </None>
   </ItemGroup>
 </Project>

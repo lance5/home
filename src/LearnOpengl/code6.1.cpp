@@ -1,40 +1,11 @@
 #include "stdafx.h"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput( GLFWwindow* pWindow );
+void processInput(GLFWwindow* pWindow);
 void mouse_callback(GLFWwindow* pWindow, double xPos, double yPos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-const uint32 SCR_WIDTH = 800;
-const uint32 SCR_HEIGHT = 600;
-
-CCamera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-// timing
-float deltaTime = 0.0f;	// time between current frame and last frame
-float lastFrame = 0.0f;
-
-int main( int nArgv, char* szArgc[] )
+int main1( int nArgv, char* szArgc[] )
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	//glfwWindowHint(GLFW_SAMPLES, 4);
-
-	GLFWwindow* pWindow = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-	Assert(pWindow != nullptr);
-	glfwMakeContextCurrent(pWindow);
-	glfwSetFramebufferSizeCallback(pWindow, framebuffer_size_callback);
-	glfwSetInputMode( pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
-	glfwSetCursorPosCallback( pWindow, mouse_callback );
-	glfwSetScrollCallback( pWindow, scroll_callback );
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		Assert(false);
-
-	//glEnable( GL_MULTISAMPLE );
-	glEnable( GL_DEPTH_TEST );
-
 	const char* szShaderPath[eShader_Count] =
 	{
 		"6.1.coordinate_systems.vs",
@@ -165,21 +136,9 @@ int main( int nArgv, char* szArgc[] )
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-	while ( !glfwWindowShouldClose( pWindow ) )
-	{
-		float currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-
-		processInput( pWindow );
-
-		glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-		glm::mat4 matView = camera.GetViewMatrix();
-		glm::mat4 matProjection( 1 );
-		matProjection = glm::perspective(glm::radians( camera.Zoom ),
-			(float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.f);
+	MainWhileStart
+		glm::mat4 matView = g_MainCamera.GetViewMatrix();
+		glm::mat4 matProjection = g_MainCamera.GetProjection( (float)g_nWindowHeight, (float)g_nWindowWidth );
 
 		shader.SetValue("view", matView);
 		shader.SetValue("projection", matProjection);
@@ -195,88 +154,11 @@ int main( int nArgv, char* szArgc[] )
 
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 		}
-
-		glfwSwapBuffers( pWindow );
-		glfwPollEvents();
-		Sleep( 15 );
-	}
+	MainWhileEnd
 
 	glDeleteVertexArrays( 1, &VAO );
 	glDeleteBuffers( 1, &VBO );
 	glDeleteBuffers( 1, &EBO );
 
-	glfwTerminate();
 	return 0;
 }
-
-void processInput( GLFWwindow* pWindow )
-{
-	float fCameraSpeed = 0.05f;
-	if ( glfwGetKey( pWindow, GLFW_KEY_W ) == GLFW_PRESS )
-		camera.ProcessKeyboard( FORWARD, deltaTime );
-	if (glfwGetKey(pWindow, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
-	if (glfwGetKey(pWindow, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(LEFT, deltaTime);
-	if (glfwGetKey(pWindow, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(RIGHT, deltaTime);
-	if (glfwGetKey(pWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(pWindow, true);
-	}
-}
-
-void mouse_callback( GLFWwindow* pWindow, double xPos, double yPos )
-{
-	static float fLastX = 400;
-	static float fLastY = 300;
-	static bool bOne = true;
-	static float fPitch = 0.0f;
-	static float fYaw = 0.0f;
-
-	if ( bOne )
-	{
-		bOne = false;
-		fLastX = xPos;
-		fLastY = yPos;
-	}
-
-	float xoffset = xPos - fLastX;
-	float yoffset = fLastY - yPos; // reversed since y-coordinates go from bottom to top
-
-	fLastX = xPos;
-	fLastY = yPos;
-
-	camera.ProcessMouseMovement(xoffset, yoffset);
-}
-
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	camera.ProcessMouseScroll(yoffset);
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport( 0, 0, width, height );
-}
-
-struct MidiMessage
-{
-	friend std::unique_ptr<MidiMessage>;
-	virtual int Send( int hmo ) = 0;
-};
-
-struct MidiEvent
-{
-	std::unique_ptr< MidiMessage > message;
-
-	int Send( int hmo )
-	{
-		return message->Send( hmo );
-	}
-};
-
-struct _NativeMidiSong
-{
-	std::vector<MidiEvent> Events;
-};
