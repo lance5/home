@@ -23,6 +23,11 @@ glm::mat4 CCamera::GetViewMatrix()
 	return glm::lookAt(Position, Position + Front, Up);
 }
 
+glm::mat4 CCamera::GetProjection( float fWidth, float fHeight )
+{
+	return glm::perspective( glm::radians( Zoom ), fWidth / fHeight, 0.1f, 100.f);
+}
+
 void CCamera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
 	float velocity = MovementSpeed * deltaTime;
