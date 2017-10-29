@@ -80,14 +80,11 @@ int main2( int argc, char* argv[] )
 		glm::mat4 matView = g_MainCamera.GetViewMatrix();
 		glm::mat4 matProjection = g_MainCamera.GetProjection((float)g_nWindowHeight, (float)g_nWindowWidth);
 
-		lightingShader.SetValue("view", matView);
-		lightingShader.SetValue("projection", matProjection);
-		lampShader.SetValue("view", matView);
-		lampShader.SetValue("projection", matProjection);
-
 		glBindVertexArray(VAO);
 
 		lightingShader.Use();
+		lightingShader.SetValue("view", matView);
+		lightingShader.SetValue("projection", matProjection);
 		lightingShader.SetValue( "objectColor", vec3(1.0f, 0.5f, 0.31f));
 		lightingShader.SetValue( "lightColor", vec3(1.0f, 1.0f, 1.0f));
 		mat4 matLightModel( 1 );
@@ -95,6 +92,8 @@ int main2( int argc, char* argv[] )
 		glDrawArrays( GL_TRIANGLES, 0, 36 );
 
 		lampShader.Use();
+		lampShader.SetValue("view", matView);
+		lampShader.SetValue("projection", matProjection);
 		mat4 matLampModel( 1 );
 		matLampModel = translate( matLampModel, lightPos );
 		matLampModel = scale(matLampModel, vec3(0.2f));

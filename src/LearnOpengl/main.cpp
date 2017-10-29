@@ -19,7 +19,7 @@ int main( int argc, char* argv[] )
 	glfwSetFramebufferSizeCallback(g_pWindow, FrameBufferSizeCallback);
 	glfwSetCursorPosCallback(g_pWindow, MouseCallback);
 	glfwSetScrollCallback(g_pWindow, ScrollCallback);
-	glfwSetInputMode(g_pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(g_pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		Assert(false);
 	glEnable(GL_DEPTH_TEST);
