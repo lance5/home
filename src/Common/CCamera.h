@@ -9,7 +9,9 @@ enum Camera_Movement {
 	FORWARD,
 	BACKWARD,
 	LEFT,
-	RIGHT
+	RIGHT,
+	SPACE,
+	SHIFT
 };
 
 // Default camera values
@@ -46,6 +48,7 @@ public:
 	// Returns the view matrix calculated using Eular Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix();
 	glm::mat4 GetProjection( float fWidth, float fHeight );
+	glm::vec3 GetPosition() const { return Position; }
 
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 	void ProcessKeyboard(Camera_Movement direction, float deltaTime);

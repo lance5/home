@@ -99,6 +99,8 @@ int main2( int argc, char* argv[] )
 		lightingShader.SetValue("projection", matProjection);
 		lightingShader.SetValue( "objectColor", vec3(1.0f, 0.5f, 0.31f));
 		lightingShader.SetValue( "lightColor", vec3(1.0f, 1.0f, 1.0f));
+		lightingShader.SetValue( "lightPos", lightPos );
+		lightingShader.SetValue( "viewPos", g_MainCamera.GetPosition() );
 		mat4 matLightModel( 1 );
 		lightingShader.SetValue( "model", matLightModel );
 		glBindVertexArray( VAO );
