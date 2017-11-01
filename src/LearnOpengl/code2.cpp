@@ -141,7 +141,8 @@ int main2( int argc, char* argv[] )
 		
 		lightingShader.SetValue( "spotLight.position", g_MainCamera.GetPosition() );
 		lightingShader.SetValue( "spotLight.direction", g_MainCamera.GetFront() );
-		lightingShader.SetValue( "spotLight.cutOff", cos( radians( 12.5f  ) ) );
+		lightingShader.SetValue( "spotLight.cutOff", cos(radians(12.5f)));
+		lightingShader.SetValue( "spotLight.outerCutOff", cos(radians(17.5f )));
 
 		for (int i = 0; i < 10; ++i)
 		{
