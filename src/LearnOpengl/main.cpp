@@ -82,3 +82,36 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	g_MainCamera.ProcessMouseScroll( (float)yoffset );
 }
+
+uint32 loadTexture( const char* szPath )
+{
+	GLuint nTextureID;
+	glGenTextures( 1, &nTextureID );
+	glBindTexture( GL_TEXTURE_2D, nTextureID );
+
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+	int32 nWidth, nHeight, nrChannels;
+	unsigned char* data = stbi_load( szPath, &nWidth, &nHeight, &nrChannels, 0);
+	Assert(data);
+	GLenum nFormat;
+	switch( nrChannels )
+	{
+	case 1:
+		nFormat = GL_RED;
+		break;
+	case 3:
+		nFormat = GL_RGB;
+		break;
+	case 4:
+		nFormat = GL_RGBA;
+		break;
+	}
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, nWidth, nHeight, 0, nFormat, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	stbi_image_free(data);
+	return nTextureID;
+}
