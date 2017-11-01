@@ -138,7 +138,7 @@ int main1( int nArgv, char* szArgc[] )
 
 	MainWhileStart
 		glm::mat4 matView = g_MainCamera.GetViewMatrix();
-		glm::mat4 matProjection = g_MainCamera.GetProjection( (float)g_nWindowHeight, (float)g_nWindowWidth );
+		glm::mat4 matProjection = g_MainCamera.GetProjection( (float)g_nWindowWidth, (float)g_nWindowHeight );
 
 		shader.SetValue("view", matView);
 		shader.SetValue("projection", matProjection);
