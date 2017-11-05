@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CFileManage.h" />
+    <ClInclude Include="CMesh.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CThread.h" />
     <ClInclude Include="CTree.h" />
@@ -32,6 +33,7 @@
   <ItemGroup>
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CFileManage.cpp" />
+    <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="common.h" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CThread.cpp" />

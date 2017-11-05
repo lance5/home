@@ -28,6 +28,7 @@
     <ClInclude Include="stb_image.h">
       <Filter>File\Image</Filter>
     </ClInclude>
+    <ClInclude Include="CMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="数据结构">
@@ -53,6 +54,9 @@
     </Filter>
     <Filter Include="Glad">
       <UniqueIdentifier>{d40c8dd0-1c99-4a7e-b6c0-6476413f6eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File\Model">
+      <UniqueIdentifier>{930cbdbc-2d55-46d3-8520-4ce76b8e4379}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,5 +84,6 @@
     <ClCompile Include="stb_image.cpp">
       <Filter>File\Image</Filter>
     </ClCompile>
+    <ClCompile Include="CMesh.cpp" />
   </ItemGroup>
 </Project>
