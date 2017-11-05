@@ -1,4 +1,4 @@
-#include "glad/glad.h"
+#include "glad.h"
 #include "glm/glm.hpp"
 #include "glfw/glfw3.h"
 

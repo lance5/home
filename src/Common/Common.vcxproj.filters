@@ -8,14 +8,25 @@
       <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="TypeDef.h">
-      <Filter>common</Filter>
+      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="CShader.h">
       <Filter>Opengl</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h" />
     <ClInclude Include="CCamera.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileManage.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="glad.h">
+      <Filter>Glad</Filter>
+    </ClInclude>
+    <ClInclude Include="khrplatform.h">
+      <Filter>Glad</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>File\Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -25,14 +36,23 @@
     <Filter Include="Thread">
       <UniqueIdentifier>{b3c2fb47-9f2b-4691-a224-e8ede2ef2c49}</UniqueIdentifier>
     </Filter>
-    <Filter Include="common">
-      <UniqueIdentifier>{66c12564-8065-47fc-9409-ecf45826c457}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Opengl">
       <UniqueIdentifier>{03cb83c8-aa8b-42ed-9e2e-0edf68e8c88c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Camera">
       <UniqueIdentifier>{ade9314b-3770-404c-b919-5fb7ada59202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{05d079d6-b190-4a90-8598-239436cf62db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File\Image">
+      <UniqueIdentifier>{80456e01-84fd-4e18-a341-8b7c5ce5c5a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{66c12564-8065-47fc-9409-ecf45826c457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Glad">
+      <UniqueIdentifier>{d40c8dd0-1c99-4a7e-b6c0-6476413f6eb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,11 +66,19 @@
       <Filter>Opengl</Filter>
     </ClCompile>
     <ClCompile Include="common.h">
-      <Filter>common</Filter>
+      <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="CCamera.cpp">
       <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileManage.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Glad</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>File\Image</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

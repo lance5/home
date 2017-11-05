@@ -94,24 +94,23 @@ uint32 loadTexture( const char* szPath )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-	int32 nWidth, nHeight, nrChannels;
-	unsigned char* data = stbi_load( szPath, &nWidth, &nHeight, &nrChannels, 0);
-	Assert(data);
+	uint32 nWidth, nHeight;
+	EImageFormat nImgFormat;
+	const byte* data = CFileManage::Inst().LoadImg( szPath, nWidth, nHeight, nImgFormat );
 	GLenum nFormat;
-	switch( nrChannels )
+	switch( nImgFormat )
 	{
-	case 1:
+	case eIF_RED:
 		nFormat = GL_RED;
 		break;
-	case 3:
+	case eIF_RGB:
 		nFormat = GL_RGB;
 		break;
-	case 4:
+	case eIF_RGBA:
 		nFormat = GL_RGBA;
 		break;
 	}
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, nWidth, nHeight, 0, nFormat, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, nWidth, nHeight, 0, nFormat, GL_UNSIGNED_BYTE, (const void*)data);
 	glGenerateMipmap(GL_TEXTURE_2D);
-	stbi_image_free(data);
 	return nTextureID;
 }

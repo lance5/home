@@ -88,30 +88,13 @@ int main1( int nArgv, char* szArgc[] )
 		"./../../res/awesomeface.png",
 	};
 
-	stbi_set_flip_vertically_on_load( true );
 	uint32 nTexture[2];
 	GLenum aryType[2] = {
 		GL_RGB,
 		GL_RGBA,
 	};
 	for ( uint32 i = 0; i < 2; ++i )
-	{
-		glGenTextures( 1, &nTexture[i] );
-		glBindTexture( GL_TEXTURE_2D, nTexture[i] );
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		int32 nWidth, nHeight, nrChannels;
-		unsigned char* data = stbi_load(szTexturePath[i].c_str(), &nWidth, &nHeight, &nrChannels, 0);
-		Assert(data);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, nWidth, nHeight, 0, aryType[i], GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		stbi_image_free(data);
-	}
+		nTexture[i] = loadTexture( szTexturePath[i].c_str() );
 
 	shader.Use();
 	shader.SetValue( "texture1", 0 );
