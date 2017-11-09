@@ -1,11 +1,10 @@
 #include "CResourceModel.h"
 
-
-
-CResourceModel::CResourceModel()
+CResourceModel::CResourceModel(const byte * szBuffer, uint32 nSize)
+	: CResourceType( szBuffer, nSize )
 {
-}
 
+}
 
 CResourceModel::~CResourceModel()
 {

@@ -23,6 +23,7 @@
     <ClInclude Include="CFileManage.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CResourceImg.h" />
+    <ClInclude Include="CResourceModel.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CThread.h" />
     <ClInclude Include="CTree.h" />
@@ -37,6 +38,7 @@
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="common.h" />
     <ClCompile Include="CResourceImg.cpp" />
+    <ClCompile Include="CResourceModel.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CThread.cpp" />
     <ClCompile Include="CTree.cpp" />

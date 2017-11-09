@@ -32,6 +32,9 @@
     <ClInclude Include="CResourceImg.h">
       <Filter>File\Model</Filter>
     </ClInclude>
+    <ClInclude Include="CResourceModel.h">
+      <Filter>File\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="数据结构">
@@ -89,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CResourceImg.cpp">
+      <Filter>File\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="CResourceModel.cpp">
       <Filter>File\Model</Filter>
     </ClCompile>
   </ItemGroup>
