@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGL", "..\src\OpenGL\OpenGL.vcxproj", "{5E3D47CA-F8C9-4204-93EA-523624D8AA3F}"
 EndProject
@@ -21,8 +21,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "implib", "implib", "{DF1806BA-A291-452E-BB3A-0D78B7C907F4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "..\implib\glfw\glfw.vcxproj", "{4DD8C1DE-5E72-4CC7-B124-99B19FFC5188}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "soil", "..\implib\soil\soil.vcxproj", "{725EF7E0-7886-4F84-A901-8A6DD039A724}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glm", "..\implib\glm\glm.vcxproj", "{CFB739C3-9E13-4875-BBF9-A3D6E2D22697}"
 EndProject
@@ -74,14 +72,6 @@ Global
 		{4DD8C1DE-5E72-4CC7-B124-99B19FFC5188}.Release|x64.Build.0 = Release|x64
 		{4DD8C1DE-5E72-4CC7-B124-99B19FFC5188}.Release|x86.ActiveCfg = Release|Win32
 		{4DD8C1DE-5E72-4CC7-B124-99B19FFC5188}.Release|x86.Build.0 = Release|Win32
-		{725EF7E0-7886-4F84-A901-8A6DD039A724}.Debug|x64.ActiveCfg = Debug|x64
-		{725EF7E0-7886-4F84-A901-8A6DD039A724}.Debug|x64.Build.0 = Debug|x64
-		{725EF7E0-7886-4F84-A901-8A6DD039A724}.Debug|x86.ActiveCfg = Debug|Win32
-		{725EF7E0-7886-4F84-A901-8A6DD039A724}.Debug|x86.Build.0 = Debug|Win32
-		{725EF7E0-7886-4F84-A901-8A6DD039A724}.Release|x64.ActiveCfg = Release|x64
-		{725EF7E0-7886-4F84-A901-8A6DD039A724}.Release|x64.Build.0 = Release|x64
-		{725EF7E0-7886-4F84-A901-8A6DD039A724}.Release|x86.ActiveCfg = Release|Win32
-		{725EF7E0-7886-4F84-A901-8A6DD039A724}.Release|x86.Build.0 = Release|Win32
 		{CFB739C3-9E13-4875-BBF9-A3D6E2D22697}.Debug|x64.ActiveCfg = Debug|x64
 		{CFB739C3-9E13-4875-BBF9-A3D6E2D22697}.Debug|x64.Build.0 = Debug|x64
 		{CFB739C3-9E13-4875-BBF9-A3D6E2D22697}.Debug|x86.ActiveCfg = Debug|Win32
@@ -96,7 +86,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4DD8C1DE-5E72-4CC7-B124-99B19FFC5188} = {DF1806BA-A291-452E-BB3A-0D78B7C907F4}
-		{725EF7E0-7886-4F84-A901-8A6DD039A724} = {DF1806BA-A291-452E-BB3A-0D78B7C907F4}
 		{CFB739C3-9E13-4875-BBF9-A3D6E2D22697} = {DF1806BA-A291-452E-BB3A-0D78B7C907F4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

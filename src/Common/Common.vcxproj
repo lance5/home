@@ -22,6 +22,7 @@
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CFileManage.h" />
     <ClInclude Include="CMesh.h" />
+    <ClInclude Include="CResourceImg.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CThread.h" />
     <ClInclude Include="CTree.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="CFileManage.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="common.h" />
+    <ClCompile Include="CResourceImg.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CThread.cpp" />
     <ClCompile Include="CTree.cpp" />

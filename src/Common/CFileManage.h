@@ -5,12 +5,19 @@
 #include <map>
 using namespace std;
 
-enum EImageFormat
+class CResourceType
 {
-	eIF_RED,
-	eIF_RGB,
-	eIF_RGBA,
-	eIF_INVALID,
+	const byte*				m_pBuffer;
+	uint32					m_nBufferSize;
+public:
+	CResourceType( const byte* szBuffer, uint32 nSize )
+		:m_pBuffer( szBuffer )
+		, m_nBufferSize( nSize )
+	{}
+	virtual ~CResourceType() {}
+
+	const byte*				GetBuffer() { return m_pBuffer; }
+	uint32					GetSize() { return m_nBufferSize; }
 };
 
 class CFileManage
@@ -22,9 +29,33 @@ class CFileManage
 public:
 
 	static CFileManage&		Inst();
-	const byte*				Load( const char* szFileName );
-	const byte*				LoadImg( const char* szFileName, uint32& nImageWidth, uint32& nImageHeight, EImageFormat& nImageFormat );
+	static string			GetFileNameExtend( const char* szFileName );
 
-	string					GetFileNameExtend( const char* szFileName );
+	template<typename ResourceType>
+	ResourceType			Load( const char* szFileName );
 };
 
+template<typename ResourceType>
+ResourceType CFileManage::Load(const char * szFileName)
+{
+	FILE* pFile;
+	fopen_s( &pFile, szFileName, "rb" );
+
+	fseek( pFile, 0, SEEK_END );
+	uint32 nSize = (uint32)ftell( pFile );
+	fseek( pFile, 0, SEEK_SET );
+
+	byte* pDesData = new byte[nSize + 1];
+	memset( pDesData, 0, sizeof( byte ) * ( nSize + 1 ) );
+	uint32 nCurSize = fread( &pDesData[0], 1, nSize, pFile );
+	fclose( pFile );
+	if ( nCurSize != nSize )
+	{
+		SAFE_DELETE_GROUP( pDesData );
+		return ResourceType( NULL, 0 );
+	}
+
+	pDesData[nSize-1] = NULL;
+	m_mapCache[string( szFileName )] = pDesData;
+	return ResourceType( pDesData, nSize + 1 );
+}

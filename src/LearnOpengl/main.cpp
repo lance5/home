@@ -94,11 +94,10 @@ uint32 loadTexture( const char* szPath )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-	uint32 nWidth, nHeight;
-	EImageFormat nImgFormat;
-	const byte* data = CFileManage::Inst().LoadImg( szPath, nWidth, nHeight, nImgFormat );
+	CResourceImg resource = CFileManage::Inst().Load<CResourceImg>( szPath );
+
 	GLenum nFormat;
-	switch( nImgFormat )
+	switch( resource.GetImageFormat() )
 	{
 	case eIF_RED:
 		nFormat = GL_RED;
@@ -110,7 +109,8 @@ uint32 loadTexture( const char* szPath )
 		nFormat = GL_RGBA;
 		break;
 	}
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, nWidth, nHeight, 0, nFormat, GL_UNSIGNED_BYTE, (const void*)data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, resource.GetImageWidth(), resource.GetImageHeight(),
+		0, nFormat, GL_UNSIGNED_BYTE, (const void*)resource.GetImageData() );
 	glGenerateMipmap(GL_TEXTURE_2D);
 	return nTextureID;
 }
