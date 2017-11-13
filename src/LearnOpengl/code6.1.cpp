@@ -84,8 +84,8 @@ int main1( int nArgv, char* szArgc[] )
 	glEnableVertexAttribArray( 1 );
 
 	string szTexturePath[2] = {
-		"./../../res/container.jpg",
-		"./../../res/awesomeface.png",
+		"container.jpg",
+		"awesomeface.png",
 	};
 
 	uint32 nTexture[2];

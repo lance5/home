@@ -8,6 +8,8 @@ float g_LastFrame = 0.0f;
 
 int main( int argc, char* argv[] )
 {
+	CFileManage::Inst().Init( RES_ROOT_DIR );
+
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

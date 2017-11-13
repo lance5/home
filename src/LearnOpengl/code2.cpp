@@ -73,9 +73,9 @@ int main2( int argc, char* argv[] )
 	glVertexAttribPointer( 0, 3, GL_FLOAT, false, 8 * sizeof( float ), (void*)0 );
 	glEnableVertexAttribArray( 0 );
 
-	GLuint nDiffuseMap = loadTexture( "./../../res/container2.png" );	
-	GLuint nSpecularMap = loadTexture( "./../../res/container2_specular.png" );
-	GLuint nEmissionMap = loadTexture( "./../../res/matrix.jpg" );
+	GLuint nDiffuseMap = loadTexture( "container2.png" );	
+	GLuint nSpecularMap = loadTexture( "container2_specular.png" );
+	GLuint nEmissionMap = loadTexture( "matrix.jpg" );
 	
 	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, nDiffuseMap );
