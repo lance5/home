@@ -78,7 +78,7 @@ int main2( int argc, char* argv[] )
 	GLuint nSpecularMap = loadTexture( "container2_specular.png" );
 	GLuint nEmissionMap = loadTexture( "matrix.jpg" );
 	CResourceModel ResModel;
-	CFileManage::Inst().Load<>( "nanosuit/nanosuit.obj", ResModel );
+	CFileManage::Inst().Load( "nanosuit/nanosuit.obj", ResModel );
 	
 	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, nDiffuseMap );

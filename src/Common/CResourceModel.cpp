@@ -88,15 +88,15 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		}
 		else if( !strcmp( strType.c_str(), "mtllib" ) )
 		{
-			if( !CFileManage::Inst().FileIsExist( vecParam[0].c_str() ) )
+			string strMtlFile = vecParam[0];
+			if( !CFileManage::Inst().FileIsExist( strMtlFile.c_str() ) )
 			{
-				string strFile = CFileManage::GetFileDir( szFileName );
-				if( !CFileManage::Inst().FileIsExist( ( strFile + vecParam[0] ).c_str() ) )
+				strMtlFile = CFileManage::GetFileDir( szFileName ) + strMtlFile;
+				if( !CFileManage::Inst().FileIsExist( strMtlFile.c_str() ) )
 					return;
 			}
 
-			
-			
+			CFileManage::Inst().Load( strMtlFile.c_str(), );
 		}
 		else if ( !strcmp(strType.c_str(), "#") )
 		{
