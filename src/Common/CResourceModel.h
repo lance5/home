@@ -13,13 +13,17 @@ struct SModelVector
 };
 
 class CResourceModel
-	: public CResourceType
+	: public IResourceCallback
 {
 	std::vector<CResourceImg>		m_vecTexture;
 	std::vector<SModelVector>		m_vecVector;
+	bool							m_bIsWholeModel;
 
 public:
-	CResourceModel( const byte* szBuffer, uint32 nSize );
+	CResourceModel();
 	~CResourceModel();
+
+	virtual void					OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
+	bool							IsWholeModel() const { return m_bIsWholeModel; }
 };
 

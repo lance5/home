@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <Common/CResourceModel.h>
 
 int main2( int argc, char* argv[] )
 {
@@ -76,6 +77,8 @@ int main2( int argc, char* argv[] )
 	GLuint nDiffuseMap = loadTexture( "container2.png" );	
 	GLuint nSpecularMap = loadTexture( "container2_specular.png" );
 	GLuint nEmissionMap = loadTexture( "matrix.jpg" );
+	CResourceModel ResModel;
+	CFileManage::Inst().Load<>( "nanosuit/nanosuit.obj", ResModel );
 	
 	glActiveTexture( GL_TEXTURE0 );
 	glBindTexture( GL_TEXTURE_2D, nDiffuseMap );

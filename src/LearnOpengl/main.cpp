@@ -96,7 +96,8 @@ uint32 loadTexture( const char* szPath )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-	CResourceImg resource = CFileManage::Inst().Load<CResourceImg>( szPath );
+	CResourceImg resource;
+	CFileManage::Inst().Load( szPath, resource );
 
 	GLenum nFormat;
 	switch( resource.GetImageFormat() )

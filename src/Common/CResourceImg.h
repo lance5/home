@@ -10,16 +10,17 @@ enum EImageFormat
 };
 
 class CResourceImg :
-	public CResourceType
+	public IResourceCallback
 {
 	uint32			m_nWidth;
 	uint32			m_nHeight;
 	EImageFormat	m_nFormat;
 	char*			m_pImageData;
-
 public:
-	CResourceImg( const byte* szBuffer, uint32 nSize );
+	CResourceImg();
 	virtual ~CResourceImg();
+
+	virtual void	OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
 
 	const char*		GetImageData() const { return m_pImageData; }
 	uint32			GetImageWidth() const { return m_nWidth; }

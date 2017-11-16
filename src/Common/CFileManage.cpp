@@ -9,8 +9,8 @@ CFileManage::CFileManage()
 
 CFileManage::~CFileManage()
 {
-	for( map<string, byte*>::iterator it = m_mapCache.begin(); it != m_mapCache.end(); ++it )
-		SAFE_DELETE_GROUP( it->second );
+	for( map<string, SFileStruct>::iterator it = m_mapCache.begin(); it != m_mapCache.end(); ++it )
+		SAFE_DELETE_GROUP( it->second.m_pBuffer );
 }
 
 CFileManage& CFileManage::Inst()
@@ -31,4 +31,21 @@ string CFileManage::GetFileNameExtend(const char * szFileName)
 	if( nLastPos == INVALIDU32BYTE )
 		return string();
 	return string( szFileName + nLastPos + 1 );
+}
+
+string CFileManage::GetFileDir(const char * szFullFileName)
+{
+	uint32 nLen = strlen( szFullFileName );
+	uint32 nDirLen = nLen;
+	for( ; nDirLen && szFullFileName[nDirLen-1] != '/' && szFullFileName[nDirLen-1] != '\\'; --nDirLen )
+		;
+	return string( szFullFileName, 0, nDirLen );
+}
+
+bool CFileManage::FileIsExist(const char * szFileName)
+{
+	FILE* pFile;
+	string szFullFileName( m_strRootDir + szFileName );
+	errno_t nError = fopen_s( &pFile, szFullFileName.c_str(), "rb" );
+	return nError == 0;
 }

@@ -5,60 +5,74 @@
 #include <map>
 using namespace std;
 
-class CResourceType
+class IResourceCallback
 {
-	const byte*				m_pBuffer;
-	uint32					m_nBufferSize;
 public:
-	CResourceType( const byte* szBuffer, uint32 nSize )
-		:m_pBuffer( szBuffer )
-		, m_nBufferSize( nSize )
-	{}
-	virtual ~CResourceType() {}
-
-	const byte*				GetBuffer() { return m_pBuffer; }
-	uint32					GetSize() { return m_nBufferSize; }
+	virtual void OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize ) = 0;
 };
 
 class CFileManage
 {
-	map<string, byte*>		m_mapCache;
-	string					m_strRootDir;
+	struct SFileStruct
+	{
+		string			m_strFileName;
+		byte*			m_pBuffer;
+		uint32			m_nSize;
+		SFileStruct() : m_pBuffer( nullptr ) , m_nSize( 0 ) {}
+	};
+
+	map<string, SFileStruct>		m_mapCache;
+	string							m_strRootDir;
 
 	CFileManage();
 	~CFileManage();
 public:
 
-	static CFileManage&		Inst();
-	static string			GetFileNameExtend( const char* szFileName );
-	void					Init( const char* szRoot ) { m_strRootDir = szRoot; }
+	static CFileManage&				Inst();
+	static string					GetFileNameExtend( const char* szFileName );
+	static string					GetFileDir( const char* szFullFileName );
+	bool							FileIsExist( const char* szFileName );
+	void							Init( const char* szRoot ) { m_strRootDir = szRoot; }
 
 	template<typename ResourceType>
-	ResourceType			Load( const char* szFileName );
+	bool							Load( const char * szFileName, ResourceType& pResource );
 };
 
 template<typename ResourceType>
-ResourceType CFileManage::Load(const char * szFileName)
+bool CFileManage::Load( const char * szFileName, ResourceType& pResource )
 {
-	FILE* pFile;
-	string szFullFileName( m_strRootDir + szFileName );
-	fopen_s( &pFile, szFullFileName.c_str(), "rb" );
-
-	fseek( pFile, 0, SEEK_END );
-	uint32 nSize = (uint32)ftell( pFile );
-	fseek( pFile, 0, SEEK_SET );
-
-	byte* pDesData = new byte[nSize + 1];
-	memset( pDesData, 0, sizeof( byte ) * ( nSize + 1 ) );
-	uint32 nCurSize = fread( &pDesData[0], 1, nSize, pFile );
-	fclose( pFile );
-	if ( nCurSize != nSize )
+	string strFileName = string( szFileName );
+	if( m_mapCache.find( strFileName ) == m_mapCache.end() )
 	{
-		SAFE_DELETE_GROUP( pDesData );
-		return ResourceType( NULL, 0 );
+		FILE* pFile;
+		string szFullFileName( m_strRootDir + szFileName );
+		errno_t nError = fopen_s( &pFile, szFullFileName.c_str(), "rb" );
+		if( nError != 0 )
+			return false;
+
+		fseek( pFile, 0, SEEK_END );
+		uint32 nSize = (uint32)ftell( pFile );
+		fseek( pFile, 0, SEEK_SET );
+
+		byte* pDesData = new byte[nSize + 1];
+		memset( pDesData, 0, sizeof( byte ) * ( nSize + 1 ) );
+		uint32 nCurSize = fread( &pDesData[0], 1, nSize, pFile );
+		fclose( pFile );
+		if ( nCurSize != nSize )
+		{
+			SAFE_DELETE_GROUP( pDesData );
+			return false;
+		}
+
+		pDesData[nSize] = NULL;
+		SFileStruct sFile;
+		sFile.m_strFileName = szFullFileName;
+		sFile.m_pBuffer = pDesData;
+		sFile.m_nSize = nSize + 1;
+		m_mapCache[strFileName] = sFile;
 	}
 
-	pDesData[nSize-1] = NULL;
-	m_mapCache[string( szFileName )] = pDesData;
-	return ResourceType( pDesData, nSize + 1 );
+	pResource.OnFileLoaded( m_mapCache[strFileName].m_strFileName.c_str(),
+		m_mapCache[strFileName].m_pBuffer, m_mapCache[strFileName].m_nSize );
+	return true;
 }

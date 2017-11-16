@@ -2,9 +2,18 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-CResourceImg::CResourceImg(const byte * szBuffer, uint32 nSize)
-	: CResourceType( szBuffer, nSize )
-	, m_pImageData( NULL )
+CResourceImg::CResourceImg()
+	: m_pImageData( NULL )
+{
+}
+
+CResourceImg::~CResourceImg()
+{
+	stbi_image_free( m_pImageData );
+	m_pImageData = NULL;
+}
+
+void CResourceImg::OnFileLoaded( const char* szFileName, const byte * szBuffer, uint32 nSize)
 {
 	int32 nWidth, nHeight, nrChannels;
 	m_pImageData = (char*)stbi_load_from_memory( szBuffer, nSize, &nWidth, &nHeight, &nrChannels, 0 );
@@ -22,10 +31,4 @@ CResourceImg::CResourceImg(const byte * szBuffer, uint32 nSize)
 		m_nFormat = eIF_RGBA;
 		break;
 	}
-}
-
-CResourceImg::~CResourceImg()
-{
-	stbi_image_free( m_pImageData );
-	m_pImageData = NULL;
 }
