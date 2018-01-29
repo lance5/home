@@ -96,7 +96,9 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 					return;
 			}
 
-			CFileManage::Inst().Load( strMtlFile.c_str(), );
+			const SFileStruct* pFile = CFileManage::Inst().Load( strMtlFile.c_str() );
+			Assert( pFile );
+			OnLoadMtllib( pFile->m_strFileName.c_str(), pFile->m_pBuffer, pFile->m_nSize );
 		}
 		else if ( !strcmp(strType.c_str(), "#") )
 		{
@@ -109,4 +111,9 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 	}
 
 	m_bIsWholeModel = true;
+}
+
+void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
+{
+	
 }

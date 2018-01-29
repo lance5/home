@@ -49,3 +49,39 @@ bool CFileManage::FileIsExist(const char * szFileName)
 	errno_t nError = fopen_s( &pFile, szFullFileName.c_str(), "rb" );
 	return nError == 0;
 }
+
+const SFileStruct* CFileManage::Load( const char * szFileName )
+{
+	string strFileName = string( szFileName );
+	if( m_mapCache.find( strFileName ) == m_mapCache.end() )
+	{
+		FILE* pFile;
+		string szFullFileName( m_strRootDir + szFileName );
+		errno_t nError = fopen_s( &pFile, szFullFileName.c_str(), "rb" );
+		if( nError != 0 )
+			return nullptr;
+
+		fseek( pFile, 0, SEEK_END );
+		uint32 nSize = (uint32)ftell( pFile );
+		fseek( pFile, 0, SEEK_SET );
+
+		byte* pDesData = new byte[nSize + 1];
+		memset( pDesData, 0, sizeof( byte ) * ( nSize + 1 ) );
+		uint32 nCurSize = fread( &pDesData[0], 1, nSize, pFile );
+		fclose( pFile );
+		if ( nCurSize != nSize )
+		{
+			SAFE_DELETE_GROUP( pDesData );
+			return nullptr;
+		}
+
+		pDesData[nSize] = NULL;
+		SFileStruct sFile;
+		sFile.m_strFileName = szFullFileName;
+		sFile.m_pBuffer = pDesData;
+		sFile.m_nSize = nSize + 1;
+		m_mapCache[strFileName] = sFile;
+	}
+
+	return &( m_mapCache[strFileName] );
+}

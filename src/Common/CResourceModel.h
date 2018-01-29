@@ -24,6 +24,7 @@ public:
 	~CResourceModel();
 
 	virtual void					OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
+	void							OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize );
 	bool							IsWholeModel() const { return m_bIsWholeModel; }
 };
 
