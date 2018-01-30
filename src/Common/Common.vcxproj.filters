@@ -35,7 +35,9 @@
     <ClInclude Include="CResourceModel.h">
       <Filter>File\Model</Filter>
     </ClInclude>
-    <ClInclude Include="CReadBuffer.h" />
+    <ClInclude Include="CBuffer.h">
+      <Filter>File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="数据结构">

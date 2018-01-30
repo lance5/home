@@ -22,7 +22,7 @@
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CFileManage.h" />
     <ClInclude Include="CMesh.h" />
-    <ClInclude Include="CReadBuffer.h" />
+    <ClInclude Include="CBuffer.h" />
     <ClInclude Include="CResourceImg.h" />
     <ClInclude Include="CResourceModel.h" />
     <ClInclude Include="CShader.h" />

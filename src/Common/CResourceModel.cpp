@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "CResourceModel.h"
 #include "common.h"
 #include <glfw/glfw3.h>
@@ -20,49 +22,18 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 	vector<vec3> vecVertex;
 	vector<vec3> vecNormal;
 	vector<vec2> vecTexCoord;
+	vector<string> vecParam;
 
-	uint32 nCurPos = 0;
-	while( nCurPos < nSize )
+	CStringBuf Buf( (char*)szBuffer, nSize );
+	char szLine[2048];
+	while ( Buf.ReadLine( szLine, ELEM_COUNT( szLine ) ) )
 	{
-		// 读取行  
-		string strLine;
-		for( ; szBuffer[nCurPos] != '\n' && nCurPos < nSize; ++nCurPos )
-		{
-			strLine.push_back( szBuffer[nCurPos] );
-		}
-		++nCurPos;
-
-		if( strLine[strLine.size() - 1] == '\r' )
-		{
-			strLine = strLine.substr( 0, strLine.size() - 1 );
-		}
-
-		if( !strLine.size() )
-			continue;
-
-		// 防止最后一个参数读取不到  
-		strLine.push_back( ' ' );
-
-		vector<string> vecParam;
-		string strCurParam;
-		for( uint32 i = 0; i < strLine.size(); ++i )
-		{
-			if ( strLine[i] == ' ' )
-			{
-				if( strCurParam.size() )
-				{
-					vecParam.push_back( strCurParam );
-					strCurParam.clear();
-				}
-				continue;
-			}
-
-			strCurParam.push_back( strLine[i] );
-		}
+		vecParam.clear();
+		partition( szLine, ' ', vecParam );
 
 		string strType = vecParam[0];
 		vecParam.erase( vecParam.begin() );
-		stringToLower( &strType[0], strType.size() );
+
 		if( !strcmp( strType.c_str(), "v" ) )
 		{
 			vec3 vVertex;
@@ -106,7 +77,7 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		}
 		else
 		{
-			Log << "Obj FIle Read Not Realize Keyword : \"" << strLine.c_str() << "\"" << endl;
+			Log << "Obj FIle Read Not Realize Keyword : \"" << szLine << "\"" << endl;
 		}
 	}
 

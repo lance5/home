@@ -36,12 +36,12 @@ public:
 class CWriteBuffer
 {
 	byte*			m_pBuffer;
-	uint32			m_nCurSize;
+	uint32			m_nCurPos;
 	uint32			m_nMaxSize;
 public:
 	CWriteBuffer()
 		: m_pBuffer(NULL)
-		, m_nCurSize(0)
+		, m_nCurPos(0)
 		, m_nMaxSize(0)
 	{}
 	~CWriteBuffer() 
@@ -51,20 +51,20 @@ public:
 
 	void Write( const byte* pData, uint32 nSize )
 	{
-		if( m_nCurSize + nSize > m_nMaxSize )
+		if( m_nCurPos + nSize > m_nMaxSize )
 		{
 			const byte* pTemBuf = m_pBuffer;
 			m_nMaxSize = (float)( (float)m_nMaxSize * 1.35f );
 			m_pBuffer = new byte[m_nMaxSize];
 			Assert( m_pBuffer );
 			memset( m_pBuffer, 0, m_nMaxSize );
-			memcpy( m_pBuffer, pTemBuf, m_nCurSize );
+			memcpy( m_pBuffer, pTemBuf, m_nCurPos );
 			if( pTemBuf )
 				SAFE_DELETE_GROUP( pTemBuf );
 		}
 
-		memcpy( m_pBuffer + m_nCurSize, pData, nSize );
-		m_nCurSize += nSize;
+		memcpy( m_pBuffer + m_nCurPos, pData, nSize );
+		m_nCurPos += nSize;
 	}
 
 	template<typename DataType>
