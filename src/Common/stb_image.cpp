@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "stb_image.h"
 
 #if defined(STBI_ONLY_JPEG) || defined(STBI_ONLY_PNG) || defined(STBI_ONLY_BMP) \

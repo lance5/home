@@ -1,10 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <exception>
-#include <vector>
-#include <string>
-
 #define SAFE_DELETE(ptr) if(ptr){delete ptr;ptr=nullptr;}
 #define SAFE_DELETE_GROUP(ptr) if(ptr){delete[] ptr;ptr=nullptr;}
 

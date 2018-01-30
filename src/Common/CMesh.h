@@ -1,13 +1,5 @@
 #pragma once
 
-#include "TypeDef.h"
-#include "glm\vec3.hpp"
-using namespace glm;
-
-#include <string>
-#include <vector>
-using namespace std;
-
 class CMesh
 {
 	struct SVertex

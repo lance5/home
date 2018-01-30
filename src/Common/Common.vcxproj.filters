@@ -38,6 +38,10 @@
     <ClInclude Include="CBuffer.h">
       <Filter>File</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="CommonHelp.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="数据结构">
@@ -78,9 +82,6 @@
     <ClCompile Include="CShader.cpp">
       <Filter>Opengl</Filter>
     </ClCompile>
-    <ClCompile Include="common.h">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
@@ -100,5 +101,6 @@
     <ClCompile Include="CResourceModel.cpp">
       <Filter>File\Model</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
 </Project>

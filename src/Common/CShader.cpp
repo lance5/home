@@ -1,15 +1,4 @@
-#include "glad.h"
-#include "glm/glm.hpp"
-#include "glfw/glfw3.h"
-
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-
-#include "TypeDef.h"
-#include "common.h"
-
+#include "stdafx.h"
 #include "CShader.h"
 
 using namespace std;

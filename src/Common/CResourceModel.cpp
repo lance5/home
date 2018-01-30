@@ -1,7 +1,5 @@
-#include <vector>
-#include <string>
+#include "stdafx.h"
 #include "CResourceModel.h"
-#include "common.h"
 #include <glfw/glfw3.h>
 
 using namespace glm;
@@ -30,55 +28,48 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 	{
 		vecParam.clear();
 		partition( szLine, ' ', vecParam );
-
-		string strType = vecParam[0];
-		vecParam.erase( vecParam.begin() );
-
-		if( !strcmp( strType.c_str(), "v" ) )
+		const char* szType = vecParam[0].c_str();
+		if ( !strcmp( szType, "#" ) )
+			continue;
+		else if( !strcmp( szType, "v" ) )
 		{
 			vec3 vVertex;
-			vVertex.x = (float)atof( vecParam[0].c_str() );
-			vVertex.y = (float)atof( vecParam[1].c_str() );
-			vVertex.z = (float)atof( vecParam[2].c_str() );
+			vVertex.x = (float)atof( vecParam[1].c_str() );
+			vVertex.y = (float)atof( vecParam[2].c_str() );
+			vVertex.z = (float)atof( vecParam[3].c_str() );
 			vecVertex.push_back( vVertex );
 		}
-		else if( !strcmp( strType.c_str(), "vt" ) )
+		else if( !strcmp( szType, "vt" ) )
 		{
 			vec2 vVertex;
-			vVertex.x = (float)atof( vecParam[0].c_str() );
-			vVertex.y = (float)atof( vecParam[1].c_str() );
+			vVertex.x = (float)atof( vecParam[1].c_str() );
+			vVertex.y = (float)atof( vecParam[2].c_str() );
 			vecTexCoord.push_back( vVertex );
 		}
-		else if( !strcmp( strType.c_str(), "vn" ) )
+		else if( !strcmp( szType, "vn" ) )
 		{
 			vec3 vVertex;
-			vVertex.x = (float)atof( vecParam[0].c_str() );
-			vVertex.y = (float)atof( vecParam[1].c_str() );
-			vVertex.z = (float)atof( vecParam[2].c_str() );
+			vVertex.x = (float)atof( vecParam[1].c_str() );
+			vVertex.y = (float)atof( vecParam[2].c_str() );
+			vVertex.z = (float)atof( vecParam[3].c_str() );
 			vecNormal.push_back( vVertex );
 		}
-		else if( !strcmp( strType.c_str(), "mtllib" ) )
+		else if( !strcmp( szType, "mtllib" ) )
 		{
-			string strMtlFile = vecParam[0];
+			string strMtlFile = vecParam[1];
 			if( !CFileManage::Inst().FileIsExist( strMtlFile.c_str() ) )
 			{
 				strMtlFile = CFileManage::GetFileDir( szFileName ) + strMtlFile;
 				if( !CFileManage::Inst().FileIsExist( strMtlFile.c_str() ) )
-					return;
+					continue;
 			}
-
+			
 			const SFileStruct* pFile = CFileManage::Inst().Load( strMtlFile.c_str() );
 			Assert( pFile );
 			OnLoadMtllib( pFile->m_strFileName.c_str(), pFile->m_pBuffer, pFile->m_nSize );
 		}
-		else if ( !strcmp(strType.c_str(), "#") )
-		{
-			continue;
-		}
 		else
-		{
 			Log << "Obj FIle Read Not Realize Keyword : \"" << szLine << "\"" << endl;
-		}
 	}
 
 	m_bIsWholeModel = true;
@@ -86,5 +77,17 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 
 void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
 {
-	
+	vector<string> vecParam;
+	CStringBuf Buf( (char*)szBuffer, nSize );
+	char szLine[2048];
+	while ( Buf.ReadLine( szLine, ELEM_COUNT( szLine ) ) )
+	{
+		vecParam.clear();
+		partition( szLine, ' ', vecParam );
+		const char* szType = vecParam[0].c_str();
+		if ( !strcmp( szType, "#" ) )
+			continue;
+		else
+			Log << "Obj FIle Read Not Realize Keyword : \"" << szLine << "\"" << endl;
+	}
 }

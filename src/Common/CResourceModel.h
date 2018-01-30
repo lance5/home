@@ -1,11 +1,5 @@
 #pragma once
 
-#include <vector>
-#include "CFileManage.h"
-#include "CResourceImg.h"
-#include <glm/glm.hpp>
-#include "common.h"
-
 struct SModelVector
 {
 	glm::vec3	m_vPosition;

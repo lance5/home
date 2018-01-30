@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "CTree.h"
 
 CTree::CTree( FuncTreeSort pFunc )

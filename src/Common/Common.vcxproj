@@ -23,6 +23,7 @@
     <ClInclude Include="CFileManage.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CBuffer.h" />
+    <ClInclude Include="CommonHelp.h" />
     <ClInclude Include="CResourceImg.h" />
     <ClInclude Include="CResourceModel.h" />
     <ClInclude Include="CShader.h" />
@@ -31,20 +32,25 @@
     <ClInclude Include="glad.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="TypeDef.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CFileManage.cpp" />
     <ClCompile Include="CMesh.cpp" />
-    <ClCompile Include="common.h" />
     <ClCompile Include="CResourceImg.cpp" />
     <ClCompile Include="CResourceModel.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CThread.cpp" />
     <ClCompile Include="CTree.cpp" />
-    <ClCompile Include="glad.c" />
+    <ClCompile Include="glad.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{232A8CC1-2443-49A1-9E8B-A224697FF87D}</ProjectGuid>
@@ -104,6 +110,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -1,5 +1,5 @@
+#include "stdafx.h"
 #include "CFileManage.h"
-#include "common.h"
 #include "CResourceImg.h"
 
 CFileManage::CFileManage()
@@ -45,18 +45,19 @@ string CFileManage::GetFileDir(const char * szFullFileName)
 bool CFileManage::FileIsExist(const char * szFileName)
 {
 	FILE* pFile;
-	string szFullFileName( m_strRootDir + szFileName );
-	errno_t nError = fopen_s( &pFile, szFullFileName.c_str(), "rb" );
+	errno_t nError = fopen_s( &pFile, szFileName, "rb" );
 	return nError == 0;
 }
 
 const SFileStruct* CFileManage::Load( const char * szFileName )
 {
-	string strFileName = string( szFileName );
-	if( m_mapCache.find( strFileName ) == m_mapCache.end() )
+	if( m_mapCache.find( szFileName ) == m_mapCache.end() )
 	{
+		string szFullFileName( szFileName );
+		if ( !FileIsExist( szFileName ) )
+			szFullFileName = m_strRootDir + szFileName;
+
 		FILE* pFile;
-		string szFullFileName( m_strRootDir + szFileName );
 		errno_t nError = fopen_s( &pFile, szFullFileName.c_str(), "rb" );
 		if( nError != 0 )
 			return nullptr;
@@ -80,8 +81,8 @@ const SFileStruct* CFileManage::Load( const char * szFileName )
 		sFile.m_strFileName = szFullFileName;
 		sFile.m_pBuffer = pDesData;
 		sFile.m_nSize = nSize + 1;
-		m_mapCache[strFileName] = sFile;
+		m_mapCache[szFileName] = sFile;
 	}
 
-	return &( m_mapCache[strFileName] );
+	return &( m_mapCache[szFileName] );
 }

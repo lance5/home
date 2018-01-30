@@ -33,6 +33,7 @@ public:
 	static string					GetFileDir( const char* szFullFileName );
 	bool							FileIsExist( const char* szFileName );
 	void							Init( const char* szRoot ) { m_strRootDir = szRoot; }
+	const string&					GetRootDir() const { return m_strRootDir; }
 
 	template<typename ResourceType>
 	bool							Load( const char* szFileName, ResourceType& pResource );
