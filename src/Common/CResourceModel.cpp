@@ -19,7 +19,7 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 
 	m_vecVertex.reserve( 65535 );
 	m_vecTexCoord.reserve( 65535 );
-	m_vecTexCoord.reserve( 65535 );
+	m_vecNormal.reserve( 65535 );
 
 	uint32 nCurPos = 0;
 	vector<cstring> vecParam;
@@ -88,7 +88,9 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else if ( !strncmp( vecParam[0].c_str(), "usemtl", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 2 );
-			m_vecObject.rbegin()->m_strMaterial = string( vecParam[1].c_str(), vecParam[1].size() );
+			string szName( vecParam[1].c_str(), vecParam[1].size() );
+			Assert( m_mapMaterial.find( szName ) != m_mapMaterial.end() );
+			m_vecObject.rbegin()->m_pMaterial = &m_mapMaterial[szName];
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "s", vecParam[0].size() ) )
 		{
@@ -123,8 +125,8 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 
 void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
 {
-	vector<cstring> vecLine;
 	uint32 nCurPos = 0;
+	vector<cstring> vecParam;
 	for( uint32 i = 0; i < nSize; ++i )
 	{
 		if( szBuffer[i] != '\n' )
@@ -132,24 +134,55 @@ void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer,
 
 		const char* szString = (const char*)( szBuffer + nCurPos );
 		uint32 nCurSize = i - nCurPos;
+		nCurPos = i + 1;
 		if( szString[nCurSize - 1] == '\r' )
 			--nCurSize;
 		cstring sString( szString, nCurSize );
-		vecLine.push_back( sString );
-	}
 
-	vector<cstring> vecParam;
-	for( vector<cstring>::iterator it = vecLine.begin(); it != vecLine.end(); ++it )
-	{
-		if( it->size() == 0 )
+		if( nCurSize == 0 )
 			continue;
 
 		vecParam.clear();
-		partition( *it, ' ', vecParam );
+		partition( sString, ' ', vecParam );
 
 		if ( !strncmp( vecParam[0].c_str(), "#", vecParam[0].size() ) )
 			continue;
-		else
-			Log;
+		else if ( !strncmp( vecParam[0].c_str(), "newmtl", vecParam[0].size() ) )
+			m_mapMaterial[string( vecParam[1].c_str(), vecParam[1].size() ) ];
+		else if ( !strncmp( vecParam[0].c_str(), "Ns", vecParam[0].size() ) )
+			m_mapMaterial.rbegin()->second.m_fShininess = (float)atof( vecParam[1].c_str() );
+		else if ( !strncmp( vecParam[0].c_str(), "Ka", vecParam[0].size() ) )
+		{
+			vec3& vector = m_mapMaterial.rbegin()->second.m_vec3Ambient;
+			vector.x = (float)atof( vecParam[1].c_str() );
+			vector.y = (float)atof( vecParam[2].c_str() );
+			vector.z = (float)atof( vecParam[3].c_str() );
+		}
+		else if ( !strncmp( vecParam[0].c_str(), "Kd", vecParam[0].size() ) )
+		{
+			vec3& vector = m_mapMaterial.rbegin()->second.m_vec3Diffuse;
+			vector.x = (float)atof( vecParam[1].c_str() );
+			vector.y = (float)atof( vecParam[2].c_str() );
+			vector.z = (float)atof( vecParam[3].c_str() );
+		}
+		else if ( !strncmp( vecParam[0].c_str(), "Ks", vecParam[0].size() ) )
+		{
+			vec3& vector = m_mapMaterial.rbegin()->second.m_vec3Specular;
+			vector.x = (float)atof( vecParam[1].c_str() );
+			vector.y = (float)atof( vecParam[2].c_str() );
+			vector.z = (float)atof( vecParam[3].c_str() );
+		}
+		else if ( !strncmp( vecParam[0].c_str(), "Ni", vecParam[0].size() ) )
+			m_mapMaterial.rbegin()->second.m_fRefractiveIndex = (float)atof( vecParam[1].c_str() );
+		else if ( !strncmp( vecParam[0].c_str(), "d", vecParam[0].size() ) )
+			m_mapMaterial.rbegin()->second.m_fFadeOut = (float)atof( vecParam[1].c_str() );
+		else if ( !strncmp( vecParam[0].c_str(), "illum", vecParam[0].size() ) )
+			m_mapMaterial.rbegin()->second.m_nIllum = atoi( vecParam[1].c_str() );
+		else if ( !strncmp( vecParam[0].c_str(), "map_Kd", vecParam[0].size() ) )
+			m_mapMaterial.rbegin()->second.m_strDiffuse = string( vecParam[1].c_str(), vecParam[1].size() );
+		else if ( !strncmp( vecParam[0].c_str(), "map_Bump", vecParam[0].size() ) )
+			m_mapMaterial.rbegin()->second.m_strBump = string( vecParam[1].c_str(), vecParam[1].size() );
+		else if ( !strncmp( vecParam[0].c_str(), "map_Ks", vecParam[0].size() ) )
+			m_mapMaterial.rbegin()->second.m_strSpecular = string( vecParam[1].c_str(), vecParam[1].size() );
 	}
 }

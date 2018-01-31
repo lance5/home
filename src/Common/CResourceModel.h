@@ -3,18 +3,34 @@
 class CResourceModel
 	: public IResourceCallback
 {
+	struct SMaterial
+	{
+		float						m_fShininess;
+		glm::vec3					m_vec3Ambient;
+		glm::vec3					m_vec3Diffuse;
+		glm::vec3					m_vec3Specular;
+		float						m_fRefractiveIndex;
+		float						m_fFadeOut;
+		uint8						m_nIllum;
+		std::string					m_strDiffuse;
+		std::string					m_strBump;
+		std::string					m_strSpecular;
+	};
+
 	struct SObjectIndex
 	{
 		std::string					m_strName;
-		std::string					m_strMaterial;
 		bool						m_bSmooth;
 		std::vector<uint32>			m_aryIndex;
+		const SMaterial*			m_pMaterial;
 	};
+
 	std::vector<float>				m_vecVertex;
 	std::vector<float>				m_vecNormal;
 	std::vector<float>				m_vecTexCoord;
 	bool							m_bIsWholeModel;
 	std::vector<SObjectIndex>		m_vecObject;
+	std::map<string, SMaterial>		m_mapMaterial;
 
 public:
 	CResourceModel();
