@@ -17,59 +17,105 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 {
 	m_bIsWholeModel = false;
 
-	vector<vec3> vecVertex;
-	vector<vec3> vecNormal;
-	vector<vec2> vecTexCoord;
-	vector<string> vecParam;
+	m_vecVertex.reserve( 65535 );
+	m_vecTexCoord.reserve( 65535 );
+	m_vecTexCoord.reserve( 65535 );
 
-	CStringBuf Buf( (char*)szBuffer, nSize );
-	char szLine[2048];
-	while ( Buf.ReadLine( szLine, ELEM_COUNT( szLine ) ) )
+	uint32 nCurPos = 0;
+	vector<cstring> vecParam;
+	for( uint32 i = 0; i < nSize; ++i )
 	{
-		vecParam.clear();
-		partition( szLine, ' ', vecParam );
-		const char* szType = vecParam[0].c_str();
-		if ( !strcmp( szType, "#" ) )
+		if( szBuffer[i] != '\n' )
 			continue;
-		else if( !strcmp( szType, "v" ) )
+
+		const char* szString = (const char*)( szBuffer + nCurPos );
+		uint32 nCurSize = i - nCurPos;
+		nCurPos = i + 1;
+		if( szString[nCurSize - 1] == '\r' )
+			--nCurSize;
+		cstring sString( szString, nCurSize );
+
+		if( nCurSize == 0 )
+			continue;
+
+		vecParam.clear();
+		partition( sString, ' ', vecParam );
+
+		if ( !strncmp( vecParam[0].c_str(), "#", vecParam[0].size() ) )
+			continue;
+		else if ( !strncmp( vecParam[0].c_str(), "v", vecParam[0].size() ) )
 		{
-			vec3 vVertex;
-			vVertex.x = (float)atof( vecParam[1].c_str() );
-			vVertex.y = (float)atof( vecParam[2].c_str() );
-			vVertex.z = (float)atof( vecParam[3].c_str() );
-			vecVertex.push_back( vVertex );
+			Assert( vecParam.size() == 4 );
+			m_vecVertex.push_back( (float)atof( vecParam[1].c_str() ) );
+			m_vecVertex.push_back( (float)atof( vecParam[2].c_str() ) );
+			m_vecVertex.push_back( (float)atof( vecParam[3].c_str() ) );
 		}
-		else if( !strcmp( szType, "vt" ) )
+		else if ( !strncmp( vecParam[0].c_str(), "vt", vecParam[0].size() ) )
 		{
-			vec2 vVertex;
-			vVertex.x = (float)atof( vecParam[1].c_str() );
-			vVertex.y = (float)atof( vecParam[2].c_str() );
-			vecTexCoord.push_back( vVertex );
+			Assert( vecParam.size() == 3 );
+			m_vecTexCoord.push_back( (float)atof( vecParam[1].c_str() ) );
+			m_vecTexCoord.push_back( (float)atof( vecParam[2].c_str() ) );
 		}
-		else if( !strcmp( szType, "vn" ) )
+		else if ( !strncmp( vecParam[0].c_str(), "vn", vecParam[0].size() ) )
 		{
-			vec3 vVertex;
-			vVertex.x = (float)atof( vecParam[1].c_str() );
-			vVertex.y = (float)atof( vecParam[2].c_str() );
-			vVertex.z = (float)atof( vecParam[3].c_str() );
-			vecNormal.push_back( vVertex );
+			Assert( vecParam.size() == 4 );
+			m_vecNormal.push_back( (float)atof( vecParam[1].c_str() ) );
+			m_vecNormal.push_back( (float)atof( vecParam[2].c_str() ) );
+			m_vecNormal.push_back( (float)atof( vecParam[3].c_str() ) );
 		}
-		else if( !strcmp( szType, "mtllib" ) )
+		else if ( !strncmp( vecParam[0].c_str(), "mtllib", vecParam[0].size() ) )
 		{
-			string strMtlFile = vecParam[1];
+			Assert( vecParam.size() == 2 );
+			string strMtlFile( vecParam[1].c_str(), vecParam[1].size() );
 			if( !CFileManage::Inst().FileIsExist( strMtlFile.c_str() ) )
 			{
 				strMtlFile = CFileManage::GetFileDir( szFileName ) + strMtlFile;
 				if( !CFileManage::Inst().FileIsExist( strMtlFile.c_str() ) )
 					continue;
 			}
-			
+
 			const SFileStruct* pFile = CFileManage::Inst().Load( strMtlFile.c_str() );
 			Assert( pFile );
 			OnLoadMtllib( pFile->m_strFileName.c_str(), pFile->m_pBuffer, pFile->m_nSize );
 		}
+		else if ( !strncmp( vecParam[0].c_str(), "o", vecParam[0].size() ) )
+		{
+			Assert( vecParam.size() == 2 );
+			SObjectIndex sIndex;
+			sIndex.m_strName = string( vecParam[1].c_str(), vecParam[1].size() );
+			m_vecObject.push_back( sIndex );
+		}
+		else if ( !strncmp( vecParam[0].c_str(), "usemtl", vecParam[0].size() ) )
+		{
+			Assert( vecParam.size() == 2 );
+			m_vecObject.rbegin()->m_strMaterial = string( vecParam[1].c_str(), vecParam[1].size() );
+		}
+		else if ( !strncmp( vecParam[0].c_str(), "s", vecParam[0].size() ) )
+		{
+			Assert( vecParam.size() == 2 );
+			if( !strcmp( vecParam[1].c_str(), "1" ) || !strcmp( vecParam[1].c_str(), "on" ) )
+				m_vecObject.rbegin()->m_bSmooth = true;
+			else
+				m_vecObject.rbegin()->m_bSmooth = false;
+		}
+		else if ( !strncmp( vecParam[0].c_str(), "f", vecParam[0].size() ) )
+		{
+			Assert( vecParam.size() >= 2 );
+			vector<cstring> aryIndex;
+			aryIndex.reserve( 3 );
+			auto it = vecParam.begin();
+			for ( ++it; it != vecParam.end(); ++it )
+			{
+				aryIndex.clear();
+				partition( *it, '/', aryIndex );
+				Assert( aryIndex.size() == 3 );
+				m_vecObject.rbegin()->m_aryIndex.push_back( atoi( aryIndex[0].c_str() ) );
+				m_vecObject.rbegin()->m_aryIndex.push_back( atoi( aryIndex[1].c_str() ) );
+				m_vecObject.rbegin()->m_aryIndex.push_back( atoi( aryIndex[2].c_str() ) );
+			}
+		}
 		else
-			Log << "Obj FIle Read Not Realize Keyword : \"" << szLine << "\"" << endl;
+			Log << "Obj FIle Read Not Realize Keyword : \"" << string( sString.c_str(), sString.size() ) << "\"" << endl;
 	}
 
 	m_bIsWholeModel = true;
@@ -77,17 +123,33 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 
 void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
 {
-	vector<string> vecParam;
-	CStringBuf Buf( (char*)szBuffer, nSize );
-	char szLine[2048];
-	while ( Buf.ReadLine( szLine, ELEM_COUNT( szLine ) ) )
+	vector<cstring> vecLine;
+	uint32 nCurPos = 0;
+	for( uint32 i = 0; i < nSize; ++i )
 	{
+		if( szBuffer[i] != '\n' )
+			continue;
+
+		const char* szString = (const char*)( szBuffer + nCurPos );
+		uint32 nCurSize = i - nCurPos;
+		if( szString[nCurSize - 1] == '\r' )
+			--nCurSize;
+		cstring sString( szString, nCurSize );
+		vecLine.push_back( sString );
+	}
+
+	vector<cstring> vecParam;
+	for( vector<cstring>::iterator it = vecLine.begin(); it != vecLine.end(); ++it )
+	{
+		if( it->size() == 0 )
+			continue;
+
 		vecParam.clear();
-		partition( szLine, ' ', vecParam );
-		const char* szType = vecParam[0].c_str();
-		if ( !strcmp( szType, "#" ) )
+		partition( *it, ' ', vecParam );
+
+		if ( !strncmp( vecParam[0].c_str(), "#", vecParam[0].size() ) )
 			continue;
 		else
-			Log << "Obj FIle Read Not Realize Keyword : \"" << szLine << "\"" << endl;
+			Log;
 	}
 }

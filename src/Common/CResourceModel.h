@@ -1,18 +1,20 @@
 #pragma once
 
-struct SModelVector
-{
-	glm::vec3	m_vPosition;
-	glm::vec3	m_vNormal;
-	glm::vec2	m_vTexCoords;
-};
-
 class CResourceModel
 	: public IResourceCallback
 {
-	std::vector<CResourceImg>		m_vecTexture;
-	std::vector<SModelVector>		m_vecVector;
+	struct SObjectIndex
+	{
+		std::string					m_strName;
+		std::string					m_strMaterial;
+		bool						m_bSmooth;
+		std::vector<uint32>			m_aryIndex;
+	};
+	std::vector<float>				m_vecVertex;
+	std::vector<float>				m_vecNormal;
+	std::vector<float>				m_vecTexCoord;
 	bool							m_bIsWholeModel;
+	std::vector<SObjectIndex>		m_vecObject;
 
 public:
 	CResourceModel();
@@ -35,17 +37,17 @@ public:
 		, m_nMaxSize( nSize ) {}
 	~CStringBuf() {}
 
-	uint32 ReadLine( char* pBuffer, uint32 nMaxSize )
+	bool ReadLine( char* pBuffer, uint32 nMaxSize )
 	{
 		Assert( nMaxSize );
+		pBuffer[0] = '\0';
 		if( m_nCurPos >= m_nMaxSize )
-		{
-			pBuffer[0] = '\0';
-			return 0;
-		}
+			return false;
 		const char* szStart = m_pBuffer + m_nCurPos;
 		uint32 nCurSize = 0;
-		while ( szStart[nCurSize] != '\n' && nCurSize + m_nCurPos < m_nMaxSize )
+		while ( szStart[nCurSize] != '\n' 
+			&& szStart[nCurSize] != '\0' 
+			&& nCurSize + m_nCurPos < m_nMaxSize )
 			++nCurSize;
 		m_nCurPos += nCurSize + 1;
 		if( nCurSize != 0 && szStart[nCurSize-1] == '\r' )
@@ -53,6 +55,6 @@ public:
 		uint32 nSize = nCurSize < nMaxSize - 1 ? nCurSize : nMaxSize - 1;
 		memcpy( pBuffer, szStart, nSize );
 		pBuffer[nSize] = '\0';
-		return nSize;
+		return ( szStart[0] == '\0' ) ? false : true;
 	}
 };

@@ -15,6 +15,24 @@
 #define ELEM_COUNT(aryBuffer) (sizeof(aryBuffer)/sizeof(aryBuffer[0]))
 
 template<class _Type>
+class TConstString
+{
+	const _Type*		m_szBuffer;
+	uint32				m_nSize;
+public:
+	TConstString() : m_szBuffer( NULL ) , m_nSize( 0 ) {}
+	TConstString( const char* szBuffer, uint32 nSize )
+		: m_szBuffer( szBuffer )
+		, m_nSize( nSize ) {}
+	~TConstString() {}
+
+	const _Type*		c_str() const { return m_szBuffer; }
+	uint32				size() const { return m_nSize; }
+};
+
+typedef TConstString<char>     cstring;
+
+template<class _Type>
 inline _Type tolower( _Type c ){ return c >= 'A' && c <= 'Z' ? c - 'A' + 'a' : c; }
 template<class _Type>
 inline _Type toupper( _Type c ){ return c >= 'a' && c <= 'z' ? c - 'a' + 'A' : c; }
@@ -32,22 +50,22 @@ inline void	stringToUpper(_Type szBuffer, _SizeType nSize)
 }
 
 template<class _DataType>
-inline void partition( const _DataType* szString, _DataType szChar, 
-	std::vector<std::basic_string<_DataType>>& vecResult )
+inline void partition( const cstring& cstrString, _DataType szChar, 
+	std::vector<cstring>& vecResult )
 {
 	uint32 nStartPos = 0;
-	for ( uint32 i = 0; szString[i] != '\0'; ++i )
+	for ( uint32 i = 0; i < cstrString.size(); ++i )
 	{
-		if( szString[i] != szChar )
+		if( cstrString.c_str()[i] != szChar )
 			continue;
 		if( i == nStartPos )
 			continue;
 
-		string strWord( szString + nStartPos, i - nStartPos );
+		cstring strWord( cstrString.c_str() + nStartPos, i - nStartPos );
 		nStartPos = i + 1;
 		vecResult.push_back( strWord );
 	}
-	if( szString[nStartPos] == '\0' )
+	if( cstrString.c_str()[nStartPos] == '\0' )
 		return;
-	vecResult.push_back( string( szString + nStartPos ) );
+	vecResult.push_back( cstring( cstrString.c_str() + nStartPos, cstrString.size() - nStartPos ) );
 }

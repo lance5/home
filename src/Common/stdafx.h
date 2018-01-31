@@ -7,8 +7,8 @@
 #include <vector>
 using namespace std;
 
-#include "CommonHelp.h"
 #include "TypeDef.h"
+#include "CommonHelp.h"
 
 #include "glm\vec3.hpp"
 using namespace glm;
