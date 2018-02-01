@@ -12,6 +12,9 @@
     <ClCompile Include="code2.cpp">
       <Filter>2</Filter>
     </ClCompile>
+    <ClCompile Include="code3.cpp">
+      <Filter>3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="1">
@@ -19,6 +22,9 @@
     </Filter>
     <Filter Include="2">
       <UniqueIdentifier>{2dc796c3-a6cf-49f4-b7b6-390bdf0e3e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3">
+      <UniqueIdentifier>{feb2f3ef-ea61-4302-b24e-bd3d1983650d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
