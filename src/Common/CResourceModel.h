@@ -1,34 +1,33 @@
 #pragma once
 
+struct SMaterial
+{
+	float						m_fShininess;
+	glm::vec3					m_vec3Ambient;
+	glm::vec3					m_vec3Diffuse;
+	glm::vec3					m_vec3Specular;
+	float						m_fRefractiveIndex;
+	float						m_fFadeOut;
+	uint8						m_nIllum;
+	std::string					m_strDiffuse;
+	std::string					m_strBump;
+	std::string					m_strSpecular;
+};
+
+struct SObjectIndex
+{
+	std::string					m_strName;
+	bool						m_bSmooth;
+	std::vector<uint32>			m_aryIndex;
+	const SMaterial*			m_pMaterial;
+};
+
 class CResourceModel
 	: public IResourceCallback
 {
-	struct SMaterial
-	{
-		float						m_fShininess;
-		glm::vec3					m_vec3Ambient;
-		glm::vec3					m_vec3Diffuse;
-		glm::vec3					m_vec3Specular;
-		float						m_fRefractiveIndex;
-		float						m_fFadeOut;
-		uint8						m_nIllum;
-		std::string					m_strDiffuse;
-		std::string					m_strBump;
-		std::string					m_strSpecular;
-	};
-
-	struct SObjectIndex
-	{
-		std::string					m_strName;
-		bool						m_bSmooth;
-		std::vector<uint32>			m_aryIndex;
-		const SMaterial*			m_pMaterial;
-	};
-
 	std::vector<float>				m_vecVertex;
 	std::vector<float>				m_vecNormal;
 	std::vector<float>				m_vecTexCoord;
-	bool							m_bIsWholeModel;
 	std::vector<SObjectIndex>		m_vecObject;
 	std::map<string, SMaterial>		m_mapMaterial;
 
@@ -38,7 +37,12 @@ public:
 
 	virtual void					OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
 	void							OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize );
-	bool							IsWholeModel() const { return m_bIsWholeModel; }
+
+	const std::vector<float>&		GetVertex() const { return m_vecVertex; }
+	const std::vector<float>&		GetNormal() const { return m_vecNormal; }
+	const std::vector<float>&		GetTexCoord() const { return m_vecTexCoord; }
+	const std::vector<SObjectIndex>& GetModelObject() const { return m_vecObject; }
+	const SMaterial&				GetMaterial( const char* szString );
 };
 
 class CStringBuf

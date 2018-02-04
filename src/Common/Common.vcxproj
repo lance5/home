@@ -26,6 +26,7 @@
     <ClInclude Include="CommonHelp.h" />
     <ClInclude Include="CResourceImg.h" />
     <ClInclude Include="CResourceModel.h" />
+    <ClInclude Include="CSceneBase.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CThread.h" />
     <ClInclude Include="CTree.h" />
@@ -41,6 +42,7 @@
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CResourceImg.cpp" />
     <ClCompile Include="CResourceModel.cpp" />
+    <ClCompile Include="CSceneBase.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CThread.cpp" />
     <ClCompile Include="CTree.cpp" />

@@ -3,7 +3,7 @@
 
 using namespace std;
 
-CShader::CShader( const char* szShaderPath[eShader_Count] )
+CShader::CShader( const char* szShader[eShader_Count] )
 	: m_nProgramID( glCreateProgram() )
 {
 	GLenum aryShaderType[eShader_Count];
@@ -16,22 +16,11 @@ CShader::CShader( const char* szShaderPath[eShader_Count] )
 
 	for ( uint8 i = 0; i < eShader_Count; ++i )
 	{
-		if ( !szShaderPath[i] )
+		if ( !szShader[i] )
 			continue;
 
-		ifstream ShaderFile;
-		ShaderFile.exceptions( ifstream::failbit | ifstream::badbit );
-		ShaderFile.open( szShaderPath[i] );
-
-		stringstream ShaderStream;
-		ShaderStream << ShaderFile.rdbuf();
-
-		ShaderFile.close();
-		
-		string strCode = ShaderStream.str();
-		const char* const szShaderCode = strCode.c_str();
 		aryShaderID[i] = glCreateShader( aryShaderType[i] );
-		glShaderSource( aryShaderID[i], 1, &szShaderCode, nullptr );
+		glShaderSource( aryShaderID[i], 1, &szShader[i], nullptr );
 		glCompileShader( aryShaderID[i] );
 
 		GLint nSuccess;
@@ -62,7 +51,7 @@ CShader::CShader( const char* szShaderPath[eShader_Count] )
 
 	for ( uint8 i = 0; i < eShader_Count; ++i )
 	{
-		if (!szShaderPath[i])
+		if (!szShader[i])
 			continue;
 		glDeleteShader( aryShaderID[i] );
 	}

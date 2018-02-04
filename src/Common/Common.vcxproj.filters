@@ -42,6 +42,9 @@
     <ClInclude Include="CommonHelp.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="CSceneBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="数据结构">
@@ -70,6 +73,9 @@
     </Filter>
     <Filter Include="File\Imagelib">
       <UniqueIdentifier>{80456e01-84fd-4e18-a341-8b7c5ce5c5a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{85ad5793-7399-45bf-8410-6d428abf8bab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,5 +108,8 @@
       <Filter>File\Model</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="CSceneBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

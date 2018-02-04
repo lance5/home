@@ -13,7 +13,7 @@ class CShader
 	uint32 m_nProgramID;
 
 public:
-	CShader( const char* szShaderPath[eShader_Count] );
+	CShader( const char* szShader[eShader_Count] );
 	~CShader();
 
 	void Use();

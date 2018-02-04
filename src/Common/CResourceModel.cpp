@@ -5,7 +5,6 @@
 using namespace glm;
 
 CResourceModel::CResourceModel()
-	: m_bIsWholeModel( false )
 {
 }
 
@@ -15,8 +14,6 @@ CResourceModel::~CResourceModel()
 
 void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )
 {
-	m_bIsWholeModel = false;
-
 	m_vecVertex.reserve( 65535 );
 	m_vecTexCoord.reserve( 65535 );
 	m_vecNormal.reserve( 65535 );
@@ -119,8 +116,6 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else
 			Log << "Obj FIle Read Not Realize Keyword : \"" << string( sString.c_str(), sString.size() ) << "\"" << endl;
 	}
-
-	m_bIsWholeModel = true;
 }
 
 void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
@@ -185,4 +180,11 @@ void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer,
 		else if ( !strncmp( vecParam[0].c_str(), "map_Ks", vecParam[0].size() ) )
 			m_mapMaterial.rbegin()->second.m_strSpecular = string( vecParam[1].c_str(), vecParam[1].size() );
 	}
+}
+
+const SMaterial& CResourceModel::GetMaterial( const char* szString )
+{
+	map<string, SMaterial>::iterator it = m_mapMaterial.find( szString );
+	Assert( it != m_mapMaterial.end() );
+	return it->second;
 }
