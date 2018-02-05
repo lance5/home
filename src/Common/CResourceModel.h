@@ -22,12 +22,17 @@ struct SObjectIndex
 	const SMaterial*			m_pMaterial;
 };
 
+struct SModelVertex
+{
+	float						m_aryVertex[3];
+	float						m_aryNoram[3];
+	float						m_aryTexCoord[2];
+};
+
 class CResourceModel
 	: public IResourceCallback
 {
-	std::vector<float>				m_vecVertex;
-	std::vector<float>				m_vecNormal;
-	std::vector<float>				m_vecTexCoord;
+	std::vector<SModelVertex>		m_vecModelVertex;
 	std::vector<SObjectIndex>		m_vecObject;
 	std::map<string, SMaterial>		m_mapMaterial;
 
@@ -38,9 +43,7 @@ public:
 	virtual void					OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
 	void							OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize );
 
-	const std::vector<float>&		GetVertex() const { return m_vecVertex; }
-	const std::vector<float>&		GetNormal() const { return m_vecNormal; }
-	const std::vector<float>&		GetTexCoord() const { return m_vecTexCoord; }
+	const std::vector<SModelVertex>	GetModelVertex() const { return m_vecModelVertex; }
 	const std::vector<SObjectIndex>& GetModelObject() const { return m_vecObject; }
 	const SMaterial&				GetMaterial( const char* szString );
 };

@@ -14,9 +14,11 @@ CResourceModel::~CResourceModel()
 
 void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )
 {
-	m_vecVertex.reserve( 65535 );
-	m_vecTexCoord.reserve( 65535 );
-	m_vecNormal.reserve( 65535 );
+	m_vecModelVertex.reserve( 65535 );
+
+	vector<float> vecVertex( 65535 );
+	vector<float> vecTexCoord( 65535 );
+	vector<float> vecNormal( 65535 );
 
 	uint32 nCurPos = 0;
 	vector<cstring> vecParam;
@@ -43,22 +45,22 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else if ( !strncmp( vecParam[0].c_str(), "v", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 4 );
-			m_vecVertex.push_back( (float)atof( vecParam[1].c_str() ) );
-			m_vecVertex.push_back( (float)atof( vecParam[2].c_str() ) );
-			m_vecVertex.push_back( (float)atof( vecParam[3].c_str() ) );
+			vecVertex.push_back( (float)atof( vecParam[1].c_str() ) );
+			vecVertex.push_back( (float)atof( vecParam[2].c_str() ) );
+			vecVertex.push_back( (float)atof( vecParam[3].c_str() ) );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "vt", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 3 );
-			m_vecTexCoord.push_back( (float)atof( vecParam[1].c_str() ) );
-			m_vecTexCoord.push_back( (float)atof( vecParam[2].c_str() ) );
+			vecTexCoord.push_back( (float)atof( vecParam[1].c_str() ) );
+			vecTexCoord.push_back( (float)atof( vecParam[2].c_str() ) );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "vn", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 4 );
-			m_vecNormal.push_back( (float)atof( vecParam[1].c_str() ) );
-			m_vecNormal.push_back( (float)atof( vecParam[2].c_str() ) );
-			m_vecNormal.push_back( (float)atof( vecParam[3].c_str() ) );
+			vecNormal.push_back( (float)atof( vecParam[1].c_str() ) );
+			vecNormal.push_back( (float)atof( vecParam[2].c_str() ) );
+			vecNormal.push_back( (float)atof( vecParam[3].c_str() ) );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "mtllib", vecParam[0].size() ) )
 		{
@@ -108,14 +110,21 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 				aryIndex.clear();
 				partition( *it, '/', aryIndex );
 				Assert( aryIndex.size() == 3 );
-				m_vecObject.rbegin()->m_aryIndex.push_back( atoi( aryIndex[0].c_str() ) );
-				m_vecObject.rbegin()->m_aryIndex.push_back( atoi( aryIndex[1].c_str() ) );
-				m_vecObject.rbegin()->m_aryIndex.push_back( atoi( aryIndex[2].c_str() ) );
+				m_vecObject.rbegin()->m_aryIndex.push_back( m_vecModelVertex.size() );
+				uint32 nVectexIndex = (uint32)atol( aryIndex[0].c_str() );
+				uint32 nTexCoordIndex = (uint32)atol( aryIndex[1].c_str() );
+				uint32 nNoramIndex =  (uint32)atol( aryIndex[2].c_str() );
+				SModelVertex modelVertex;
+				memcpy( modelVertex.m_aryVertex, &vecVertex[nVectexIndex*3], sizeof( modelVertex.m_aryVertex ) );
+				memcpy( modelVertex.m_aryNoram, &vecVertex[nNoramIndex*3], sizeof( modelVertex.m_aryNoram ) );
+				memcpy( modelVertex.m_aryTexCoord, &vecVertex[nVectexIndex*2], sizeof( modelVertex.m_aryTexCoord ) );
+				m_vecModelVertex.push_back( modelVertex );
 			}
 		}
 		else
 			Log << "Obj FIle Read Not Realize Keyword : \"" << string( sString.c_str(), sString.size() ) << "\"" << endl;
 	}
+	Log;
 }
 
 void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
