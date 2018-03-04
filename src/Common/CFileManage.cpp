@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#include "CommonHelp.h"
+
 #include "CFileManage.h"
 #include "CResourceImg.h"
 

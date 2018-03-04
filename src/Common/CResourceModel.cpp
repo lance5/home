@@ -1,8 +1,9 @@
-#include "stdafx.h"
-#include "CResourceModel.h"
-#include <glfw/glfw3.h>
+#include "CommonHelp.h"
+#include "TVector3.h"
+#include "CFileManage.h"
 
-using namespace glm;
+#include "CResourceModel.h"
+#include "glfw/glfw3.h"
 
 CResourceModel::CResourceModel()
 {
@@ -16,12 +17,12 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 {
 	m_vecModelVertex.reserve( 65535 );
 
-	vector<float> vecVertex( 65535 );
-	vector<float> vecTexCoord( 65535 );
-	vector<float> vecNormal( 65535 );
+	std::vector<float> vecVertex( 65535 );
+	std::vector<float> vecTexCoord( 65535 );
+	std::vector<float> vecNormal( 65535 );
 
 	uint32 nCurPos = 0;
-	vector<cstring> vecParam;
+	std::vector<cstring> vecParam;
 	for( uint32 i = 0; i < nSize; ++i )
 	{
 		if( szBuffer[i] != '\n' )
@@ -65,7 +66,7 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else if ( !strncmp( vecParam[0].c_str(), "mtllib", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 2 );
-			string strMtlFile( vecParam[1].c_str(), vecParam[1].size() );
+			std::string strMtlFile( vecParam[1].c_str(), vecParam[1].size() );
 			if( !CFileManage::Inst().FileIsExist( strMtlFile.c_str() ) )
 			{
 				strMtlFile = CFileManage::GetFileDir( szFileName ) + strMtlFile;
@@ -124,7 +125,6 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else
 			Log << "Obj FIle Read Not Realize Keyword : \"" << string( sString.c_str(), sString.size() ) << "\"" << endl;
 	}
-	Log;
 }
 
 void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
@@ -157,21 +157,21 @@ void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer,
 			m_mapMaterial.rbegin()->second.m_fShininess = (float)atof( vecParam[1].c_str() );
 		else if ( !strncmp( vecParam[0].c_str(), "Ka", vecParam[0].size() ) )
 		{
-			vec3& vector = m_mapMaterial.rbegin()->second.m_vec3Ambient;
+			CVector3f& vector = m_mapMaterial.rbegin()->second.m_vec3Ambient;
 			vector.x = (float)atof( vecParam[1].c_str() );
 			vector.y = (float)atof( vecParam[2].c_str() );
 			vector.z = (float)atof( vecParam[3].c_str() );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "Kd", vecParam[0].size() ) )
 		{
-			vec3& vector = m_mapMaterial.rbegin()->second.m_vec3Diffuse;
+			CVector3f& vector = m_mapMaterial.rbegin()->second.m_vec3Diffuse;
 			vector.x = (float)atof( vecParam[1].c_str() );
 			vector.y = (float)atof( vecParam[2].c_str() );
 			vector.z = (float)atof( vecParam[3].c_str() );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "Ks", vecParam[0].size() ) )
 		{
-			vec3& vector = m_mapMaterial.rbegin()->second.m_vec3Specular;
+			CVector3f& vector = m_mapMaterial.rbegin()->second.m_vec3Specular;
 			vector.x = (float)atof( vecParam[1].c_str() );
 			vector.y = (float)atof( vecParam[2].c_str() );
 			vector.z = (float)atof( vecParam[3].c_str() );

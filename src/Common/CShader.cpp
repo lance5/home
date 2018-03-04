@@ -1,7 +1,14 @@
-#include "stdafx.h"
-#include "CShader.h"
+#include "CommonHelp.h"
+#include "TVector2.h"
+#include "TVector3.h"
+#include "TVector4.h"
+#include "TMatrix2.h"
+#include "TMatrix3.h"
+#include "TMatrix4.h"
 
-using namespace std;
+#include "CShader.h"
+#include "glad.h"
+#include <glfw\glfw3.h>
 
 CShader::CShader( const char* szShader[eShader_Count] )
 	: m_nProgramID( glCreateProgram() )
@@ -35,7 +42,7 @@ CShader::CShader( const char* szShader[eShader_Count] )
 
 		ErrLog << "SHADER_COMPILATION_ERROR of type : " 
 			<< aryShaderType[i] << "\n\t" << szBuffer
-			<< "\n -- --------------------------------------------------- -- " << endl;
+			<< "\n -- --------------------------------------------------- -- " << std::endl;
 	}
 
 	glLinkProgram( m_nProgramID );
@@ -46,7 +53,7 @@ CShader::CShader( const char* szShader[eShader_Count] )
 	{
 		glGetProgramInfoLog( m_nProgramID, 1024, nullptr, szBuffer );
 		ErrLog << "PROGRAM_LINKING_ERROR of type : " << szBuffer
-		<< "\n -- --------------------------------------------------- -- " << endl;
+		<< "\n -- --------------------------------------------------- -- " << std::endl;
 	}
 
 	for ( uint8 i = 0; i < eShader_Count; ++i )
@@ -98,37 +105,37 @@ void CShader::SetValue(const char* szName, const float& fValue) const
 }
 
 template<>
-void CShader::SetValue(const char* szName, const glm::vec2& vec) const
+void CShader::SetValue( const char* szName, const CVector2f& vec ) const
 {
 	glUniform2fv( GetUniformLoca( szName ), 1, &vec[0] );
 }
 
 template<>
-void CShader::SetValue(const char* szName, const glm::vec3& vec) const
+void CShader::SetValue(const char* szName, const CVector3f& vec) const
 {
 	glUniform3fv(GetUniformLoca(szName), 1, &vec[0]);
 }
 
 template<>
-void CShader::SetValue(const char* szName, const glm::vec4& vec ) const
+void CShader::SetValue(const char* szName, const CVector4f& vec ) const
 {
 	glUniform4fv(GetUniformLoca(szName), 1, &vec[0]);
 }
 
 template<>
-void CShader::SetValue(const char* szName, const glm::mat2& mat) const
+void CShader::SetValue(const char* szName, const CMatrix2f& mat) const
 {
 	glUniformMatrix2fv(GetUniformLoca(szName), 1, GL_FALSE, &mat[0][0]);
 }
 
 template<>
-void CShader::SetValue(const char* szName, const glm::mat3& mat) const
+void CShader::SetValue(const char* szName, const CMatrix3f& mat) const
 {
 	glUniformMatrix3fv(GetUniformLoca(szName), 1, GL_FALSE, &mat[0][0]);
 }
 
 template<>
-void CShader::SetValue(const char* szName, const glm::mat4& mat) const
+void CShader::SetValue(const char* szName, const CMatrix4f& mat) const
 {
 	glUniformMatrix4fv(GetUniformLoca(szName), 1, GL_FALSE, &mat[0][0]);
 }

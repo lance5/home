@@ -3,9 +3,9 @@
 struct SMaterial
 {
 	float						m_fShininess;
-	glm::vec3					m_vec3Ambient;
-	glm::vec3					m_vec3Diffuse;
-	glm::vec3					m_vec3Specular;
+	CVector3f					m_vec3Ambient;
+	CVector3f					m_vec3Diffuse;
+	CVector3f					m_vec3Specular;
 	float						m_fRefractiveIndex;
 	float						m_fFadeOut;
 	uint8						m_nIllum;
@@ -34,7 +34,7 @@ class CResourceModel
 {
 	std::vector<SModelVertex>		m_vecModelVertex;
 	std::vector<SObjectIndex>		m_vecObject;
-	std::map<string, SMaterial>		m_mapMaterial;
+	std::map<std::string,SMaterial> m_mapMaterial;
 
 public:
 	CResourceModel();

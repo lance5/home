@@ -21,25 +21,37 @@
   <ItemGroup>
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CFileManage.h" />
+    <ClInclude Include="CGame.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CBuffer.h" />
+    <ClInclude Include="CNode.h" />
+    <ClInclude Include="CNode2D.h" />
     <ClInclude Include="CommonHelp.h" />
     <ClInclude Include="CResourceImg.h" />
     <ClInclude Include="CResourceModel.h" />
     <ClInclude Include="CSceneBase.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CThread.h" />
+    <ClInclude Include="TList.h" />
     <ClInclude Include="CTree.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="stb_image.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TMatrix2.h" />
+    <ClInclude Include="TMatrix3.h" />
+    <ClInclude Include="TMatrix4.h" />
+    <ClInclude Include="TVector2.h" />
+    <ClInclude Include="TVector3.h" />
+    <ClInclude Include="TVector4.h" />
     <ClInclude Include="TypeDef.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CFileManage.cpp" />
+    <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CMesh.cpp" />
+    <ClCompile Include="CNode.cpp" />
+    <ClCompile Include="CNode2D.cpp" />
     <ClCompile Include="CResourceImg.cpp" />
     <ClCompile Include="CResourceModel.cpp" />
     <ClCompile Include="CSceneBase.cpp" />
@@ -51,10 +63,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{232A8CC1-2443-49A1-9E8B-A224697FF87D}</ProjectGuid>
@@ -117,7 +125,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

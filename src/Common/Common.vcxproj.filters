@@ -38,12 +38,39 @@
     <ClInclude Include="CBuffer.h">
       <Filter>File</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="CommonHelp.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="CSceneBase.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CGame.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CNode.h">
+      <Filter>Node</Filter>
+    </ClInclude>
+    <ClInclude Include="TList.h" />
+    <ClInclude Include="CNode2D.h">
+      <Filter>Node</Filter>
+    </ClInclude>
+    <ClInclude Include="TVector2.h">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="TVector3.h">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="TVector4.h">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="TMatrix2.h">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="TMatrix3.h">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="TMatrix4.h">
+      <Filter>Matrix</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +104,18 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{85ad5793-7399-45bf-8410-6d428abf8bab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{8771135f-ce36-4041-8795-a1e5e69ea045}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Node">
+      <UniqueIdentifier>{6fc14ab0-5fde-4b20-b328-2bb96a748617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector">
+      <UniqueIdentifier>{40debc68-25a4-4023-a1ce-76aa998bdf47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Matrix">
+      <UniqueIdentifier>{44c6d677-737f-4ee9-ac81-ac6c3d98c9af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTree.cpp">
@@ -107,9 +146,17 @@
     <ClCompile Include="CResourceModel.cpp">
       <Filter>File\Model</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="CSceneBase.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CGame.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CNode.cpp">
+      <Filter>Node</Filter>
+    </ClCompile>
+    <ClCompile Include="CNode2D.cpp">
+      <Filter>Node</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

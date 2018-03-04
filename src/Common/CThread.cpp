@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "CThread.h"
 
 CThread::CThread()
