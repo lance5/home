@@ -1,8 +1,8 @@
 #pragma once
 
-class CCamera
+class CCamera : public TList<CCamera>::CNode
 {
 public:
 	CCamera();
-
+	~CCamera();
 };

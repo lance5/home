@@ -18,6 +18,8 @@ public:
 
 		void Remove()
 		{
+			if ( !m_pLast && !m_pNext )
+				return;
 			m_pLast->m_pNext = m_pNext;
 			m_pNext->m_pLast = m_pLast;
 			m_pNext = nullptr;

@@ -12,6 +12,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "..\implib\freetype\freetype.vcxproj", "{87D8D395-E72A-4113-A737-A99DC5F536E8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Breakout", "..\src\Breakout\Breakout.vcxproj", "{522445E1-B922-4993-82CF-DF795041B3AA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{232A8CC1-2443-49A1-9E8B-A224697FF87D} = {232A8CC1-2443-49A1-9E8B-A224697FF87D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

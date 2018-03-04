@@ -11,5 +11,7 @@ public:
 
 	void AddChild( CNode& Node );
 	void RemoveAllChild();
+
+	virtual void OnUpdate( uint32 nDeltaTime ) = 0;
 };
 

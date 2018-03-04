@@ -41,9 +41,6 @@
     <ClInclude Include="CommonHelp.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="CSceneBase.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="CGame.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -71,6 +68,12 @@
     </ClInclude>
     <ClInclude Include="TMatrix4.h">
       <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CNode3D.h">
+      <Filter>Node</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -146,9 +149,6 @@
     <ClCompile Include="CResourceModel.cpp">
       <Filter>File\Model</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneBase.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="CGame.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -156,6 +156,12 @@
       <Filter>Node</Filter>
     </ClCompile>
     <ClCompile Include="CNode2D.cpp">
+      <Filter>Node</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CNode3D.cpp">
       <Filter>Node</Filter>
     </ClCompile>
   </ItemGroup>

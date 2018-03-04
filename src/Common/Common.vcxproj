@@ -26,10 +26,11 @@
     <ClInclude Include="CBuffer.h" />
     <ClInclude Include="CNode.h" />
     <ClInclude Include="CNode2D.h" />
+    <ClInclude Include="CNode3D.h" />
     <ClInclude Include="CommonHelp.h" />
     <ClInclude Include="CResourceImg.h" />
     <ClInclude Include="CResourceModel.h" />
-    <ClInclude Include="CSceneBase.h" />
+    <ClInclude Include="CScene.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CThread.h" />
     <ClInclude Include="TList.h" />
@@ -52,9 +53,10 @@
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CNode.cpp" />
     <ClCompile Include="CNode2D.cpp" />
+    <ClCompile Include="CNode3D.cpp" />
     <ClCompile Include="CResourceImg.cpp" />
     <ClCompile Include="CResourceModel.cpp" />
-    <ClCompile Include="CSceneBase.cpp" />
+    <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CThread.cpp" />
     <ClCompile Include="CTree.cpp" />
