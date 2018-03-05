@@ -1,3 +1,4 @@
+#include "CommonHelp.h"
 #include "CNode.h"
 #include "CNode2D.h"
 

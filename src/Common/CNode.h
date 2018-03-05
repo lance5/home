@@ -2,7 +2,7 @@
 
 #include "TList.h"
 
-class CNode : public TList<CNode>::CNode
+class CNode : public TList<CNode>::INode
 {
 	TList<CNode>	m_ListChilds;
 public:

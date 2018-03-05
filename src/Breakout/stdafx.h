@@ -24,5 +24,6 @@ using namespace std;
 #include "Common/CShader.h"
 #include "Common/CNode.h"
 #include "Common/CCamera.h"
+#include "Common/CGame.h"
 
 #include "glfw/glfw3.h"

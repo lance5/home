@@ -6,18 +6,18 @@
 
 class CCamera;
 
-class CScene : public CNode
+class CScene : public TList<CScene>::INode
 {
-	TList<CNode2D>	m_listChilds2D;
-	TList<CNode3D>	m_listChilds3D;
+	TList<CNode>	m_listChilds2D;
+	TList<CNode>	m_listChilds3D;
 public:
 	CScene();
-	~CScene();
+	virtual ~CScene();
+	virtual void OnUpdate( uint32 nDeltaTime );
 
 	void AddChild2D( CNode2D& pNode );
 	void AddChild3D( CNode3D& pNode );
 
-	virtual void OnUpdate( uint32 nDeltaTime );
 	void OnRender( CCamera* pCamera );
 };
 

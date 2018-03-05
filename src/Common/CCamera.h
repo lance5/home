@@ -1,6 +1,6 @@
 #pragma once
 
-class CCamera : public TList<CCamera>::CNode
+class CCamera : public TList<CCamera>::INode
 {
 public:
 	CCamera();

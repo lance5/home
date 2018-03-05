@@ -5,6 +5,8 @@
 #include "glad.h"
 #include "glfw/glfw3.h"
 
+#include "CCamera.h"
+
 void OnGlfwKeyCallback( GLFWwindow * pWindow, int nKey, int nScanCode, int nAction, int nMode )
 {
 	if ( nKey == GLFW_KEY_ESCAPE && nAction == GLFW_PRESS )
@@ -15,6 +17,7 @@ void OnGlfwKeyCallback( GLFWwindow * pWindow, int nKey, int nScanCode, int nActi
 
 CGame::CGame()
 	: m_pMainCamera( new CCamera )
+	, m_pGameListen( NULL )
 {
 }
 
@@ -29,8 +32,9 @@ CGame & CGame::Inst()
 	return s_instance;
 }
 
-void CGame::Init( uint32 nWidth, uint32 nHeight, char* szWindowName, uint32 nFrameInterval /* = 33 */ )
+void CGame::Init( uint32 nWidth, uint32 nHeight, char* szWindowName, IGameListen* pGameListen, uint32 nFrameInterval /* = 33 */ )
 {
+	m_pGameListen = pGameListen;
 	m_nFrameInterval = nFrameInterval;
 	m_nState = eGameState_Active;
 	m_nLastFrame = (int64)( glfwGetTime() * 1000 );
@@ -49,6 +53,8 @@ void CGame::Init( uint32 nWidth, uint32 nHeight, char* szWindowName, uint32 nFra
 	glEnable( GL_CULL_FACE );
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+	m_pGameListen->OnCreated();
 }
 
 void CGame::OnRun()
@@ -79,12 +85,13 @@ void CGame::OnRun()
 int CGame::OnQuit() 
 {
 	glfwTerminate();
+	m_pGameListen->OnDestroy();
 	return 0;
 }
 
-void CGame::AddScene( CScene * pScene )
+void CGame::AddScene( CScene* pScene )
 {
-	m_listScene.Insert( pScene );
+	m_listScene.Insert( *pScene );
 }
 
 void CGame::OnKeyCallback( int nKey, int nAction )

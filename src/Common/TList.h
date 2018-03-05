@@ -4,21 +4,22 @@ template<typename DataType>
 class TList
 {
 public:
-	class CNode
+	class INode
 	{
 		friend TList<DataType>;
-		CNode* m_pLast;
-		CNode* m_pNext;
+		INode* m_pLast;
+		INode* m_pNext;
 	public:
-		CNode() : m_pLast( nullptr ), m_pNext( nullptr ) {}
-		~CNode()
+		INode() : m_pLast( nullptr ), m_pNext( nullptr ) {}
+		virtual ~INode()
 		{
 			Remove();
 		}
 
 		void Remove()
 		{
-			if ( !m_pLast && !m_pNext )
+			// 有一方为空，表示为list头尾节点，不然就是链表出现问题  
+			if ( !m_pLast || !m_pNext )
 				return;
 			m_pLast->m_pNext = m_pNext;
 			m_pNext->m_pLast = m_pLast;
@@ -28,12 +29,12 @@ public:
 
 		DataType* GetLast()
 		{
-			return m_pLast->m_pLast == nullptr ? nullptr : m_pLast;
+			return static_cast<DataType*>( m_pLast->m_pLast == nullptr ? nullptr : m_pLast );
 		}
 
 		DataType* GetNext()
 		{
-			return m_pNext->m_pNext == nullptr ? nullptr : m_pNext;
+			return static_cast<DataType*>( m_pNext->m_pNext == nullptr ? nullptr : m_pNext );
 		}
 
 		bool IsList()
@@ -57,12 +58,12 @@ public:
 
 	DataType* GetFirst()
 	{
-		return static_cast<DataType*>( m_First.m_pNext );
+		return static_cast<DataType*>( m_First.m_pNext == &m_End ? nullptr : m_First.m_pNext );
 	}
 
 	DataType* GetEnd()
 	{
-		return static_cast<DataType*>( m_End.m_pLast );
+		return static_cast<DataType*>( m_End.m_pLast == &m_First ? nullptr : m_End.m_pLast );
 	}
 
 	bool IsEmpty()
@@ -70,20 +71,20 @@ public:
 		return  m_First.m_pNext == &m_End && m_End.m_pLast == &m_First; 
 	}
 
-	void InsertToBack( CNode& Node, CNode& Pos )
+	void InsertToBack( INode& node, INode& Pos )
 	{
-		Assert( !Node.IsList() );
-		Node.m_pLast = &Pos;
-		Node.m_pNext = Pos.m_pNext;
-		Node.m_pLast->m_pNext = &Node;
-		Node.m_pNext->m_pLast = &Node;
+		Assert( !node.IsList() );
+		node.m_pLast = &Pos;
+		node.m_pNext = Pos.m_pNext;
+		node.m_pLast->m_pNext = &node;
+		node.m_pNext->m_pLast = &node;
 	}
 
-	void Insert( CNode& Node )
+	void Insert( INode& INode )
 	{
-		InsertToBack( Node, *m_End.m_pLast );
+		InsertToBack( INode, *m_End.m_pLast );
 	}
 private:
-	CNode m_First;
-	CNode m_End;
+	INode m_First;
+	INode m_End;
 };
