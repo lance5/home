@@ -11,6 +11,12 @@ public:
 	virtual void OnCreated() = 0;
 	virtual void OnDestroy() = 0;
 };
+typedef std::map<uint32, CShader*> ShaderMap;
+enum
+{
+	eShaderType_Sprite,
+	eShaderType_ShellStart,
+};
 
 class CGame
 {
@@ -20,30 +26,33 @@ class CGame
 		eGameState_Menu,
 		eGameState_Win,
 	};
-	eGameState			m_nState;
-	GLFWwindow*			m_pMainWindow;
-	IGameListen*		m_pGameListen;
-	int64				m_nLastFrame;
-	uint32				m_nFrameInterval;
-	CCamera*			m_pMainCamera;
-	TList<CScene>		m_listScene;
+	eGameState				m_nState;
+	GLFWwindow*				m_pMainWindow;
+	IGameListen*			m_pGameListen;
+	int64					m_nLastFrame;
+	uint32					m_nFrameInterval;
+	CCamera*				m_pMainCamera;
+	TList<CScene>			m_listScene;
+	ShaderMap				m_mapShader;
 
-	void				ProcessInput( uint32 nDeltaTime );
-	void				Update( uint32 nDeltaTime );
-	void				Render();
+	void					ProcessInput( uint32 nDeltaTime );
+	void					Update( uint32 nDeltaTime );
+	void					Render();
+	void					InitEngineShader();
 
 	CGame();
 	~CGame();
 public:
 
-	void				OnKeyCallback( int nKey, int nAction );
-	void				Init( uint32 nWidth, uint32 nHeight, char* szWindowName, IGameListen* pGameListen, uint32 nFrameInterval = 33 );
-	void				OnRun();
-	int					OnQuit();
+	void					OnKeyCallback( int nKey, int nAction );
+	void					Init( uint32 nWidth, uint32 nHeight, char* szWindowName, IGameListen* pGameListen, uint32 nFrameInterval = 33 );
+	void					OnRun();
+	int						OnQuit();
 
-	void				AddScene( CScene* pScene );
+	void					AddScene( CScene* pScene );
+	void					RegisterShader( uint32 nShaderID );
 
-	static CGame&		Inst();
+	static CGame&			Inst();
 };
 
 #define CREATE_GAME( nWindowWidth, nWindowHeight, szWindowName, ClassGameListen ) \

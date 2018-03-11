@@ -10,6 +10,7 @@ class CScene : public TList<CScene>::INode
 {
 	TList<CNode>	m_listChilds2D;
 	TList<CNode>	m_listChilds3D;
+	TList<CCamera>	m_listCamera;
 public:
 	CScene();
 	virtual ~CScene();
@@ -17,7 +18,8 @@ public:
 
 	void AddChild2D( CNode2D& pNode );
 	void AddChild3D( CNode3D& pNode );
+	void AddCamera( CCamera* pCamera );
 
-	void OnRender( CCamera* pCamera );
+	void OnRender();
 };
 

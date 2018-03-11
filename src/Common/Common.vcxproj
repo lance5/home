@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CFileManage.h" />
+    <ClInclude Include="CFrameBuffer.h" />
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CBuffer.h" />
@@ -28,10 +29,13 @@
     <ClInclude Include="CNode2D.h" />
     <ClInclude Include="CNode3D.h" />
     <ClInclude Include="CommonHelp.h" />
+    <ClInclude Include="CRender.h" />
     <ClInclude Include="CResourceImg.h" />
     <ClInclude Include="CResourceModel.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CShader.h" />
+    <ClInclude Include="CSprite.h" />
+    <ClInclude Include="CTexture2D.h" />
     <ClInclude Include="CThread.h" />
     <ClInclude Include="TList.h" />
     <ClInclude Include="CTree.h" />
@@ -41,23 +45,24 @@
     <ClInclude Include="TMatrix2.h" />
     <ClInclude Include="TMatrix3.h" />
     <ClInclude Include="TMatrix4.h" />
+    <ClInclude Include="TRect.h" />
     <ClInclude Include="TVector2.h" />
     <ClInclude Include="TVector3.h" />
     <ClInclude Include="TVector4.h" />
-    <ClInclude Include="TypeDef.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CFileManage.cpp" />
+    <ClCompile Include="CFrameBuffer.cpp" />
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CMesh.cpp" />
-    <ClCompile Include="CNode.cpp" />
-    <ClCompile Include="CNode2D.cpp" />
-    <ClCompile Include="CNode3D.cpp" />
+    <ClCompile Include="CRender.cpp" />
     <ClCompile Include="CResourceImg.cpp" />
     <ClCompile Include="CResourceModel.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CShader.cpp" />
+    <ClCompile Include="CSprite.cpp" />
+    <ClCompile Include="CTexture2D.cpp" />
     <ClCompile Include="CThread.cpp" />
     <ClCompile Include="CTree.cpp" />
     <ClCompile Include="glad.c">

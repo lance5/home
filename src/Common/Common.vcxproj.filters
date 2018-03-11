@@ -7,9 +7,6 @@
     <ClInclude Include="CThread.h">
       <Filter>Thread</Filter>
     </ClInclude>
-    <ClInclude Include="TypeDef.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="CShader.h">
       <Filter>Opengl</Filter>
     </ClInclude>
@@ -20,10 +17,10 @@
       <Filter>File</Filter>
     </ClInclude>
     <ClInclude Include="glad.h">
-      <Filter>Glad</Filter>
+      <Filter>Opengl\Glad</Filter>
     </ClInclude>
     <ClInclude Include="khrplatform.h">
-      <Filter>Glad</Filter>
+      <Filter>Opengl\Glad</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>File\Imagelib</Filter>
@@ -51,30 +48,41 @@
     <ClInclude Include="CNode2D.h">
       <Filter>Node</Filter>
     </ClInclude>
-    <ClInclude Include="TVector2.h">
-      <Filter>Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="TVector3.h">
-      <Filter>Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="TVector4.h">
-      <Filter>Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="TMatrix2.h">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="TMatrix3.h">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="TMatrix4.h">
-      <Filter>Matrix</Filter>
-    </ClInclude>
     <ClInclude Include="CScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="CNode3D.h">
       <Filter>Node</Filter>
     </ClInclude>
+    <ClInclude Include="CTexture2D.h">
+      <Filter>Opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="TVector2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="TVector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="TVector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="TMatrix2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="TMatrix3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="TMatrix4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="TRect.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CSprite.h" />
+    <ClInclude Include="CFrameBuffer.h">
+      <Filter>Opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="CRender.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="数据结构">
@@ -95,9 +103,6 @@
     <Filter Include="Common">
       <UniqueIdentifier>{66c12564-8065-47fc-9409-ecf45826c457}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Glad">
-      <UniqueIdentifier>{d40c8dd0-1c99-4a7e-b6c0-6476413f6eb7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="File\Model">
       <UniqueIdentifier>{930cbdbc-2d55-46d3-8520-4ce76b8e4379}</UniqueIdentifier>
     </Filter>
@@ -113,11 +118,11 @@
     <Filter Include="Node">
       <UniqueIdentifier>{6fc14ab0-5fde-4b20-b328-2bb96a748617}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Vector">
-      <UniqueIdentifier>{40debc68-25a4-4023-a1ce-76aa998bdf47}</UniqueIdentifier>
+    <Filter Include="Math">
+      <UniqueIdentifier>{00ae11c5-9bd2-432b-8113-3aa0edbc2c06}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Matrix">
-      <UniqueIdentifier>{44c6d677-737f-4ee9-ac81-ac6c3d98c9af}</UniqueIdentifier>
+    <Filter Include="Opengl\Glad">
+      <UniqueIdentifier>{d40c8dd0-1c99-4a7e-b6c0-6476413f6eb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -137,7 +142,7 @@
       <Filter>File</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
-      <Filter>Glad</Filter>
+      <Filter>Opengl\Glad</Filter>
     </ClCompile>
     <ClCompile Include="stb_image.cpp">
       <Filter>File\Imagelib</Filter>
@@ -152,17 +157,16 @@
     <ClCompile Include="CGame.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="CNode.cpp">
-      <Filter>Node</Filter>
-    </ClCompile>
-    <ClCompile Include="CNode2D.cpp">
-      <Filter>Node</Filter>
-    </ClCompile>
     <ClCompile Include="CScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="CNode3D.cpp">
-      <Filter>Node</Filter>
+    <ClCompile Include="CTexture2D.cpp">
+      <Filter>Opengl</Filter>
     </ClCompile>
+    <ClCompile Include="CSprite.cpp" />
+    <ClCompile Include="CFrameBuffer.cpp">
+      <Filter>Opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="CRender.cpp" />
   </ItemGroup>
 </Project>

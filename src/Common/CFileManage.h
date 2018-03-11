@@ -1,15 +1,8 @@
 #pragma once
-#include "TypeDef.h"
 #include <string>
 #include <vector>
 #include <map>
 using namespace std;
-
-class IResourceCallback
-{
-public:
-	virtual void OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize ) = 0;
-};
 
 struct SFileStruct
 {

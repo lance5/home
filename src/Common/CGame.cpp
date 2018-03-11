@@ -1,5 +1,7 @@
 #include "CommonHelp.h"
+#include <map>
 #include "CScene.h"
+#include "CShader.h"
 
 #include "CGame.h"
 #include "glad.h"
@@ -53,6 +55,7 @@ void CGame::Init( uint32 nWidth, uint32 nHeight, char* szWindowName, IGameListen
 	glEnable( GL_CULL_FACE );
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	InitEngineShader();
 
 	m_pGameListen->OnCreated();
 }
@@ -86,12 +89,19 @@ int CGame::OnQuit()
 {
 	glfwTerminate();
 	m_pGameListen->OnDestroy();
+	for ( ShaderMap::iterator it = m_mapShader.begin(); 
+		it != m_mapShader.end(); ++it )
+		SAFE_DELETE( it->second );
 	return 0;
 }
 
 void CGame::AddScene( CScene* pScene )
 {
 	m_listScene.Insert( *pScene );
+}
+
+void CGame::RegisterShader(uint32 nShaderID)
+{
 }
 
 void CGame::OnKeyCallback( int nKey, int nAction )
@@ -113,5 +123,38 @@ void CGame::Render()
 {
 	CScene* pScene = m_listScene.GetFirst();
 	for ( ; pScene; pScene = pScene->GetNext() )
-		pScene->OnRender( m_pMainCamera );
+		pScene->OnRender();
+}
+
+void CGame::InitEngineShader()
+{
+	const char* szShader[eShaderType_ShellStart][eShader_Count] =
+	{
+		{ 
+			"#version 330 core\n"
+			"layout (location = 0) in vec4 vertex;\n"
+			"out vec2 TexCoords;\n"
+			"uniform mat4 model;\n"
+			"uniform mat4 projection;\n"
+			"void main()\n"
+			"{\n"
+			"	TexCoords = vertex.zw;\n"
+			"	gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);\n"
+			"}",
+			"#version 330 core\n"
+			"in vec2 TexCoords;\n"
+			"out vec4 color;\n"
+			"uniform sampler2D image;\n"
+			"uniform vec3 spriteColor;\n"
+			"void main()\n"
+			"{\n"
+			"	color = vec4(spriteColor, 1.0) * texture(image, TexCoords);\n"
+			"}",
+			nullptr 
+		}
+	};
+	for ( uint32 i = 0; i < eShaderType_ShellStart; ++i )
+	{
+		m_mapShader[eShaderType_Sprite] = new CShader( szShader[i] );
+	}
 }
