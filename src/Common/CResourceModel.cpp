@@ -90,12 +90,13 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 			Assert( vecParam.size() == 2 );
 			string szName( vecParam[1].c_str(), vecParam[1].size() );
 			Assert( m_mapMaterial.find( szName ) != m_mapMaterial.end() );
-			m_vecObject.rbegin()->m_pMaterial = &m_mapMaterial[szName];
+			m_vecObject.rbegin()->m_Material = m_mapMaterial[szName];
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "s", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 2 );
-			if( !strcmp( vecParam[1].c_str(), "1" ) || !strcmp( vecParam[1].c_str(), "on" ) )
+			if( !strcmp( vecParam[1].c_str(), "1" ) 
+				|| !strcmp( vecParam[1].c_str(), "on" ) )
 				m_vecObject.rbegin()->m_bSmooth = true;
 			else
 				m_vecObject.rbegin()->m_bSmooth = false;
@@ -116,9 +117,9 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 				uint32 nTexCoordIndex = (uint32)atol( aryIndex[1].c_str() );
 				uint32 nNoramIndex =  (uint32)atol( aryIndex[2].c_str() );
 				SModelVertex modelVertex;
-				memcpy( modelVertex.m_aryVertex, &vecVertex[nVectexIndex*3], sizeof( modelVertex.m_aryVertex ) );
-				memcpy( modelVertex.m_aryNoram, &vecVertex[nNoramIndex*3], sizeof( modelVertex.m_aryNoram ) );
-				memcpy( modelVertex.m_aryTexCoord, &vecVertex[nVectexIndex*2], sizeof( modelVertex.m_aryTexCoord ) );
+				memcpy( modelVertex.m_vVertex, &vecVertex[nVectexIndex*3], sizeof( modelVertex.m_vVertex ) );
+				memcpy( modelVertex.m_vNoram, &vecVertex[nNoramIndex*3], sizeof( modelVertex.m_vNoram ) );
+				memcpy( modelVertex.m_vTexCoord, &vecVertex[nVectexIndex*2], sizeof( modelVertex.m_vTexCoord ) );
 				m_vecModelVertex.push_back( modelVertex );
 			}
 		}

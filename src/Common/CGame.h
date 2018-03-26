@@ -34,6 +34,8 @@ class CGame
 	CCamera*				m_pMainCamera;
 	TList<CScene>			m_listScene;
 	ShaderMap				m_mapShader;
+	uint32					m_nWindowWidth;
+	uint32					m_nWindowHeight;
 
 	void					ProcessInput( uint32 nDeltaTime );
 	void					Update( uint32 nDeltaTime );
@@ -51,6 +53,8 @@ public:
 
 	void					AddScene( CScene* pScene );
 	void					RegisterShader( uint32 nShaderID );
+	uint32					GetWindowWidth() const { return m_nWindowWidth; }
+	uint32					GetWindowHeight() const { return m_nWindowHeight; }
 
 	static CGame&			Inst();
 };

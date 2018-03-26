@@ -4,21 +4,21 @@ template<typename DataType>
 class TList
 {
 public:
-	class INode
+	class CListNode
 	{
 		friend TList<DataType>;
-		INode* m_pLast;
-		INode* m_pNext;
+		CListNode* m_pLast;
+		CListNode* m_pNext;
 	public:
-		INode() : m_pLast( nullptr ), m_pNext( nullptr ) {}
-		virtual ~INode()
+		CListNode() : m_pLast( nullptr ), m_pNext( nullptr ) {}
+		virtual ~CListNode()
 		{
 			Remove();
 		}
 
 		void Remove()
 		{
-			// ÓÐÒ»·½Îª¿Õ£¬±íÊ¾ÎªlistÍ·Î²½Úµã£¬²»È»¾ÍÊÇÁ´±í³öÏÖÎÊÌâ  
+			// ï¿½ï¿½Ò»ï¿½ï¿½Îªï¿½Õ£ï¿½ï¿½ï¿½Ê¾ÎªlistÍ·Î²ï¿½Úµã£¬ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  
 			if ( !m_pLast || !m_pNext )
 				return;
 			m_pLast->m_pNext = m_pNext;
@@ -71,7 +71,7 @@ public:
 		return  m_First.m_pNext == &m_End && m_End.m_pLast == &m_First; 
 	}
 
-	void InsertToBack( INode& node, INode& Pos )
+	void InsertToBack( CListNode& node, CListNode& Pos )
 	{
 		Assert( !node.IsList() );
 		node.m_pLast = &Pos;
@@ -80,11 +80,11 @@ public:
 		node.m_pNext->m_pLast = &node;
 	}
 
-	void Insert( INode& INode )
+	void Insert( CListNode& CListNode )
 	{
-		InsertToBack( INode, *m_End.m_pLast );
+		InsertToBack( CListNode, *m_End.m_pLast );
 	}
 private:
-	INode m_First;
-	INode m_End;
+	CListNode m_First;
+	CListNode m_End;
 };

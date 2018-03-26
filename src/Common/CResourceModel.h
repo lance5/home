@@ -1,51 +1,21 @@
 #pragma once
 
-struct SMaterial
-{
-	float						m_fShininess;
-	CVector3f					m_vec3Ambient;
-	CVector3f					m_vec3Diffuse;
-	CVector3f					m_vec3Specular;
-	float						m_fRefractiveIndex;
-	float						m_fFadeOut;
-	uint8						m_nIllum;
-	std::string					m_strDiffuse;
-	std::string					m_strBump;
-	std::string					m_strSpecular;
-};
-
-struct SObjectIndex
-{
-	std::string					m_strName;
-	bool						m_bSmooth;
-	std::vector<uint32>			m_aryIndex;
-	const SMaterial*			m_pMaterial;
-};
-
-struct SModelVertex
-{
-	float						m_aryVertex[3];
-	float						m_aryNoram[3];
-	float						m_aryTexCoord[2];
-};
+#include "SModelData.h"
 
 class CResourceModel
-	: public IResourceCallback
+	: public IResourceListener
+	, private SModelData
 {
-	std::vector<SModelVertex>		m_vecModelVertex;
-	std::vector<SObjectIndex>		m_vecObject;
-	std::map<std::string,SMaterial> m_mapMaterial;
-
 public:
 	CResourceModel();
 	~CResourceModel();
 
-	virtual void					OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
-	void							OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize );
+	virtual void						OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
+	void								OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize );
 
-	const std::vector<SModelVertex>	GetModelVertex() const { return m_vecModelVertex; }
-	const std::vector<SObjectIndex>& GetModelObject() const { return m_vecObject; }
-	const SMaterial&				GetMaterial( const char* szString );
+	const SMaterial&					GetMaterial( const char* szString );
+	const std::vector<SModelVertex>		GetModelVertex() const { return m_vecModelVertex; }
+	const std::vector<SObjectIndex>& 	GetModelObject() const { return m_vecObject; }
 };
 
 class CStringBuf

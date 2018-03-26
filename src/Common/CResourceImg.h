@@ -1,7 +1,7 @@
 #pragma once
 
 class CResourceImg :
-	public IResourceCallback
+	public IResourceListener
 {
 	uint32			m_nWidth;
 	uint32			m_nHeight;

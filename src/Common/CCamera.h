@@ -2,7 +2,7 @@
 
 class CFrameBuffer;
 
-class CCamera : public TList<CCamera>::INode
+class CCamera : public TList<CCamera>::CListNode
 {
 	CVector3f			m_vecPosition;
 	CVector3f			m_vecLookPosition;
@@ -17,4 +17,6 @@ class CCamera : public TList<CCamera>::INode
 public:
 	CCamera( uint32 nNearWdith, uint32 nNearHeight, uint32 nFarLen, float fFov );
 	~CCamera();
+
+	void				RenderNode( TList<CNode>& listNode );
 };

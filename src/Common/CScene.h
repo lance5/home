@@ -1,23 +1,19 @@
 #pragma once
-/* Ö»ÓÐÖ÷Ïà»ú²Å»áäÖÈ¾CNode2D */
-#include "CNode.h"
-#include "CNode2D.h"
-#include "CNode3D.h"
+/* Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å»ï¿½ï¿½ï¿½È¾CNode2D */
+#include "CObject3D.h"
 
 class CCamera;
 
-class CScene : public TList<CScene>::INode
+class CScene : public TList<CScene>::CListNode
 {
-	TList<CNode>	m_listChilds2D;
-	TList<CNode>	m_listChilds3D;
-	TList<CCamera>	m_listCamera;
+	TList<CObject3D>	m_listChilds;
+	TList<CCamera>		m_listCamera;
 public:
 	CScene();
 	virtual ~CScene();
 	virtual void OnUpdate( uint32 nDeltaTime );
 
-	void AddChild2D( CNode2D& pNode );
-	void AddChild3D( CNode3D& pNode );
+	void AddChild( CObject3D& pNode );
 	void AddCamera( CCamera* pCamera );
 
 	void OnRender();

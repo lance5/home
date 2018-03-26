@@ -89,7 +89,7 @@ inline void partition( const cstring& cstrString, _DataType szChar,
 	vecResult.push_back( cstring( cstrString.c_str() + nStartPos, cstrString.size() - nStartPos ) );
 }
 
-class IResourceCallback
+class IResourceListener
 {
 public:
 	virtual void OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize ) = 0;
