@@ -1,4 +1,4 @@
-#include "CommonHelp.h"
+#include "stdafx.h"
 #include "TList.h"
 #include "CCamera.h"
 #include "CScene.h"

@@ -17,6 +17,4 @@ class CCamera : public TList<CCamera>::CListNode
 public:
 	CCamera( uint32 nNearWdith, uint32 nNearHeight, uint32 nFarLen, float fFov );
 	~CCamera();
-
-	void				RenderNode( TList<CNode>& listNode );
 };

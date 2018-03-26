@@ -8,7 +8,7 @@
       <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="CShader.h">
-      <Filter>Opengl</Filter>
+      <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
       <Filter>Camera</Filter>
@@ -17,15 +17,14 @@
       <Filter>File</Filter>
     </ClInclude>
     <ClInclude Include="glad.h">
-      <Filter>Opengl\Glad</Filter>
+      <Filter>Render\Glad</Filter>
     </ClInclude>
     <ClInclude Include="khrplatform.h">
-      <Filter>Opengl\Glad</Filter>
+      <Filter>Render\Glad</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>File\Imagelib</Filter>
     </ClInclude>
-    <ClInclude Include="CMesh.h" />
     <ClInclude Include="CResourceImg.h">
       <Filter>File\Model</Filter>
     </ClInclude>
@@ -41,21 +40,11 @@
     <ClInclude Include="CGame.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="CNode.h">
-      <Filter>Node</Filter>
-    </ClInclude>
-    <ClInclude Include="TList.h" />
-    <ClInclude Include="CNode2D.h">
-      <Filter>Node</Filter>
-    </ClInclude>
     <ClInclude Include="CScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="CNode3D.h">
-      <Filter>Node</Filter>
-    </ClInclude>
     <ClInclude Include="CTexture2D.h">
-      <Filter>Opengl</Filter>
+      <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="TVector2.h">
       <Filter>Math</Filter>
@@ -66,23 +55,24 @@
     <ClInclude Include="TVector4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="TMatrix2.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="TMatrix3.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="TMatrix4.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="TRect.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="CSprite.h" />
     <ClInclude Include="CFrameBuffer.h">
-      <Filter>Opengl</Filter>
+      <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="CRender.h" />
+    <ClInclude Include="CObject3D.h" />
+    <ClInclude Include="SModelData.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="CMaterial.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="CMatrix.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="TList.h">
+      <Filter>数据结构</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="数据结构">
@@ -90,9 +80,6 @@
     </Filter>
     <Filter Include="Thread">
       <UniqueIdentifier>{b3c2fb47-9f2b-4691-a224-e8ede2ef2c49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Opengl">
-      <UniqueIdentifier>{03cb83c8-aa8b-42ed-9e2e-0edf68e8c88c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Camera">
       <UniqueIdentifier>{ade9314b-3770-404c-b919-5fb7ada59202}</UniqueIdentifier>
@@ -115,13 +102,13 @@
     <Filter Include="Game">
       <UniqueIdentifier>{8771135f-ce36-4041-8795-a1e5e69ea045}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Node">
-      <UniqueIdentifier>{6fc14ab0-5fde-4b20-b328-2bb96a748617}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{00ae11c5-9bd2-432b-8113-3aa0edbc2c06}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Opengl\Glad">
+    <Filter Include="Render">
+      <UniqueIdentifier>{03cb83c8-aa8b-42ed-9e2e-0edf68e8c88c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Glad">
       <UniqueIdentifier>{d40c8dd0-1c99-4a7e-b6c0-6476413f6eb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -133,7 +120,7 @@
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="CShader.cpp">
-      <Filter>Opengl</Filter>
+      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
       <Filter>Camera</Filter>
@@ -142,12 +129,11 @@
       <Filter>File</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
-      <Filter>Opengl\Glad</Filter>
+      <Filter>Render\Glad</Filter>
     </ClCompile>
     <ClCompile Include="stb_image.cpp">
       <Filter>File\Imagelib</Filter>
     </ClCompile>
-    <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CResourceImg.cpp">
       <Filter>File\Model</Filter>
     </ClCompile>
@@ -161,12 +147,15 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="CTexture2D.cpp">
-      <Filter>Opengl</Filter>
+      <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CFrameBuffer.cpp">
-      <Filter>Opengl</Filter>
+      <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="CRender.cpp" />
+    <ClCompile Include="CObject3D.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="CMaterial.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

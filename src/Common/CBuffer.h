@@ -1,8 +1,5 @@
 #pragma once
 
-#include "TypeDef.h"
-#include "common.h"
-
 class CReadBuffer
 {
 	const byte*		m_pBuffer;
@@ -24,6 +21,27 @@ public:
 		Assert( m_nCurPos + nSize <= m_nMaxSize );
 		memcpy( pData, m_pBuffer + m_nCurPos, nSize );
 		m_nCurPos += nSize;
+	}
+
+	bool ReadLine( char* pBuffer, uint32 nMaxSize )
+	{
+		Assert( nMaxSize );
+		pBuffer[0] = '\0';
+		if( m_nCurPos >= m_nMaxSize )
+			return false;
+		const byte* szStart = m_pBuffer + m_nCurPos;
+		uint32 nCurSize = 0;
+		while ( szStart[nCurSize] != '\n' 
+			&& szStart[nCurSize] != '\0' 
+			&& nCurSize + m_nCurPos < m_nMaxSize )
+			++nCurSize;
+		m_nCurPos += nCurSize + 1;
+		if( nCurSize != 0 && szStart[nCurSize-1] == '\r' )
+			--nCurSize;
+		uint32 nSize = nCurSize < nMaxSize - 1 ? nCurSize : nMaxSize - 1;
+		memcpy( pBuffer, szStart, nSize );
+		pBuffer[nSize] = '\0';
+		return ( szStart[0] == '\0' ) ? false : true;
 	}
 
 	template<typename DataType>

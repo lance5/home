@@ -1,4 +1,5 @@
-#include "CommonHelp.h"
+#include "stdafx.h"
+
 #include "TVector3.h"
 #include "CMatrix.h"
 #include "CObject3D.h"
@@ -13,9 +14,4 @@ CCamera::CCamera( uint32 nNearWdith, uint32 nNearHeight, uint32 nFarLen, float f
 CCamera::~CCamera()
 {
 	SAFE_DELETE( m_pFrameBuffer );
-}
-
-void CCamera::RenderNode( TList<CObject3D>& listNode )
-{
-
 }

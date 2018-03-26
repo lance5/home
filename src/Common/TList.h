@@ -18,7 +18,6 @@ public:
 
 		void Remove()
 		{
-			// ��һ��Ϊ�գ���ʾΪlistͷβ�ڵ㣬��Ȼ���������������  
 			if ( !m_pLast || !m_pNext )
 				return;
 			m_pLast->m_pNext = m_pNext;

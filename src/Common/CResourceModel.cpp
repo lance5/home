@@ -1,4 +1,4 @@
-#include "CommonHelp.h"
+#include "stdafx.h"
 #include "TVector3.h"
 #include "CFileManage.h"
 
@@ -15,11 +15,9 @@ CResourceModel::~CResourceModel()
 
 void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )
 {
-	m_vecModelVertex.reserve( 65535 );
-
-	std::vector<float> vecVertex( 65535 );
-	std::vector<float> vecTexCoord( 65535 );
-	std::vector<float> vecNormal( 65535 );
+	m_vecVertex.reserve( 65535 );
+	m_vecTexCoord.reserve( 65535 );
+	m_vecNormal.reserve( 65535 );
 
 	uint32 nCurPos = 0;
 	std::vector<cstring> vecParam;
@@ -46,22 +44,22 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else if ( !strncmp( vecParam[0].c_str(), "v", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 4 );
-			vecVertex.push_back( (float)atof( vecParam[1].c_str() ) );
-			vecVertex.push_back( (float)atof( vecParam[2].c_str() ) );
-			vecVertex.push_back( (float)atof( vecParam[3].c_str() ) );
+			m_vecVertex.push_back( (float)atof( vecParam[1].c_str() ) );
+			m_vecVertex.push_back( (float)atof( vecParam[2].c_str() ) );
+			m_vecVertex.push_back( (float)atof( vecParam[3].c_str() ) );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "vt", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 3 );
-			vecTexCoord.push_back( (float)atof( vecParam[1].c_str() ) );
-			vecTexCoord.push_back( (float)atof( vecParam[2].c_str() ) );
+			m_vecTexCoord.push_back( (float)atof( vecParam[1].c_str() ) );
+			m_vecTexCoord.push_back( (float)atof( vecParam[2].c_str() ) );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "vn", vecParam[0].size() ) )
 		{
 			Assert( vecParam.size() == 4 );
-			vecNormal.push_back( (float)atof( vecParam[1].c_str() ) );
-			vecNormal.push_back( (float)atof( vecParam[2].c_str() ) );
-			vecNormal.push_back( (float)atof( vecParam[3].c_str() ) );
+			m_vecNormal.push_back( (float)atof( vecParam[1].c_str() ) );
+			m_vecNormal.push_back( (float)atof( vecParam[2].c_str() ) );
+			m_vecNormal.push_back( (float)atof( vecParam[3].c_str() ) );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "mtllib", vecParam[0].size() ) )
 		{
@@ -82,7 +80,7 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		{
 			Assert( vecParam.size() == 2 );
 			SObjectIndex sIndex;
-			sIndex.m_strName = string( vecParam[1].c_str(), vecParam[1].size() );
+			sIndex.m_strName.assign( vecParam[1].c_str(), vecParam[1].size() );
 			m_vecObject.push_back( sIndex );
 		}
 		else if ( !strncmp( vecParam[0].c_str(), "usemtl", vecParam[0].size() ) )
@@ -112,15 +110,10 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 				aryIndex.clear();
 				partition( *it, '/', aryIndex );
 				Assert( aryIndex.size() == 3 );
-				m_vecObject.rbegin()->m_aryIndex.push_back( m_vecModelVertex.size() );
-				uint32 nVectexIndex = (uint32)atol( aryIndex[0].c_str() );
-				uint32 nTexCoordIndex = (uint32)atol( aryIndex[1].c_str() );
-				uint32 nNoramIndex =  (uint32)atol( aryIndex[2].c_str() );
-				SModelVertex modelVertex;
-				memcpy( modelVertex.m_vVertex, &vecVertex[nVectexIndex*3], sizeof( modelVertex.m_vVertex ) );
-				memcpy( modelVertex.m_vNoram, &vecVertex[nNoramIndex*3], sizeof( modelVertex.m_vNoram ) );
-				memcpy( modelVertex.m_vTexCoord, &vecVertex[nVectexIndex*2], sizeof( modelVertex.m_vTexCoord ) );
-				m_vecModelVertex.push_back( modelVertex );
+
+				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[0].c_str() ) );
+				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[1].c_str() ) );
+				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[2].c_str() ) );
 			}
 		}
 		else

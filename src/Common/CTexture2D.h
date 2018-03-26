@@ -13,4 +13,3 @@ public:
 
 	uint32		GetTextureID() const { return m_nTextureID; }
 };
-

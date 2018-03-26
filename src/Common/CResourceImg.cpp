@@ -1,4 +1,4 @@
-#include "CommonHelp.h"
+#include "stdafx.h"
 #include "CResourceImg.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -9,7 +9,7 @@ CResourceImg::CResourceImg()
 {
 }
 
-CResourceImg::CResourceImg(const byte * szBuffer, const uint32 nSize)
+CResourceImg::CResourceImg( const byte* szBuffer, const uint32 nSize )
 {
 	InitImageData( szBuffer, nSize );
 }
@@ -20,7 +20,7 @@ CResourceImg::~CResourceImg()
 	m_pImageData = NULL;
 }
 
-void CResourceImg::InitImageData(const byte * szBuffer, const uint32 nSize)
+void CResourceImg::InitImageData( const byte * szBuffer, const uint32 nSize )
 {
 	int32 nWidth, nHeight, nrChannels;
 	m_pImageData = (char*)stbi_load_from_memory( szBuffer, nSize, &nWidth, &nHeight, &nrChannels, 0 );

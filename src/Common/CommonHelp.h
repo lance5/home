@@ -1,8 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
-
 typedef unsigned char byte;
 typedef signed char int8;
 typedef short int16;

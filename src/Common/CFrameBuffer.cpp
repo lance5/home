@@ -1,4 +1,4 @@
-#include "CommonHelp.h"
+#include "stdafx.h"
 #include "CFrameBuffer.h"
 #include "CTexture2D.h"
 

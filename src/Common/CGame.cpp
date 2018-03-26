@@ -1,4 +1,4 @@
-#include "CommonHelp.h"
+#include "stdafx.h"
 #include <map>
 #include "CScene.h"
 #include "CShader.h"
