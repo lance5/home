@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "CTexture2D.h"
-
 #include "glad.h"
 
 CTexture2D::CTexture2D()
 	: m_nTextureID( 0 )
+	, m_nRef( 1 )
 {
 	glGenTextures( 1, &m_nTextureID );
 }

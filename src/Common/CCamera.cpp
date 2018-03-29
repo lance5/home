@@ -1,5 +1,4 @@
 #include "stdafx.h"
-
 #include "TVector3.h"
 #include "CMatrix.h"
 #include "CObject3D.h"

@@ -1,8 +1,10 @@
 #pragma once
-#include "CFileManage.h"
+#include "IUnKnown.h"
 
 class CTexture2D
 {
+	DEFAULT_METHOD( CTexture2D );
+
 	uint32		m_nTextureID;
 
 public:

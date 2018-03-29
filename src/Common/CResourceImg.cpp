@@ -23,7 +23,7 @@ CResourceImg::~CResourceImg()
 void CResourceImg::InitImageData( const byte * szBuffer, const uint32 nSize )
 {
 	int32 nWidth, nHeight, nrChannels;
-	m_pImageData = (char*)stbi_load_from_memory( szBuffer, nSize, &nWidth, &nHeight, &nrChannels, 0 );
+	m_pImageData = (byte*)stbi_load_from_memory( szBuffer, nSize, &nWidth, &nHeight, &nrChannels, 0 );
 	m_nWidth = (uint32)nWidth;
 	m_nHeight = (uint32)nHeight;
 	switch( nrChannels )

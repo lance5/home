@@ -3,7 +3,7 @@
 #include "CFileManage.h"
 
 #include "CResourceModel.h"
-#include "glfw/glfw3.h"
+#include "CResourceImg.h"
 
 CResourceModel::CResourceModel()
 {
@@ -15,12 +15,11 @@ CResourceModel::~CResourceModel()
 
 void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )
 {
-	m_vecVertex.reserve( 65535 );
-	m_vecTexCoord.reserve( 65535 );
-	m_vecNormal.reserve( 65535 );
+	m_modelData.m_vecVertex.reserve( 65535 );
+	m_modelData.m_vecTexCoord.reserve( 65535 );
+	m_modelData.m_vecNormal.reserve( 65535 );
 
 	uint32 nCurPos = 0;
-	std::vector<cstring> vecParam;
 	for( uint32 i = 0; i < nSize; ++i )
 	{
 		if( szBuffer[i] != '\n' )
@@ -36,35 +35,37 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		if( nCurSize == 0 )
 			continue;
 
-		vecParam.clear();
-		partition( sString, ' ', vecParam );
-
-		if ( !strncmp( vecParam[0].c_str(), "#", vecParam[0].size() ) )
+		cstring aryParam[10];
+		uint32 nParamSize = partition( sString, ' ', aryParam );
+		if( nParamSize == 0 )
 			continue;
-		else if ( !strncmp( vecParam[0].c_str(), "v", vecParam[0].size() ) )
+
+		if ( !strncmp( aryParam[0].c_str(), "#", aryParam[0].size() ) )
+			continue;
+		else if ( !strncmp( aryParam[0].c_str(), "v", aryParam[0].size() ) )
 		{
-			Assert( vecParam.size() == 4 );
-			m_vecVertex.push_back( (float)atof( vecParam[1].c_str() ) );
-			m_vecVertex.push_back( (float)atof( vecParam[2].c_str() ) );
-			m_vecVertex.push_back( (float)atof( vecParam[3].c_str() ) );
+			Assert( nParamSize == 4 );
+			m_modelData.m_vecVertex.push_back( (float)atof( aryParam[1].c_str() ) );
+			m_modelData.m_vecVertex.push_back( (float)atof( aryParam[2].c_str() ) );
+			m_modelData.m_vecVertex.push_back( (float)atof( aryParam[3].c_str() ) );
 		}
-		else if ( !strncmp( vecParam[0].c_str(), "vt", vecParam[0].size() ) )
+		else if ( !strncmp( aryParam[0].c_str(), "vt", aryParam[0].size() ) )
 		{
-			Assert( vecParam.size() == 3 );
-			m_vecTexCoord.push_back( (float)atof( vecParam[1].c_str() ) );
-			m_vecTexCoord.push_back( (float)atof( vecParam[2].c_str() ) );
+			Assert( nParamSize == 3 );
+			m_modelData.m_vecTexCoord.push_back( (float)atof( aryParam[1].c_str() ) );
+			m_modelData.m_vecTexCoord.push_back( (float)atof( aryParam[2].c_str() ) );
 		}
-		else if ( !strncmp( vecParam[0].c_str(), "vn", vecParam[0].size() ) )
+		else if ( !strncmp( aryParam[0].c_str(), "vn", aryParam[0].size() ) )
 		{
-			Assert( vecParam.size() == 4 );
-			m_vecNormal.push_back( (float)atof( vecParam[1].c_str() ) );
-			m_vecNormal.push_back( (float)atof( vecParam[2].c_str() ) );
-			m_vecNormal.push_back( (float)atof( vecParam[3].c_str() ) );
+			Assert( nParamSize == 4 );
+			m_modelData.m_vecNormal.push_back( (float)atof( aryParam[1].c_str() ) );
+			m_modelData.m_vecNormal.push_back( (float)atof( aryParam[2].c_str() ) );
+			m_modelData.m_vecNormal.push_back( (float)atof( aryParam[3].c_str() ) );
 		}
-		else if ( !strncmp( vecParam[0].c_str(), "mtllib", vecParam[0].size() ) )
+		else if ( !strncmp( aryParam[0].c_str(), "mtllib", aryParam[0].size() ) )
 		{
-			Assert( vecParam.size() == 2 );
-			std::string strMtlFile( vecParam[1].c_str(), vecParam[1].size() );
+			Assert( nParamSize == 2 );
+			std::string strMtlFile( aryParam[1].c_str(), aryParam[1].size() );
 			if( !CFileManage::Inst().FileIsExist( strMtlFile.c_str() ) )
 			{
 				strMtlFile = CFileManage::GetFileDir( szFileName ) + strMtlFile;
@@ -76,55 +77,55 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 			Assert( pFile );
 			OnLoadMtllib( pFile->m_strFileName.c_str(), pFile->m_pBuffer, pFile->m_nSize );
 		}
-		else if ( !strncmp( vecParam[0].c_str(), "o", vecParam[0].size() ) )
+		else if ( !strncmp( aryParam[0].c_str(), "o", aryParam[0].size() ) )
 		{
-			Assert( vecParam.size() == 2 );
-			SObjectIndex sIndex;
-			sIndex.m_strName.assign( vecParam[1].c_str(), vecParam[1].size() );
-			m_vecObject.push_back( sIndex );
+			Assert( nParamSize == 2 );
+			SModelData::SObjectIndex sIndex;
+			sIndex.m_strName.assign( aryParam[1].c_str(), aryParam[1].size() );
+			m_modelData.m_vecObject.push_back( sIndex );
 		}
-		else if ( !strncmp( vecParam[0].c_str(), "usemtl", vecParam[0].size() ) )
+		else if ( !strncmp( aryParam[0].c_str(), "usemtl", aryParam[0].size() ) )
 		{
-			Assert( vecParam.size() == 2 );
-			string szName( vecParam[1].c_str(), vecParam[1].size() );
+			Assert( nParamSize == 2 );
+			string szName( aryParam[1].c_str(), aryParam[1].size() );
 			Assert( m_mapMaterial.find( szName ) != m_mapMaterial.end() );
-			m_vecObject.rbegin()->m_Material = m_mapMaterial[szName];
+			m_mapMaterial[szName]->AddRef();
+			m_modelData.m_vecObject.rbegin()->m_Material = m_mapMaterial[szName];
 		}
-		else if ( !strncmp( vecParam[0].c_str(), "s", vecParam[0].size() ) )
+		else if ( !strncmp( aryParam[0].c_str(), "s", aryParam[0].size() ) )
 		{
-			Assert( vecParam.size() == 2 );
-			if( !strcmp( vecParam[1].c_str(), "1" ) 
-				|| !strcmp( vecParam[1].c_str(), "on" ) )
-				m_vecObject.rbegin()->m_bSmooth = true;
+			Assert( nParamSize == 2 );
+			if( !strcmp( aryParam[1].c_str(), "1" ) 
+				|| !strcmp( aryParam[1].c_str(), "on" ) )
+				m_modelData.m_vecObject.rbegin()->m_bSmooth = true;
 			else
-				m_vecObject.rbegin()->m_bSmooth = false;
+				m_modelData.m_vecObject.rbegin()->m_bSmooth = false;
 		}
-		else if ( !strncmp( vecParam[0].c_str(), "f", vecParam[0].size() ) )
+		else if ( !strncmp( aryParam[0].c_str(), "f", aryParam[0].size() ) )
 		{
-			Assert( vecParam.size() >= 2 );
-			vector<cstring> aryIndex;
-			aryIndex.reserve( 3 );
-			auto it = vecParam.begin();
-			for ( ++it; it != vecParam.end(); ++it )
+			Assert( nParamSize >= 2 );
+			cstring aryIndex[5];
+			for( uint32 i = 1; i < nParamSize; ++i )
 			{
-				aryIndex.clear();
-				partition( *it, '/', aryIndex );
-				Assert( aryIndex.size() == 3 );
+				uint32 nIndexSize = partition( aryParam[i], '/', aryIndex );
+				Assert( nIndexSize == 3 );
 
-				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[0].c_str() ) );
-				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[1].c_str() ) );
-				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[2].c_str() ) );
+				m_modelData.m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[0].c_str() ) );
+				m_modelData.m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[1].c_str() ) );
+				m_modelData.m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[2].c_str() ) );
 			}
 		}
 		else
 			Log << "Obj FIle Read Not Realize Keyword : \"" << string( sString.c_str(), sString.size() ) << "\"" << endl;
 	}
+	for( auto it = m_mapMaterial.begin(); it != m_mapMaterial.end(); ++it )
+		it->second->Release();
+	m_mapMaterial.clear();
 }
 
 void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
 {
 	uint32 nCurPos = 0;
-	vector<cstring> vecParam;
 	for( uint32 i = 0; i < nSize; ++i )
 	{
 		if( szBuffer[i] != '\n' )
@@ -140,54 +141,78 @@ void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer,
 		if( nCurSize == 0 )
 			continue;
 
-		vecParam.clear();
-		partition( sString, ' ', vecParam );
-
-		if ( !strncmp( vecParam[0].c_str(), "#", vecParam[0].size() ) )
+		cstring aryParam[10];
+		uint32 nParamSize = partition( sString, ' ', aryParam );
+		if( nParamSize == 0 )
 			continue;
-		else if ( !strncmp( vecParam[0].c_str(), "newmtl", vecParam[0].size() ) )
-			m_mapMaterial[string( vecParam[1].c_str(), vecParam[1].size() ) ];
-		else if ( !strncmp( vecParam[0].c_str(), "Ns", vecParam[0].size() ) )
-			m_mapMaterial.rbegin()->second.m_fShininess = (float)atof( vecParam[1].c_str() );
-		else if ( !strncmp( vecParam[0].c_str(), "Ka", vecParam[0].size() ) )
-		{
-			CVector3f& vector = m_mapMaterial.rbegin()->second.m_vec3Ambient;
-			vector.x = (float)atof( vecParam[1].c_str() );
-			vector.y = (float)atof( vecParam[2].c_str() );
-			vector.z = (float)atof( vecParam[3].c_str() );
-		}
-		else if ( !strncmp( vecParam[0].c_str(), "Kd", vecParam[0].size() ) )
-		{
-			CVector3f& vector = m_mapMaterial.rbegin()->second.m_vec3Diffuse;
-			vector.x = (float)atof( vecParam[1].c_str() );
-			vector.y = (float)atof( vecParam[2].c_str() );
-			vector.z = (float)atof( vecParam[3].c_str() );
-		}
-		else if ( !strncmp( vecParam[0].c_str(), "Ks", vecParam[0].size() ) )
-		{
-			CVector3f& vector = m_mapMaterial.rbegin()->second.m_vec3Specular;
-			vector.x = (float)atof( vecParam[1].c_str() );
-			vector.y = (float)atof( vecParam[2].c_str() );
-			vector.z = (float)atof( vecParam[3].c_str() );
-		}
-		else if ( !strncmp( vecParam[0].c_str(), "Ni", vecParam[0].size() ) )
-			m_mapMaterial.rbegin()->second.m_fRefractiveIndex = (float)atof( vecParam[1].c_str() );
-		else if ( !strncmp( vecParam[0].c_str(), "d", vecParam[0].size() ) )
-			m_mapMaterial.rbegin()->second.m_fFadeOut = (float)atof( vecParam[1].c_str() );
-		else if ( !strncmp( vecParam[0].c_str(), "illum", vecParam[0].size() ) )
-			m_mapMaterial.rbegin()->second.m_nIllum = atoi( vecParam[1].c_str() );
-		else if ( !strncmp( vecParam[0].c_str(), "map_Kd", vecParam[0].size() ) )
-			m_mapMaterial.rbegin()->second.m_strDiffuse = string( vecParam[1].c_str(), vecParam[1].size() );
-		else if ( !strncmp( vecParam[0].c_str(), "map_Bump", vecParam[0].size() ) )
-			m_mapMaterial.rbegin()->second.m_strBump = string( vecParam[1].c_str(), vecParam[1].size() );
-		else if ( !strncmp( vecParam[0].c_str(), "map_Ks", vecParam[0].size() ) )
-			m_mapMaterial.rbegin()->second.m_strSpecular = string( vecParam[1].c_str(), vecParam[1].size() );
-	}
-}
 
-const SMaterial& CResourceModel::GetMaterial( const char* szString )
-{
-	map<string, SMaterial>::iterator it = m_mapMaterial.find( szString );
-	Assert( it != m_mapMaterial.end() );
-	return it->second;
+#define LastMaterial m_mapMaterial.rbegin()->second
+
+		if ( !strncmp( aryParam[0].c_str(), "#", aryParam[0].size() ) )
+			continue;
+		else if ( !strncmp( aryParam[0].c_str(), "newmtl", aryParam[0].size() ) )
+		{
+			string strName( aryParam[1].c_str(), aryParam[1].size() );
+			m_mapMaterial[strName] = new CMaterial();
+		}
+		else if ( !strncmp( aryParam[0].c_str(), "Ns", aryParam[0].size() ) )
+			LastMaterial->SetShininess( (float)atof( aryParam[1].c_str() ) );
+		else if ( !strncmp( aryParam[0].c_str(), "Ka", aryParam[0].size() ) )
+		{
+			float x = (float)atof( aryParam[1].c_str() );
+			float y = (float)atof( aryParam[2].c_str() );
+			float z = (float)atof( aryParam[3].c_str() );
+			LastMaterial->SetAmbient( x, y, z );
+		}
+		else if ( !strncmp( aryParam[0].c_str(), "Kd", aryParam[0].size() ) )
+		{
+			float x = (float)atof( aryParam[1].c_str() );
+			float y = (float)atof( aryParam[2].c_str() );
+			float z = (float)atof( aryParam[3].c_str() );
+			LastMaterial->SetDiffuse( x, y, z );
+		}
+		else if ( !strncmp( aryParam[0].c_str(), "Ks", aryParam[0].size() ) )
+		{
+			float x = (float)atof( aryParam[1].c_str() );
+			float y = (float)atof( aryParam[2].c_str() );
+			float z = (float)atof( aryParam[3].c_str() );
+			LastMaterial->SetSpecular( x, y, z );
+		}
+		else if ( !strncmp( aryParam[0].c_str(), "Ni", aryParam[0].size() ) )
+			LastMaterial->SetRefractiveIndex( (float)atof( aryParam[1].c_str() ) );
+		else if ( !strncmp( aryParam[0].c_str(), "d", aryParam[0].size() ) )
+			LastMaterial->SetFadeOut( (float)atof( aryParam[1].c_str() ) );
+		else if ( !strncmp( aryParam[0].c_str(), "illum", aryParam[0].size() ) )
+			LastMaterial->SetIllum( atoi( aryParam[1].c_str() ) );
+		else if ( !strncmp( aryParam[0].c_str(), "map_Kd", aryParam[0].size() ) )
+		{
+			string strName( aryParam[1].c_str(), aryParam[1].size() );
+			CResourceImg Img;
+			CFileManage::Inst().Load( strName.c_str(), Img );
+			CTexture2D* texture = new CTexture2D();
+			texture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
+			LastMaterial->SetTexture( eMaterialTexture_Diffuse, *texture );
+			texture->Release();
+		}
+		else if ( !strncmp( aryParam[0].c_str(), "map_Bump", aryParam[0].size() ) )
+		{
+			string strName( aryParam[1].c_str(), aryParam[1].size() );
+			CResourceImg Img;
+			CFileManage::Inst().Load( strName.c_str(), Img );
+			CTexture2D* texture = new CTexture2D();
+			texture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
+			LastMaterial->SetTexture( eMaterialTexture_Bump, *texture );
+			texture->Release();
+		}
+		else if ( !strncmp( aryParam[0].c_str(), "map_Ks", aryParam[0].size() ) )
+		{
+			string strName( aryParam[1].c_str(), aryParam[1].size() );
+			CResourceImg Img;
+			CFileManage::Inst().Load( strName.c_str(), Img );
+			CTexture2D* texture = new CTexture2D();
+			texture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
+			LastMaterial->SetTexture( eMaterialTexture_Specular, *texture );
+			texture->Release();
+		}
+	}
 }

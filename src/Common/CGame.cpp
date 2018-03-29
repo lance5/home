@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include <map>
 #include "CScene.h"
 #include "CShader.h"
 
+#include <map>
 #include "CGame.h"
 #include "glad.h"
 #include "glfw/glfw3.h"
@@ -41,19 +41,19 @@ void CGame::Init( uint32 nWidth, uint32 nHeight, char* szWindowName, IGameListen
 	m_nState = eGameState_Active;
 	m_nLastFrame = (int64)( glfwGetTime() * 1000 );
 	m_nWindowWidth = nWidth;
-	m_nWindownHeight = nHeight;
+	m_nWindowHeight = nHeight;
 
 	glfwInit();
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
 	glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 	glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
-	m_pMainWindow = glfwCreateWindow( m_nWindowWidth, m_nWindownHeight, szWindowName, nullptr, nullptr );
+	m_pMainWindow = glfwCreateWindow( m_nWindowWidth, m_nWindowHeight, szWindowName, nullptr, nullptr );
 	glfwMakeContextCurrent( m_pMainWindow );
 	glfwSetKeyCallback( m_pMainWindow, OnGlfwKeyCallback );
 	if ( !gladLoadGLLoader( (GLADloadproc)glfwGetProcAddress ) )
 		Assert( false );
-	glViewport( 0, 0, m_nWindowWidth, m_nWindownHeight );
+	glViewport( 0, 0, m_nWindowWidth, m_nWindowHeight );
 	glEnable( GL_CULL_FACE );
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );

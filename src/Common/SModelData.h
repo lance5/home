@@ -1,5 +1,6 @@
 #pragma once
 
+class CMaterial;
 struct SModelData
 {
 	struct SObjectIndex
@@ -9,7 +10,9 @@ struct SModelData
 		std::vector<uint32>			m_vecVertexIndex;
 		std::vector<uint32>			m_vecNoramIndex;
 		std::vector<uint32>			m_vecTexCoordIndex;
-		CMaterial					m_Material;
+		CMaterial*					m_Material;
+
+		~SObjectIndex() { SAFE_RELEASE( m_Material ); }
 	};
 
 	std::vector<float>				m_vecVertex;

@@ -1,22 +1,11 @@
 #pragma once
 
-typedef unsigned char byte;
-typedef signed char int8;
-typedef short int16;
-typedef int	int32;
-typedef long long int64;
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef unsigned long long uint64;
-
-#define INVALIDU8BYTE 0xFF
-#define INVALIDU16BYTE 0xFFFF
-#define INVALIDU32BYTE 0xFFFFFFFF
-#define INVALIDU64BYTE 0xFFFFFFFFFFFFFFFF
+#include "CommonHelpType.h"
 
 #define SAFE_DELETE(ptr) if(ptr){delete ptr;ptr=nullptr;}
 #define SAFE_DELETE_GROUP(ptr) if(ptr){delete[] ptr;ptr=nullptr;}
+
+#define SAFE_RELEASE(ptr) if(ptr){ptr->Release();}
 
 #define Log std::cout
 #define ErrLog std::cout<<"ERROR : "
@@ -66,9 +55,10 @@ inline void	stringToUpper(_Type szBuffer, _SizeType nSize)
 }
 
 template<class _DataType>
-inline void partition( const cstring& cstrString, _DataType szChar, 
-	std::vector<cstring>& vecResult )
+inline uint32 partition( const cstring& cstrString, _DataType szChar, 
+	cstring aryResult[] )
 {
+	uint32 nResultCount = 0;
 	uint32 nStartPos = 0;
 	for ( uint32 i = 0; i < cstrString.size(); ++i )
 	{
@@ -79,11 +69,12 @@ inline void partition( const cstring& cstrString, _DataType szChar,
 
 		cstring strWord( cstrString.c_str() + nStartPos, i - nStartPos );
 		nStartPos = i + 1;
-		vecResult.push_back( strWord );
+		aryResult[nResultCount++] = strWord;
 	}
 	if( cstrString.c_str()[nStartPos] == '\0' )
-		return;
-	vecResult.push_back( cstring( cstrString.c_str() + nStartPos, cstrString.size() - nStartPos ) );
+		return nResultCount;
+	aryResult[nResultCount++] = cstring( cstrString.c_str() + nStartPos, cstrString.size() - nStartPos );
+	return nResultCount;
 }
 
 class IResourceListener

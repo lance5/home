@@ -16,8 +16,8 @@ class CObject3D
 	
 
 public:
-	CObject3D() {}
-	~CObject3D() {}
+	CObject3D();
+	~CObject3D();
 	
 	virtual void 		OnUpdate( uint32 nDeltaTime ) = 0;
 

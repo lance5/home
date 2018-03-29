@@ -1,9 +1,11 @@
 #pragma once
 
+class CMaterial;
 class CResourceModel
 	: public IResourceListener
-	, private SModelData
 {
+	SModelData							m_modelData;
+	std::map<std::string, CMaterial*>	m_mapMaterial;
 public:
 	CResourceModel();
 	~CResourceModel();

@@ -1,10 +1,9 @@
 #include "stdafx.h"
+#include "CommonHelp.h"
 #include "TVector2.h"
 #include "TVector3.h"
 #include "TVector4.h"
-#include "TMatrix2.h"
-#include "TMatrix3.h"
-#include "TMatrix4.h"
+#include "CMatrix.h"
 
 #include "CShader.h"
 #include "glad.h"
@@ -123,19 +122,7 @@ void CShader::SetValue(const char* szName, const CVector4f& vec ) const
 }
 
 template<>
-void CShader::SetValue(const char* szName, const CMatrix2f& mat) const
-{
-	glUniformMatrix2fv(GetUniformLoca(szName), 1, GL_FALSE, &mat[0][0]);
-}
-
-template<>
-void CShader::SetValue(const char* szName, const CMatrix3f& mat) const
-{
-	glUniformMatrix3fv(GetUniformLoca(szName), 1, GL_FALSE, &mat[0][0]);
-}
-
-template<>
-void CShader::SetValue(const char* szName, const CMatrix4f& mat) const
+void CShader::SetValue(const char* szName, const CMatrix& mat) const
 {
 	glUniformMatrix4fv(GetUniformLoca(szName), 1, GL_FALSE, &mat[0][0]);
 }

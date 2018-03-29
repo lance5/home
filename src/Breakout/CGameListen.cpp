@@ -16,8 +16,6 @@ CGameListen::~CGameListen()
 void CGameListen::OnCreated()
 {
 	CGame::Inst().AddScene( m_pScene );
-
-	m_pMainCamera.SetViewProt( 800, 600 );
 }
 
 void CGameListen::OnDestroy()

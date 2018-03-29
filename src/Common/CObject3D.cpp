@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "CObject3D.h"
 
 CObject3D::CObject3D()

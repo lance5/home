@@ -72,7 +72,7 @@ public:
 		if( m_nCurPos + nSize > m_nMaxSize )
 		{
 			const byte* pTemBuf = m_pBuffer;
-			m_nMaxSize = (float)( (float)m_nMaxSize * 1.35f );
+			m_nMaxSize = (uint32)( (float)m_nMaxSize * 1.35f );
 			m_pBuffer = new byte[m_nMaxSize];
 			Assert( m_pBuffer );
 			memset( m_pBuffer, 0, m_nMaxSize );

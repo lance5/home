@@ -15,6 +15,7 @@ class CCamera : public TList<CCamera>::CListNode
 
 	CFrameBuffer*		m_pFrameBuffer;
 public:
+	CCamera() {};
 	CCamera( uint32 nNearWdith, uint32 nNearHeight, uint32 nFarLen, float fFov );
 	~CCamera();
 };
