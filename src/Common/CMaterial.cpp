@@ -17,8 +17,9 @@ CMaterial::~CMaterial()
 	}
 }
 
-void CMaterial::SetTexture( uint8 nTexture, CTexture2D& p )
+CTexture2D* CMaterial::GetTexture(uint8 nTexture)
 {
-	p.AddRef();
-	m_Texture[nTexture] = &p;
+	if( !m_Texture[nTexture] )
+		m_Texture[nTexture] = new CTexture2D();
+	return m_Texture[nTexture];
 }

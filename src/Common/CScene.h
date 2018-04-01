@@ -1,8 +1,8 @@
 #pragma once
-/* ֻ��������Ż���ȾCNode2D */
 #include "CObject3D.h"
 
 class CCamera;
+class CGraphics;
 
 class CScene : public TList<CScene>::CListNode
 {
@@ -16,6 +16,6 @@ public:
 	void AddChild( CObject3D& pNode );
 	void AddCamera( CCamera* pCamera );
 
-	void OnRender();
+	void OnRender( CGraphics* pGraphics );
 };
 

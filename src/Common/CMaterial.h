@@ -37,5 +37,5 @@ public:
 	void						SetFadeOut( float f )						{ m_fFadeOut = f; }
 	void						SetIllum( uint8 n )							{ m_nIllum = n; }
 
-	void						SetTexture( uint8 nTexture, CTexture2D& p );
+	CTexture2D*					GetTexture( uint8 nTexture );
 };

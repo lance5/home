@@ -12,6 +12,7 @@ struct SModelData
 		std::vector<uint32>			m_vecTexCoordIndex;
 		CMaterial*					m_Material;
 
+		SObjectIndex() : m_Material( nullptr ) {}
 		~SObjectIndex() { SAFE_RELEASE( m_Material ); }
 	};
 

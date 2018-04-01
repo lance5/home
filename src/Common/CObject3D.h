@@ -21,6 +21,7 @@ public:
 	
 	virtual void 		OnUpdate( uint32 nDeltaTime ) = 0;
 
-	CMatrix&			GetModelMatrix();
+	const SModelData&	GetModel();
+	const CMatrix&		GetMatrix();
 };
 

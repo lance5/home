@@ -18,6 +18,7 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 	m_modelData.m_vecVertex.reserve( 65535 );
 	m_modelData.m_vecTexCoord.reserve( 65535 );
 	m_modelData.m_vecNormal.reserve( 65535 );
+	std::map<std::string, CMaterial*> mapMaterial;
 
 	uint32 nCurPos = 0;
 	for( uint32 i = 0; i < nSize; ++i )
@@ -75,7 +76,7 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 
 			const SFileStruct* pFile = CFileManage::Inst().Load( strMtlFile.c_str() );
 			Assert( pFile );
-			OnLoadMtllib( pFile->m_strFileName.c_str(), pFile->m_pBuffer, pFile->m_nSize );
+			OnLoadMtllib( pFile->m_strFileName.c_str(), pFile->m_pBuffer, pFile->m_nSize, mapMaterial );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "o", aryParam[0].size() ) )
 		{
@@ -88,9 +89,10 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		{
 			Assert( nParamSize == 2 );
 			string szName( aryParam[1].c_str(), aryParam[1].size() );
-			Assert( m_mapMaterial.find( szName ) != m_mapMaterial.end() );
-			m_mapMaterial[szName]->AddRef();
-			m_modelData.m_vecObject.rbegin()->m_Material = m_mapMaterial[szName];
+			Assert( mapMaterial.find( szName ) != mapMaterial.end() );
+			CMaterial* pMaterial = mapMaterial[szName];
+			pMaterial->AddRef();
+			m_modelData.m_vecObject.rbegin()->m_Material = pMaterial;
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "s", aryParam[0].size() ) )
 		{
@@ -118,14 +120,15 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else
 			Log << "Obj FIle Read Not Realize Keyword : \"" << string( sString.c_str(), sString.size() ) << "\"" << endl;
 	}
-	for( auto it = m_mapMaterial.begin(); it != m_mapMaterial.end(); ++it )
+	for( auto it = mapMaterial.begin(); it != mapMaterial.end(); ++it )
 		it->second->Release();
-	m_mapMaterial.clear();
+	mapMaterial.clear();
 }
 
-void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize )
+void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize, std::map<std::string, CMaterial*>& mapMaterial )
 {
 	uint32 nCurPos = 0;
+	CMaterial* pCurMaterial = nullptr;
 	for( uint32 i = 0; i < nSize; ++i )
 	{
 		if( szBuffer[i] != '\n' )
@@ -146,73 +149,66 @@ void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer,
 		if( nParamSize == 0 )
 			continue;
 
-#define LastMaterial m_mapMaterial.rbegin()->second
-
 		if ( !strncmp( aryParam[0].c_str(), "#", aryParam[0].size() ) )
 			continue;
 		else if ( !strncmp( aryParam[0].c_str(), "newmtl", aryParam[0].size() ) )
 		{
 			string strName( aryParam[1].c_str(), aryParam[1].size() );
-			m_mapMaterial[strName] = new CMaterial();
+			pCurMaterial = new CMaterial();
+			mapMaterial[strName] = pCurMaterial;
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "Ns", aryParam[0].size() ) )
-			LastMaterial->SetShininess( (float)atof( aryParam[1].c_str() ) );
+			pCurMaterial->SetShininess( (float)atof( aryParam[1].c_str() ) );
 		else if ( !strncmp( aryParam[0].c_str(), "Ka", aryParam[0].size() ) )
 		{
 			float x = (float)atof( aryParam[1].c_str() );
 			float y = (float)atof( aryParam[2].c_str() );
 			float z = (float)atof( aryParam[3].c_str() );
-			LastMaterial->SetAmbient( x, y, z );
+			pCurMaterial->SetAmbient( x, y, z );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "Kd", aryParam[0].size() ) )
 		{
 			float x = (float)atof( aryParam[1].c_str() );
 			float y = (float)atof( aryParam[2].c_str() );
 			float z = (float)atof( aryParam[3].c_str() );
-			LastMaterial->SetDiffuse( x, y, z );
+			pCurMaterial->SetDiffuse( x, y, z );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "Ks", aryParam[0].size() ) )
 		{
 			float x = (float)atof( aryParam[1].c_str() );
 			float y = (float)atof( aryParam[2].c_str() );
 			float z = (float)atof( aryParam[3].c_str() );
-			LastMaterial->SetSpecular( x, y, z );
+			pCurMaterial->SetSpecular( x, y, z );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "Ni", aryParam[0].size() ) )
-			LastMaterial->SetRefractiveIndex( (float)atof( aryParam[1].c_str() ) );
+			pCurMaterial->SetRefractiveIndex( (float)atof( aryParam[1].c_str() ) );
 		else if ( !strncmp( aryParam[0].c_str(), "d", aryParam[0].size() ) )
-			LastMaterial->SetFadeOut( (float)atof( aryParam[1].c_str() ) );
+			pCurMaterial->SetFadeOut( (float)atof( aryParam[1].c_str() ) );
 		else if ( !strncmp( aryParam[0].c_str(), "illum", aryParam[0].size() ) )
-			LastMaterial->SetIllum( atoi( aryParam[1].c_str() ) );
+			pCurMaterial->SetIllum( atoi( aryParam[1].c_str() ) );
 		else if ( !strncmp( aryParam[0].c_str(), "map_Kd", aryParam[0].size() ) )
 		{
 			string strName( aryParam[1].c_str(), aryParam[1].size() );
 			CResourceImg Img;
 			CFileManage::Inst().Load( strName.c_str(), Img );
-			CTexture2D* texture = new CTexture2D();
-			texture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
-			LastMaterial->SetTexture( eMaterialTexture_Diffuse, *texture );
-			texture->Release();
+			CTexture2D* pTexture = pCurMaterial->GetTexture( eMaterialTexture_Diffuse );
+			pTexture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "map_Bump", aryParam[0].size() ) )
 		{
 			string strName( aryParam[1].c_str(), aryParam[1].size() );
 			CResourceImg Img;
 			CFileManage::Inst().Load( strName.c_str(), Img );
-			CTexture2D* texture = new CTexture2D();
-			texture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
-			LastMaterial->SetTexture( eMaterialTexture_Bump, *texture );
-			texture->Release();
+			CTexture2D* pTexture = pCurMaterial->GetTexture( eMaterialTexture_Bump );
+			pTexture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "map_Ks", aryParam[0].size() ) )
 		{
 			string strName( aryParam[1].c_str(), aryParam[1].size() );
 			CResourceImg Img;
 			CFileManage::Inst().Load( strName.c_str(), Img );
-			CTexture2D* texture = new CTexture2D();
-			texture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
-			LastMaterial->SetTexture( eMaterialTexture_Specular, *texture );
-			texture->Release();
+			CTexture2D* pTexture = pCurMaterial->GetTexture( eMaterialTexture_Specular );
+			pTexture->SetTextureData( Img.GetImageFormat(), Img.GetImageWidth(), Img.GetImageHeight(), Img.GetImageData() );
 		}
 	}
 }

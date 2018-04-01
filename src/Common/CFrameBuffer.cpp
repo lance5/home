@@ -7,7 +7,7 @@
 CFrameBuffer::CFrameBuffer( uint32 nWidth, uint32 nHeight )
 {
 	glGenFramebuffers( 1, &m_nFrameBuffer );
-	glBindFramebuffer( GL_FRAMEBUFFER, m_nFrameBuffer );
+	BindFrame();
 
 	GLenum nAttachment[eBufferType_Count] =
 	{
@@ -22,7 +22,7 @@ CFrameBuffer::CFrameBuffer( uint32 nWidth, uint32 nHeight )
 		glFramebufferTexture2D( GL_FRAMEBUFFER, nAttachment[i], GL_TEXTURE_2D, nTextureID, 0 );
 	}
 
-	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+	UnBindFrame();
 }
 
 CFrameBuffer::~CFrameBuffer()
@@ -32,4 +32,22 @@ CFrameBuffer::~CFrameBuffer()
 
 	glDeleteFramebuffers( 1, &m_nFrameBuffer );
 	m_nFrameBuffer = 0;
+}
+
+void CFrameBuffer::BindFrame()
+{
+	glBindFramebuffer( GL_FRAMEBUFFER, m_nFrameBuffer );
+}
+
+void CFrameBuffer::UnBindFrame()
+{
+	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+}
+
+void CFrameBuffer::CloseBuffer()
+{
+	BindFrame();
+	glClearColor( 0.0f, 0.0f, 0.0f,1.0f );
+	glClear( GL_COLOR_BUFFER_BIT );
+	UnBindFrame();
 }

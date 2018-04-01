@@ -23,6 +23,7 @@
     <ClInclude Include="CFileManage.h" />
     <ClInclude Include="CFrameBuffer.h" />
     <ClInclude Include="CGame.h" />
+    <ClInclude Include="CGraphics.h" />
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMatrix.h" />
     <ClInclude Include="CBuffer.h" />
@@ -53,6 +54,7 @@
     <ClCompile Include="CFileManage.cpp" />
     <ClCompile Include="CFrameBuffer.cpp" />
     <ClCompile Include="CGame.cpp" />
+    <ClCompile Include="CGraphics.cpp" />
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CObject3D.cpp" />
     <ClCompile Include="CResourceImg.cpp" />

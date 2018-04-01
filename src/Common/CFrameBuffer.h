@@ -15,4 +15,8 @@ class CFrameBuffer
 public:
 	CFrameBuffer( uint32 nWidth, uint32 nHeight );
 	~CFrameBuffer();
+
+	void			BindFrame();
+	void			UnBindFrame();
+	void			CloseBuffer();
 };

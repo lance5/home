@@ -12,7 +12,12 @@ CObject3D::~CObject3D()
 
 }
 
-CMatrix& CObject3D::GetModelMatrix()
+const SModelData& CObject3D::GetModel()
+{ 
+	return *this;
+}
+
+const CMatrix& CObject3D::GetMatrix()
 {
 	if( m_bUpdateMat )
 	{

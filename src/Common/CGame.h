@@ -3,23 +3,12 @@
 struct GLFWwindow;
 class CCamera;
 class CScene;
-
-class IGameListen
-{
-public:
-	virtual ~IGameListen() {}
-	virtual void OnCreated() = 0;
-	virtual void OnDestroy() = 0;
-};
-typedef std::map<uint32, CShader*> ShaderMap;
-enum
-{
-	eShaderType_Sprite,
-	eShaderType_ShellStart,
-};
+class CGraphics;
 
 class CGame
 {
+	static CGame*			m_sInstance;
+private:
 	enum eGameState
 	{
 		eGameState_Active,
@@ -28,26 +17,23 @@ class CGame
 	};
 	eGameState				m_nState;
 	GLFWwindow*				m_pMainWindow;
-	IGameListen*			m_pGameListen;
 	int64					m_nLastFrame;
 	uint32					m_nFrameInterval;
-	CCamera*				m_pMainCamera;
 	TList<CScene>			m_listScene;
-	ShaderMap				m_mapShader;
 	uint32					m_nWindowWidth;
 	uint32					m_nWindowHeight;
+	CGraphics*				m_pGraphics;
+	CFrameBuffer*			m_pMainFrame;
 
 	void					ProcessInput( uint32 nDeltaTime );
 	void					Update( uint32 nDeltaTime );
 	void					Render();
-	void					InitEngineShader();
 
-	CGame();
+	CGame( uint32 nWidth, uint32 nHeight, char* szWindowName, uint32 nFrameInterval = 33 );
 	~CGame();
 public:
 
 	void					OnKeyCallback( int nKey, int nAction );
-	void					Init( uint32 nWidth, uint32 nHeight, char* szWindowName, IGameListen* pGameListen, uint32 nFrameInterval = 33 );
 	void					OnRun();
 	int						OnQuit();
 
@@ -55,18 +41,19 @@ public:
 	void					RegisterShader( uint32 nShaderID );
 	uint32					GetWindowWidth() const { return m_nWindowWidth; }
 	uint32					GetWindowHeight() const { return m_nWindowHeight; }
+	CGraphics&				GetGraphics() { return *m_pGraphics; }
 
-	static CGame&			Inst();
+	static void				SetInstance( CGame* pInstance ) { m_sInstance = pInstance; }
+	static CGame&			Inst() { return *m_sInstance; }
 };
 
-#define CREATE_GAME( nWindowWidth, nWindowHeight, szWindowName, ClassGameListen ) \
+#define CREATE_GAME( nWindowWidth, nWindowHeight, szWindowName, ClassGame ) \
 	int main( int argc, char* argv[] ) \
 	{ \
+		CGame::SetInstance( new ClassGame( nWindowWidth, nWindowHeight, szWindowName ) ); \
 		CGame& game = CGame::Inst(); \
-		IGameListen* pGameListen = new ClassGameListen; \
-		game.Init( nWindowWidth, nWindowHeight, szWindowName, pGameListen ); \
 		game.OnRun(); \
 		int nResult = game.OnQuit(); \
-		SAFE_DELETE(  pGameListen ); \
+		SAFE_DELETE( &game ); \
 		return nResult; \
 	}

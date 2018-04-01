@@ -77,6 +77,7 @@
     <ClInclude Include="CommonHelpType.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="CGraphics.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="数据结构">
@@ -161,5 +162,6 @@
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="CGraphics.cpp" />
   </ItemGroup>
 </Project>

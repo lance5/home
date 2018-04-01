@@ -8,6 +8,8 @@
 #include "glfw/glfw3.h"
 
 #include "CCamera.h"
+#include "CGraphics.h"
+#include "CFrameBuffer.h"
 
 void OnGlfwKeyCallback( GLFWwindow * pWindow, int nKey, int nScanCode, int nAction, int nMode )
 {
@@ -17,24 +19,9 @@ void OnGlfwKeyCallback( GLFWwindow * pWindow, int nKey, int nScanCode, int nActi
 	CGame::Inst().OnKeyCallback( nKey, nAction );
 }
 
-CGame::CGame()
-	: m_pMainCamera( new CCamera )
-	, m_pGameListen( NULL )
-{
-}
-
-
-CGame::~CGame()
-{
-}
-
-CGame & CGame::Inst()
-{
-	static CGame s_instance;
-	return s_instance;
-}
-
-void CGame::Init( uint32 nWidth, uint32 nHeight, char* szWindowName, IGameListen* pGameListen, uint32 nFrameInterval /* = 33 */ )
+CGame::CGame( uint32 nWidth, uint32 nHeight, char* szWindowName, uint32 nFrameInterval = /* 33 */ )
+	: m_pGraphics( nullptr )
+	, m_pMainFrame( nullptr )
 {
 	m_pGameListen = pGameListen;
 	m_nFrameInterval = nFrameInterval;
@@ -57,9 +44,14 @@ void CGame::Init( uint32 nWidth, uint32 nHeight, char* szWindowName, IGameListen
 	glEnable( GL_CULL_FACE );
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-	InitEngineShader();
 
-	m_pGameListen->OnCreated();
+	m_pGraphics = new CGraphics();
+	m_pMainFrame = new CFrameBuffer( m_nWindowWidth, m_nWindowHeight );
+}
+
+CGame::~CGame()
+{
+	SAFE_DELETE( m_pGraphics );
 }
 
 void CGame::OnRun()
@@ -74,9 +66,6 @@ void CGame::OnRun()
 
 		ProcessInput( nDeltaTime );
 		Update( nDeltaTime );
-
-		glClearColor( 0.0f, 0.0f, 0.0f,1.0f );
-		glClear( GL_COLOR_BUFFER_BIT );
 		Render();
 
 		glfwSwapBuffers( m_pMainWindow );
@@ -90,10 +79,6 @@ void CGame::OnRun()
 int CGame::OnQuit() 
 {
 	glfwTerminate();
-	m_pGameListen->OnDestroy();
-	for ( ShaderMap::iterator it = m_mapShader.begin(); 
-		it != m_mapShader.end(); ++it )
-		SAFE_DELETE( it->second );
 	return 0;
 }
 
@@ -123,40 +108,12 @@ void CGame::Update( uint32 nDeltaTime )
 
 void CGame::Render()
 {
+	/* ÇåÀíÖ÷»º´æ */
+	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+	glClearColor( 1.0f, 1.0f, 1.0f, 1.0f ); 
+	glClear( GL_COLOR_BUFFER_BIT );
+
 	CScene* pScene = m_listScene.GetFirst();
 	for ( ; pScene; pScene = pScene->GetNext() )
-		pScene->OnRender();
-}
-
-void CGame::InitEngineShader()
-{
-	const char* szShader[eShaderType_ShellStart][eShader_Count] =
-	{
-		{ 
-			"#version 330 core\n"
-			"layout (location = 0) in vec4 vertex;\n"
-			"out vec2 TexCoords;\n"
-			"uniform mat4 model;\n"
-			"uniform mat4 projection;\n"
-			"void main()\n"
-			"{\n"
-			"	TexCoords = vertex.zw;\n"
-			"	gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);\n"
-			"}",
-			"#version 330 core\n"
-			"in vec2 TexCoords;\n"
-			"out vec4 color;\n"
-			"uniform sampler2D image;\n"
-			"uniform vec3 spriteColor;\n"
-			"void main()\n"
-			"{\n"
-			"	color = vec4(spriteColor, 1.0) * texture(image, TexCoords);\n"
-			"}",
-			nullptr 
-		}
-	};
-	for ( uint32 i = 0; i < eShaderType_ShellStart; ++i )
-	{
-		m_mapShader[eShaderType_Sprite] = new CShader( szShader[i] );
-	}
+		pScene->OnRender( m_pGraphics );
 }

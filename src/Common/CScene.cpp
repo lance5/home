@@ -2,6 +2,8 @@
 #include "TList.h"
 #include "CCamera.h"
 #include "CScene.h"
+#include "CGame.h"
+#include "CGraphics.h"
 
 CScene::CScene()
 {
@@ -29,6 +31,10 @@ void CScene::OnUpdate( uint32 nDeltaTime )
 		pNode->OnUpdate( nDeltaTime );
 }
 
-void CScene::OnRender()
+void CScene::OnRender( CGraphics* pGraphics )
 {
+	for ( CObject3D* pNode = m_listChilds.GetFirst(); pNode; pNode = pNode->GetNext() )
+	{
+		pGraphics->RenderObject( eShaderType_Sprite, pNode->GetModel(), pNode->GetMatrix() );
+	}
 }
