@@ -1,6 +1,6 @@
 #pragma once
 
-class SModelData;
+class CRenderModel;
 class CMatrix;
 class CShader;
 class CFrameBuffer;
@@ -22,6 +22,8 @@ public:
 
 	void			InitShader();
 	void			SetFrameBuffer( CFrameBuffer* pBuffer ) { m_pCurFrameBuffer = pBuffer; }
-	void			RenderObject( uint32 nShaderID, const SModelData& model, const CMatrix& mat );
+	void			RenderObject( uint32 nShaderID, const CRenderModel& model, const CMatrix& mat );
+	
+	template<class ClassName>
+	ClassName*		CreateResource();
 };
-

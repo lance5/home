@@ -31,13 +31,13 @@
     <ClInclude Include="CommonHelp.h" />
     <ClInclude Include="CommonHelpType.h" />
     <ClInclude Include="CResourceImg.h" />
-    <ClInclude Include="CResourceModel.h" />
+    <ClInclude Include="CDecodeModel.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CTexture2D.h" />
     <ClInclude Include="CThread.h" />
     <ClInclude Include="IUnKnown.h" />
-    <ClInclude Include="SModelData.h" />
+    <ClInclude Include="CRenderModel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TList.h" />
     <ClInclude Include="CTree.h" />
@@ -56,9 +56,10 @@
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CGraphics.cpp" />
     <ClCompile Include="CMaterial.cpp" />
+    <ClCompile Include="CRenderModel.cpp" />
     <ClCompile Include="CObject3D.cpp" />
     <ClCompile Include="CResourceImg.cpp" />
-    <ClCompile Include="CResourceModel.cpp" />
+    <ClCompile Include="CDecodeModel.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CTexture2D.cpp" />

@@ -3,16 +3,16 @@
 #include "TList.h"
 #include "TVector3.h"
 #include "CMatrix.h"
-#include "SModelData.h"
+
+class CRenderModel;
 
 class CObject3D 
 	: public TList<CObject3D>::CListNode
-	, private SModelData
 {
 	CVector3f			m_vPosition;
 	CMatrix				m_matModel;
 	bool				m_bUpdateMat;
-
+	CRenderModel*			m_pModelData;
 	
 
 public:
@@ -21,7 +21,7 @@ public:
 	
 	virtual void 		OnUpdate( uint32 nDeltaTime ) = 0;
 
-	const SModelData&	GetModel();
+	const CRenderModel&	GetModel();
 	const CMatrix&		GetMatrix();
 };
 

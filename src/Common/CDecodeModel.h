@@ -1,7 +1,8 @@
 #pragma once
 
 class CMaterial;
-struct SModelData
+class CDecodeModel
+	: public IResourceListener
 {
 	struct SObjectIndex
 	{
@@ -13,11 +14,18 @@ struct SModelData
 		CMaterial*					m_Material;
 
 		SObjectIndex() : m_Material( nullptr ) {}
-		~SObjectIndex() { SAFE_RELEASE( m_Material ); }
 	};
 
+private:
 	std::vector<float>				m_vecVertex;
 	std::vector<float>				m_vecNormal;
 	std::vector<float>				m_vecTexCoord;
 	std::vector<SObjectIndex>		m_vecObject;
+
+public:
+	CDecodeModel();
+	~CDecodeModel();
+
+	virtual void	OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
+	void			OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize, std::map<std::string, CMaterial*>& mapMaterial );
 };

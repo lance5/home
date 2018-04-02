@@ -14,6 +14,5 @@
 
 #include "CTexture2D.h"
 #include "CMaterial.h"
-#include "SModelData.h"
 #include "CBuffer.h"
-#include "SModelData.h"
+#include "CModelData.h"

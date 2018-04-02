@@ -2,23 +2,25 @@
 #include "TVector3.h"
 #include "CFileManage.h"
 
-#include "CResourceModel.h"
+#include "CDecodeModel.h"
 #include "CResourceImg.h"
+#include "CGame.h"
+#include "CGraphics.h"
 
-CResourceModel::CResourceModel()
+CDecodeModel::CDecodeModel()
 {
 }
 
-CResourceModel::~CResourceModel()
+CDecodeModel::~CDecodeModel()
 {
 }
 
-void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )
+void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )
 {
-	m_modelData.m_vecVertex.reserve( 65535 );
-	m_modelData.m_vecTexCoord.reserve( 65535 );
-	m_modelData.m_vecNormal.reserve( 65535 );
 	std::map<std::string, CMaterial*> mapMaterial;
+	m_vecVertex.reserve( 65535 );
+	m_vecTexCoord.reserve( 65535 );
+	m_vecNormal.reserve( 65535 );
 
 	uint32 nCurPos = 0;
 	for( uint32 i = 0; i < nSize; ++i )
@@ -46,22 +48,22 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else if ( !strncmp( aryParam[0].c_str(), "v", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 4 );
-			m_modelData.m_vecVertex.push_back( (float)atof( aryParam[1].c_str() ) );
-			m_modelData.m_vecVertex.push_back( (float)atof( aryParam[2].c_str() ) );
-			m_modelData.m_vecVertex.push_back( (float)atof( aryParam[3].c_str() ) );
+			m_vecVertex.push_back( (float)atof( aryParam[1].c_str() ) );
+			m_vecVertex.push_back( (float)atof( aryParam[2].c_str() ) );
+			m_vecVertex.push_back( (float)atof( aryParam[3].c_str() ) );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "vt", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 3 );
-			m_modelData.m_vecTexCoord.push_back( (float)atof( aryParam[1].c_str() ) );
-			m_modelData.m_vecTexCoord.push_back( (float)atof( aryParam[2].c_str() ) );
+			m_vecTexCoord.push_back( (float)atof( aryParam[1].c_str() ) );
+			m_vecTexCoord.push_back( (float)atof( aryParam[2].c_str() ) );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "vn", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 4 );
-			m_modelData.m_vecNormal.push_back( (float)atof( aryParam[1].c_str() ) );
-			m_modelData.m_vecNormal.push_back( (float)atof( aryParam[2].c_str() ) );
-			m_modelData.m_vecNormal.push_back( (float)atof( aryParam[3].c_str() ) );
+			m_vecNormal.push_back( (float)atof( aryParam[1].c_str() ) );
+			m_vecNormal.push_back( (float)atof( aryParam[2].c_str() ) );
+			m_vecNormal.push_back( (float)atof( aryParam[3].c_str() ) );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "mtllib", aryParam[0].size() ) )
 		{
@@ -81,9 +83,9 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 		else if ( !strncmp( aryParam[0].c_str(), "o", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 2 );
-			SModelData::SObjectIndex sIndex;
+			SObjectIndex sIndex;
 			sIndex.m_strName.assign( aryParam[1].c_str(), aryParam[1].size() );
-			m_modelData.m_vecObject.push_back( sIndex );
+			m_vecObject.push_back( sIndex );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "usemtl", aryParam[0].size() ) )
 		{
@@ -91,17 +93,16 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 			string szName( aryParam[1].c_str(), aryParam[1].size() );
 			Assert( mapMaterial.find( szName ) != mapMaterial.end() );
 			CMaterial* pMaterial = mapMaterial[szName];
-			pMaterial->AddRef();
-			m_modelData.m_vecObject.rbegin()->m_Material = pMaterial;
+			m_vecObject.rbegin()->m_Material = pMaterial;
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "s", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 2 );
 			if( !strcmp( aryParam[1].c_str(), "1" ) 
 				|| !strcmp( aryParam[1].c_str(), "on" ) )
-				m_modelData.m_vecObject.rbegin()->m_bSmooth = true;
+				m_vecObject.rbegin()->m_bSmooth = true;
 			else
-				m_modelData.m_vecObject.rbegin()->m_bSmooth = false;
+				m_vecObject.rbegin()->m_bSmooth = false;
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "f", aryParam[0].size() ) )
 		{
@@ -112,20 +113,17 @@ void CResourceModel::OnFileLoaded( const char* szFileName, const byte * szBuffer
 				uint32 nIndexSize = partition( aryParam[i], '/', aryIndex );
 				Assert( nIndexSize == 3 );
 
-				m_modelData.m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[0].c_str() ) );
-				m_modelData.m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[1].c_str() ) );
-				m_modelData.m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[2].c_str() ) );
+				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[0].c_str() ) );
+				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[1].c_str() ) );
+				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[2].c_str() ) );
 			}
 		}
 		else
 			Log << "Obj FIle Read Not Realize Keyword : \"" << string( sString.c_str(), sString.size() ) << "\"" << endl;
 	}
-	for( auto it = mapMaterial.begin(); it != mapMaterial.end(); ++it )
-		it->second->Release();
-	mapMaterial.clear();
 }
 
-void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize, std::map<std::string, CMaterial*>& mapMaterial )
+void CDecodeModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize, std::map<std::string, CMaterial*>& mapMaterial )
 {
 	uint32 nCurPos = 0;
 	CMaterial* pCurMaterial = nullptr;
@@ -154,7 +152,7 @@ void CResourceModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer,
 		else if ( !strncmp( aryParam[0].c_str(), "newmtl", aryParam[0].size() ) )
 		{
 			string strName( aryParam[1].c_str(), aryParam[1].size() );
-			pCurMaterial = new CMaterial();
+			pCurMaterial = CGame::Inst().GetGraphics().CreateResource<CMaterial>();
 			mapMaterial[strName] = pCurMaterial;
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "Ns", aryParam[0].size() ) )

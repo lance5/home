@@ -50,7 +50,7 @@ void CGraphics::InitShader()
 	}
 }
 
-void CGraphics::RenderObject( uint32 nShaderID, const SModelData & model, const CMatrix & mat )
+void CGraphics::RenderObject( uint32 nShaderID, const CRenderModel& model, const CMatrix & mat )
 {
 	if( m_pCurFrameBuffer )
 		m_pCurFrameBuffer->BindFrame();
@@ -60,4 +60,10 @@ void CGraphics::RenderObject( uint32 nShaderID, const SModelData & model, const 
 
 	if( m_pCurFrameBuffer )
 		m_pCurFrameBuffer->UnBindFrame();
+}
+
+template<class ClassName>
+ClassName* CGraphics::CreateResource()
+{
+	return new ClassName();
 }

@@ -1,20 +1,21 @@
 #include "stdafx.h"
 #include "CObject3D.h"
+#include "CModelData.h"
 
 CObject3D::CObject3D()
 	: m_bUpdateMat( true )
+	, m_pModelData( new CRenderModel )
 {
-
 }
 
 CObject3D::~CObject3D()
 {
-
+	SAFE_DELETE( m_pModelData );
 }
 
-const SModelData& CObject3D::GetModel()
+const CRenderModel& CObject3D::GetModel()
 { 
-	return *this;
+	return *m_pModelData;
 }
 
 const CMatrix& CObject3D::GetMatrix()
