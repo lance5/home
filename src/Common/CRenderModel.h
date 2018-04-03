@@ -13,16 +13,29 @@ public:
 		eBufferType_Count,
 	};
 private:
-	uint32							m_nVertexArrays;
-	uint32							m_aryVertexBuffer[eBufferType_Count];
-	uint32							m_aryBufferElement[eBufferType_Count];
+	struct SObjectElement
+	{
+		uint32						m_Element[eBufferType_Count];
+		bool						m_bSmooth;
+		CMaterial*					m_Material;
+	};
+
+	uint32 m_nVertexArrays;
+	uint32 m_nVertexBuffer;
+	std::vector<SObjectElement> m_vecElement;
 
 public:
 	CRenderModel();
 	~CRenderModel();
 
 	template<typename Data>
-	void							SetVertexBuffer( uint8 nType, const Data* pData, uint32 nSize );
+	void SetVertexBuffer( const Data* aryData[eBufferType_Count],
+		const uint32 arySize[eBufferType_Count] );
+
 	template<typename Data>
-	void							SetBufferElement( uint8 nType, const Data* pData, uint32 nSize );
+	void PushObjectData( const Data* aryData[eBufferType_Count],
+		const uint32 arySize[eBufferType_Count], 
+		CMaterial* pMaterail, bool bSmooth );
+
+	void RenderAllObject();
 };

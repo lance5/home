@@ -1,6 +1,8 @@
 #pragma once
 
 class CMaterial;
+class CRenderModel;
+
 class CDecodeModel
 	: public IResourceListener
 {
@@ -25,6 +27,8 @@ private:
 public:
 	CDecodeModel();
 	~CDecodeModel();
+
+	void			FillRenderModel( CRenderModel& model );
 
 	virtual void	OnFileLoaded( const char* szFileName, const byte* szBuffer, const uint32 nSize );
 	void			OnLoadMtllib( const char* szFileName, const byte* szBuffer, const uint32 nSize, std::map<std::string, CMaterial*>& mapMaterial );

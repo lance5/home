@@ -6,6 +6,7 @@
 #include "CResourceImg.h"
 #include "CGame.h"
 #include "CGraphics.h"
+#include "CRenderModel.h"
 
 CDecodeModel::CDecodeModel()
 {
@@ -13,6 +14,34 @@ CDecodeModel::CDecodeModel()
 
 CDecodeModel::~CDecodeModel()
 {
+	for( uint32 i = 0; i < m_vecObject.size(); ++i )
+	{
+		SAFE_RELEASE( m_vecObject[i].m_Material );
+	}
+}
+
+void CDecodeModel::FillRenderModel( CRenderModel& model )
+{
+	model.SetVertexBuffer( CRenderModel::eBufferType_Vertex, &m_vecVertex[0], m_vecVertex.size() );
+	model.SetVertexBuffer( CRenderModel::eBufferType_Normal, &m_vecNormal[0], m_vecNormal.size() );
+	model.SetVertexBuffer( CRenderModel::eBufferType_TexCoord, &m_vecTexCoord[0], m_vecTexCoord.size() );
+
+	for( uint32 i = 0; i < m_vecObject.size(); ++i )
+	{
+		const uint32* aryData[] =
+		{
+			&m_vecObject[i].m_vecVertexIndex[0],
+			&m_vecObject[i].m_vecNoramIndex[0],
+			&m_vecObject[i].m_vecTexCoordIndex[0],
+		};
+		const uint32 arySize[] =
+		{
+			m_vecObject[i].m_vecVertexIndex.size(),
+			m_vecObject[i].m_vecNoramIndex.size(),
+			m_vecObject[i].m_vecTexCoordIndex.size(),
+		};
+		model.PushObjectData( aryData, arySize, m_vecObject[i].m_Material, m_vecObject[i].m_bSmooth );
+	}
 }
 
 void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )

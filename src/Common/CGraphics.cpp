@@ -2,6 +2,7 @@
 #include "CGraphics.h"
 #include "CShader.h"
 #include "CFrameBuffer.h"
+#include "CRenderModel.h"
 
 CGraphics::CGraphics()
 	: m_pCurFrameBuffer( nullptr )
@@ -56,7 +57,7 @@ void CGraphics::RenderObject( uint32 nShaderID, const CRenderModel& model, const
 		m_pCurFrameBuffer->BindFrame();
 	
 	/* ¿ªÊ¼äÖÈ¾ */
-
+	model.RenderAllObject();
 
 	if( m_pCurFrameBuffer )
 		m_pCurFrameBuffer->UnBindFrame();
