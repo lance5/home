@@ -119,7 +119,7 @@ void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, 
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "f", aryParam[0].size() ) )
 		{
-			Assert( nParamSize == 3 );
+			Assert( nParamSize == 4 );
 			cstring aryIndex[5];
 			for( uint32 i = 1; i < nParamSize; ++i )
 			{

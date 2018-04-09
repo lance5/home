@@ -16,13 +16,13 @@ class CRenderModel
 private:
 	struct SObject
 	{
+		uint32						m_nVertexArrays;
 		uint32						m_nVertexBuffer;
 		uint32						m_nCount;
 		bool						m_bSmooth;
 		CMaterial*					m_Material;
 	};
 
-	uint32 m_nVertexArrays;
 	std::vector<SObject> m_vecObject;
 
 public:

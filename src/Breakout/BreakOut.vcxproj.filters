@@ -4,10 +4,12 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="CScene1.h" />
     <ClInclude Include="CGameClient.h" />
+    <ClInclude Include="CSpirit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="CScene1.cpp" />
     <ClCompile Include="CGameClient.cpp" />
+    <ClCompile Include="CSpirit.cpp" />
   </ItemGroup>
 </Project>

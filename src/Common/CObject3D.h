@@ -12,7 +12,7 @@ class CObject3D
 	CVector3f			m_vPosition;
 	CMatrix				m_matModel;
 	bool				m_bUpdateMat;
-	CRenderModel*			m_pModelData;
+	CRenderModel*		m_pModelData;
 	
 
 public:
@@ -21,7 +21,7 @@ public:
 	
 	virtual void 		OnUpdate( uint32 nDeltaTime ) = 0;
 
-	const CRenderModel&	GetModel();
+	CRenderModel&		GetModel();
 	const CMatrix&		GetMatrix();
 };
 
