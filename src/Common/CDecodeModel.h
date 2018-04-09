@@ -1,7 +1,8 @@
 #pragma once
 
+#include "CRenderModel.h"
+
 class CMaterial;
-class CRenderModel;
 
 class CDecodeModel
 	: public IResourceListener
@@ -10,18 +11,13 @@ class CDecodeModel
 	{
 		std::string					m_strName;
 		bool						m_bSmooth;
-		std::vector<uint32>			m_vecVertexIndex;
-		std::vector<uint32>			m_vecNoramIndex;
-		std::vector<uint32>			m_vecTexCoordIndex;
+		std::vector<SVectexData>	m_vecVectexData;
 		CMaterial*					m_Material;
 
 		SObjectIndex() : m_Material( nullptr ) {}
 	};
 
 private:
-	std::vector<float>				m_vecVertex;
-	std::vector<float>				m_vecNormal;
-	std::vector<float>				m_vecTexCoord;
 	std::vector<SObjectIndex>		m_vecObject;
 
 public:

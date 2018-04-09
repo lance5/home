@@ -2,12 +2,12 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="CGameListen.h" />
     <ClInclude Include="CScene1.h" />
+    <ClInclude Include="CGameClient.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="CGameListen.cpp" />
     <ClCompile Include="CScene1.cpp" />
+    <ClCompile Include="CGameClient.cpp" />
   </ItemGroup>
 </Project>

@@ -1,41 +1,34 @@
 #pragma once
 
 class CMaterial;
+class CGraphics;
+
+struct SVectexData
+{
+	float	m_vVectex[3];
+	float	m_vNormal[3];
+	float	m_vTexCoord[2];
+};
 
 class CRenderModel
 {
-public:
-	enum
-	{
-		eBufferType_Vertex,
-		eBufferType_Normal,
-		eBufferType_TexCoord,
-		eBufferType_Count,
-	};
+	friend CGraphics;
 private:
-	struct SObjectElement
+	struct SObject
 	{
-		uint32						m_Element[eBufferType_Count];
+		uint32						m_nVertexBuffer;
+		uint32						m_nCount;
 		bool						m_bSmooth;
 		CMaterial*					m_Material;
 	};
 
 	uint32 m_nVertexArrays;
-	uint32 m_nVertexBuffer;
-	std::vector<SObjectElement> m_vecElement;
+	std::vector<SObject> m_vecObject;
 
 public:
 	CRenderModel();
 	~CRenderModel();
 
-	template<typename Data>
-	void SetVertexBuffer( const Data* aryData[eBufferType_Count],
-		const uint32 arySize[eBufferType_Count] );
-
-	template<typename Data>
-	void PushObjectData( const Data* aryData[eBufferType_Count],
-		const uint32 arySize[eBufferType_Count], 
+	void PushObjectData( const std::vector<SVectexData>& vecData, 
 		CMaterial* pMaterail, bool bSmooth );
-
-	void RenderAllObject();
 };

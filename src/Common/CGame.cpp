@@ -16,14 +16,13 @@ void OnGlfwKeyCallback( GLFWwindow * pWindow, int nKey, int nScanCode, int nActi
 	if ( nKey == GLFW_KEY_ESCAPE && nAction == GLFW_PRESS )
 		glfwSetWindowShouldClose( pWindow, GL_TRUE );
 
-	CGame::Inst().OnKeyCallback( nKey, nAction );
+	CGame::Inst()->OnKeyCallback( nKey, nAction );
 }
 
-CGame::CGame( uint32 nWidth, uint32 nHeight, char* szWindowName, uint32 nFrameInterval = /* 33 */ )
+CGame::CGame( uint32 nWidth, uint32 nHeight, const char* szWindowName, uint32 nFrameInterval )
 	: m_pGraphics( nullptr )
 	, m_pMainFrame( nullptr )
 {
-	m_pGameListen = pGameListen;
 	m_nFrameInterval = nFrameInterval;
 	m_nState = eGameState_Active;
 	m_nLastFrame = (int64)( glfwGetTime() * 1000 );

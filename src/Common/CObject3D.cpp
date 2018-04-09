@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CObject3D.h"
-#include "CModelData.h"
+#include "CRenderModel.h"
 
 CObject3D::CObject3D()
 	: m_bUpdateMat( true )

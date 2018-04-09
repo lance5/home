@@ -4,10 +4,13 @@ struct GLFWwindow;
 class CCamera;
 class CScene;
 class CGraphics;
+class CFrameBuffer;
+
+class CGame;
+static CGame* m_sAppInstance;
 
 class CGame
 {
-	static CGame*			m_sInstance;
 private:
 	enum eGameState
 	{
@@ -28,10 +31,9 @@ private:
 	void					ProcessInput( uint32 nDeltaTime );
 	void					Update( uint32 nDeltaTime );
 	void					Render();
-
-	CGame( uint32 nWidth, uint32 nHeight, char* szWindowName, uint32 nFrameInterval = 33 );
-	~CGame();
 public:
+	CGame( uint32 nWidth, uint32 nHeight, const char* szWindowName, uint32 nFrameInterval );
+	virtual ~CGame();
 
 	void					OnKeyCallback( int nKey, int nAction );
 	void					OnRun();
@@ -43,17 +45,16 @@ public:
 	uint32					GetWindowHeight() const { return m_nWindowHeight; }
 	CGraphics&				GetGraphics() { return *m_pGraphics; }
 
-	static void				SetInstance( CGame* pInstance ) { m_sInstance = pInstance; }
-	static CGame&			Inst() { return *m_sInstance; }
+	static CGame*			Inst() { return m_sAppInstance; }
 };
 
-#define CREATE_GAME( nWindowWidth, nWindowHeight, szWindowName, ClassGame ) \
+#define CREATE_GAME( nWindowWidth, nWindowHeight, szWindowName, nFrameInterval, ClassGame ) \
 	int main( int argc, char* argv[] ) \
 	{ \
-		CGame::SetInstance( new ClassGame( nWindowWidth, nWindowHeight, szWindowName ) ); \
-		CGame& game = CGame::Inst(); \
-		game.OnRun(); \
-		int nResult = game.OnQuit(); \
-		SAFE_DELETE( &game ); \
+		m_sAppInstance = new ClassGame( nWindowWidth, nWindowHeight, szWindowName, nFrameInterval ); \
+		CGame* game = CGame::Inst(); \
+		game->OnRun(); \
+		int nResult = game->OnQuit(); \
+		SAFE_DELETE( game ); \
 		return nResult; \
 	}

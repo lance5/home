@@ -3,6 +3,7 @@
 #include "CShader.h"
 #include "CFrameBuffer.h"
 #include "CRenderModel.h"
+#include "glad.h"
 
 CGraphics::CGraphics()
 	: m_pCurFrameBuffer( nullptr )
@@ -30,8 +31,9 @@ void CGraphics::InitShader()
 			"uniform mat4 projection;\n"
 			"void main()\n"
 			"{\n"
-			"	TexCoords = vertex.zw;\n"
-			"	gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);\n"
+			//"	TexCoords = vertex.zw;\n"
+			//"	gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);\n"
+				"gl_Position = vertex.xyz;"
 			"}",
 			"#version 330 core\n"
 			"in vec2 TexCoords;\n"
@@ -55,9 +57,19 @@ void CGraphics::RenderObject( uint32 nShaderID, const CRenderModel& model, const
 {
 	if( m_pCurFrameBuffer )
 		m_pCurFrameBuffer->BindFrame();
+
+	m_aryShader[eShaderType_Sprite]->Use();
 	
 	/* ¿ªÊ¼äÖÈ¾ */
-	model.RenderAllObject();
+	glBindVertexArray( model.m_nVertexArrays );
+	for ( uint32 i = 0; i < model.m_vecObject.size(); ++i )
+	{
+		const CRenderModel::SObject& element = model.m_vecObject[i];
+		glBindBuffer( GL_ARRAY_BUFFER, element.m_nVertexBuffer );
+		glDrawArrays( GL_TRIANGLES, 0, element.m_nCount );
+		glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	}
+	glBindVertexArray( 0 );
 
 	if( m_pCurFrameBuffer )
 		m_pCurFrameBuffer->UnBindFrame();

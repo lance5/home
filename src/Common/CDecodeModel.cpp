@@ -22,34 +22,18 @@ CDecodeModel::~CDecodeModel()
 
 void CDecodeModel::FillRenderModel( CRenderModel& model )
 {
-	model.SetVertexBuffer( CRenderModel::eBufferType_Vertex, &m_vecVertex[0], m_vecVertex.size() );
-	model.SetVertexBuffer( CRenderModel::eBufferType_Normal, &m_vecNormal[0], m_vecNormal.size() );
-	model.SetVertexBuffer( CRenderModel::eBufferType_TexCoord, &m_vecTexCoord[0], m_vecTexCoord.size() );
-
 	for( uint32 i = 0; i < m_vecObject.size(); ++i )
 	{
-		const uint32* aryData[] =
-		{
-			&m_vecObject[i].m_vecVertexIndex[0],
-			&m_vecObject[i].m_vecNoramIndex[0],
-			&m_vecObject[i].m_vecTexCoordIndex[0],
-		};
-		const uint32 arySize[] =
-		{
-			m_vecObject[i].m_vecVertexIndex.size(),
-			m_vecObject[i].m_vecNoramIndex.size(),
-			m_vecObject[i].m_vecTexCoordIndex.size(),
-		};
-		model.PushObjectData( aryData, arySize, m_vecObject[i].m_Material, m_vecObject[i].m_bSmooth );
+		model.PushObjectData( m_vecObject[i].m_vecVectexData, m_vecObject[i].m_Material, m_vecObject[i].m_bSmooth );
 	}
 }
 
 void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )
 {
 	std::map<std::string, CMaterial*> mapMaterial;
-	m_vecVertex.reserve( 65535 );
-	m_vecTexCoord.reserve( 65535 );
-	m_vecNormal.reserve( 65535 );
+	std::vector<float> vecVertex( 65535 );
+	std::vector<float> vecNormal( 65535 );
+	std::vector<float> vecTexCoord( 65535 );
 
 	uint32 nCurPos = 0;
 	for( uint32 i = 0; i < nSize; ++i )
@@ -77,22 +61,22 @@ void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, 
 		else if ( !strncmp( aryParam[0].c_str(), "v", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 4 );
-			m_vecVertex.push_back( (float)atof( aryParam[1].c_str() ) );
-			m_vecVertex.push_back( (float)atof( aryParam[2].c_str() ) );
-			m_vecVertex.push_back( (float)atof( aryParam[3].c_str() ) );
+			vecVertex.push_back( (float)atof( aryParam[1].c_str() ) );
+			vecVertex.push_back( (float)atof( aryParam[2].c_str() ) );
+			vecVertex.push_back( (float)atof( aryParam[3].c_str() ) );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "vt", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 3 );
-			m_vecTexCoord.push_back( (float)atof( aryParam[1].c_str() ) );
-			m_vecTexCoord.push_back( (float)atof( aryParam[2].c_str() ) );
+			vecTexCoord.push_back( (float)atof( aryParam[1].c_str() ) );
+			vecTexCoord.push_back( (float)atof( aryParam[2].c_str() ) );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "vn", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 4 );
-			m_vecNormal.push_back( (float)atof( aryParam[1].c_str() ) );
-			m_vecNormal.push_back( (float)atof( aryParam[2].c_str() ) );
-			m_vecNormal.push_back( (float)atof( aryParam[3].c_str() ) );
+			vecNormal.push_back( (float)atof( aryParam[1].c_str() ) );
+			vecNormal.push_back( (float)atof( aryParam[2].c_str() ) );
+			vecNormal.push_back( (float)atof( aryParam[3].c_str() ) );
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "mtllib", aryParam[0].size() ) )
 		{
@@ -135,16 +119,22 @@ void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, 
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "f", aryParam[0].size() ) )
 		{
-			Assert( nParamSize >= 2 );
+			Assert( nParamSize == 3 );
 			cstring aryIndex[5];
 			for( uint32 i = 1; i < nParamSize; ++i )
 			{
 				uint32 nIndexSize = partition( aryParam[i], '/', aryIndex );
 				Assert( nIndexSize == 3 );
+				uint32 nVertexIndex		= (uint32)atol( aryIndex[0].c_str() );
+				uint32 nNormalIndex		= (uint32)atol( aryIndex[1].c_str() );
+				uint32 nTexCoordIndex	= (uint32)atol( aryIndex[2].c_str() );
 
-				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[0].c_str() ) );
-				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[1].c_str() ) );
-				m_vecObject.rbegin()->m_vecVertexIndex.push_back( (uint32)atol( aryIndex[2].c_str() ) );
+				SVectexData data;
+				memcpy( &data.m_vVectex[0], &vecVertex[ nVertexIndex * 3 ], sizeof( float ) * 3 );
+				memcpy( &data.m_vNormal[0], &vecNormal[ nNormalIndex * 3 ], sizeof( float ) * 3 );
+				memcpy( &data.m_vTexCoord[0], &vecTexCoord[ nTexCoordIndex * 2 ], sizeof( float ) * 2 );
+
+				m_vecObject.rbegin()->m_vecVectexData.push_back( data );
 			}
 		}
 		else
@@ -181,7 +171,7 @@ void CDecodeModel::OnLoadMtllib( const char* szFileName, const byte* szBuffer, c
 		else if ( !strncmp( aryParam[0].c_str(), "newmtl", aryParam[0].size() ) )
 		{
 			string strName( aryParam[1].c_str(), aryParam[1].size() );
-			pCurMaterial = CGame::Inst().GetGraphics().CreateResource<CMaterial>();
+			pCurMaterial = CGame::Inst()->GetGraphics().CreateResource<CMaterial>();
 			mapMaterial[strName] = pCurMaterial;
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "Ns", aryParam[0].size() ) )
