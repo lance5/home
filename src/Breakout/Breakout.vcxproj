@@ -121,11 +121,13 @@
   <ItemGroup>
     <ClInclude Include="CGameClient.h" />
     <ClInclude Include="CScene1.h" />
+    <ClInclude Include="CSpirit.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CGameClient.cpp" />
     <ClCompile Include="CScene1.cpp" />
+    <ClCompile Include="CSpirit.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>

@@ -13,7 +13,7 @@ CObject3D::~CObject3D()
 	SAFE_DELETE( m_pModelData );
 }
 
-const CRenderModel& CObject3D::GetModel()
+CRenderModel& CObject3D::GetModel()
 { 
 	return *m_pModelData;
 }

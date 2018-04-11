@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "..\src\Common\Common.vcxproj", "{232A8CC1-2443-49A1-9E8B-A224697FF87D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4DD8C1DE-5E72-4CC7-B124-99B19FFC5188} = {4DD8C1DE-5E72-4CC7-B124-99B19FFC5188}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "implib", "implib", "{DF1806BA-A291-452E-BB3A-0D78B7C907F4}"
 EndProject

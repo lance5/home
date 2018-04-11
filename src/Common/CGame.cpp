@@ -40,9 +40,13 @@ CGame::CGame( uint32 nWidth, uint32 nHeight, const char* szWindowName, uint32 nF
 	if ( !gladLoadGLLoader( (GLADloadproc)glfwGetProcAddress ) )
 		Assert( false );
 	glViewport( 0, 0, m_nWindowWidth, m_nWindowHeight );
+	CheckError();
 	glEnable( GL_CULL_FACE );
+	CheckError();
 	glEnable( GL_BLEND );
+	CheckError();
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	CheckError();
 
 	m_pGraphics = new CGraphics();
 	m_pMainFrame = new CFrameBuffer( m_nWindowWidth, m_nWindowHeight );
@@ -51,6 +55,15 @@ CGame::CGame( uint32 nWidth, uint32 nHeight, const char* szWindowName, uint32 nF
 CGame::~CGame()
 {
 	SAFE_DELETE( m_pGraphics );
+	glfwTerminate();
+}
+
+void CGame::OnCreated()
+{
+}
+
+void CGame::OnDestroy() 
+{
 }
 
 void CGame::OnRun()
@@ -73,12 +86,6 @@ void CGame::OnRun()
 		if ( nTheRumTime <= m_nFrameInterval )
 			Sleep( m_nFrameInterval - nTheRumTime );
 	}
-}
-
-int CGame::OnQuit() 
-{
-	glfwTerminate();
-	return 0;
 }
 
 void CGame::AddScene( CScene* pScene )
@@ -109,8 +116,11 @@ void CGame::Render()
 {
 	/* ÇåÀíÖ÷»º´æ */
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+	CheckError();
 	glClearColor( 1.0f, 1.0f, 1.0f, 1.0f ); 
+	CheckError();
 	glClear( GL_COLOR_BUFFER_BIT );
+	CheckError();
 
 	CScene* pScene = m_listScene.GetFirst();
 	for ( ; pScene; pScene = pScene->GetNext() )

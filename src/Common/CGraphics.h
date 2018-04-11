@@ -5,6 +5,9 @@ class CMatrix;
 class CShader;
 class CFrameBuffer;
 
+//#define CheckError() { uint32 nError = glGetError(); if( nError != 0 ){ Log << nError << std::endl; Assert( false ); } }
+#define CheckError()
+
 enum
 {
 	eShaderType_Sprite,
@@ -25,5 +28,8 @@ public:
 	void			RenderObject( uint32 nShaderID, const CRenderModel& model, const CMatrix& mat );
 	
 	template<class ClassName>
-	ClassName*		CreateResource();
+	ClassName* CreateResource()
+	{
+		return new ClassName();
+	}
 };

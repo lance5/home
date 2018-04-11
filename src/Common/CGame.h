@@ -36,8 +36,9 @@ public:
 	virtual ~CGame();
 
 	void					OnKeyCallback( int nKey, int nAction );
-	void					OnRun();
-	int						OnQuit();
+	virtual void			OnCreated();
+	virtual void			OnDestroy();
+	virtual void			OnRun();
 
 	void					AddScene( CScene* pScene );
 	void					RegisterShader( uint32 nShaderID );
@@ -52,9 +53,9 @@ public:
 	int main( int argc, char* argv[] ) \
 	{ \
 		m_sAppInstance = new ClassGame( nWindowWidth, nWindowHeight, szWindowName, nFrameInterval ); \
-		CGame* game = CGame::Inst(); \
-		game->OnRun(); \
-		int nResult = game->OnQuit(); \
-		SAFE_DELETE( game ); \
-		return nResult; \
+		CGame::Inst()->OnCreated(); \
+		CGame::Inst()->OnRun(); \
+		CGame::Inst()->OnDestroy(); \
+		SAFE_DELETE( m_sAppInstance ); \
+		return 1; \
 	}
