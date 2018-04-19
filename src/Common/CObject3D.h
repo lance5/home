@@ -10,6 +10,7 @@ class CObject3D
 	: public TList<CObject3D>::CListNode
 {
 	CVector3f			m_vPosition;
+	CVector3f			m_vRatio;
 	CMatrix				m_matModel;
 	bool				m_bUpdateMat;
 	CRenderModel*		m_pModelData;
@@ -18,10 +19,14 @@ class CObject3D
 public:
 	CObject3D();
 	~CObject3D();
-	
-	virtual void 		OnUpdate( uint32 nDeltaTime ) = 0;
 
 	CRenderModel&		GetModel();
 	const CMatrix&		GetMatrix();
+
+	const CVector3f&	GetPosition();
+	const CVector3f&	GetRatio();
+
+	void				SetPosition( const CVector3f& vPos );
+	void				SetRatio( const CVector3f& vRatio );
 };
 

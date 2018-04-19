@@ -26,13 +26,13 @@ void CScene::AddCamera( CCamera * pCamera )
 
 void CScene::OnUpdate( uint32 nDeltaTime )
 {
-	for ( CObject3D* pNode = m_listChilds.GetFirst(); 
-		pNode; pNode = pNode->GetNext() )
-		pNode->OnUpdate( nDeltaTime );
+
 }
 
 void CScene::OnRender( CGraphics* pGraphics )
 {
+	//pGraphics->RenderTest();
+	//return;
 	for ( CObject3D* pNode = m_listChilds.GetFirst(); pNode; pNode = pNode->GetNext() )
 	{
 		pGraphics->RenderObject( eShaderType_Sprite, pNode->GetModel(), pNode->GetMatrix() );

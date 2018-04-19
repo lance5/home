@@ -54,9 +54,9 @@ inline void	stringToUpper(_Type szBuffer, _SizeType nSize)
 		szBuffer[i] = toupper( szBuffer[i] );
 }
 
-template<class _DataType>
-inline uint32 partition( const cstring& cstrString, _DataType szChar, 
-	cstring aryResult[] )
+template<class _DataType, class _StringType>
+inline uint32 partition( const _StringType& cstrString, _DataType szChar, 
+	_StringType aryResult[] )
 {
 	uint32 nResultCount = 0;
 	uint32 nStartPos = 0;
@@ -67,13 +67,13 @@ inline uint32 partition( const cstring& cstrString, _DataType szChar,
 		if( i == nStartPos )
 			continue;
 
-		cstring strWord( cstrString.c_str() + nStartPos, i - nStartPos );
+		_StringType strWord( cstrString.c_str() + nStartPos, i - nStartPos );
 		nStartPos = i + 1;
 		aryResult[nResultCount++] = strWord;
 	}
-	if( cstrString.c_str()[nStartPos] == '\0' )
+	if( nStartPos == cstrString.size() )
 		return nResultCount;
-	aryResult[nResultCount++] = cstring( cstrString.c_str() + nStartPos, cstrString.size() - nStartPos );
+	aryResult[nResultCount++] = _StringType( cstrString.c_str() + nStartPos, cstrString.size() - nStartPos );
 	return nResultCount;
 }
 

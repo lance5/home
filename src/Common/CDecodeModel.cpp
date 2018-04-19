@@ -31,9 +31,12 @@ void CDecodeModel::FillRenderModel( CRenderModel& model )
 void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, const uint32 nSize )
 {
 	std::map<std::string, CMaterial*> mapMaterial;
-	std::vector<float> vecVertex( 65535 );
-	std::vector<float> vecNormal( 65535 );
-	std::vector<float> vecTexCoord( 65535 );
+	std::vector<float> vecVertex;
+	std::vector<float> vecNormal;
+	std::vector<float> vecTexCoord;
+	vecVertex.reserve( 65535 );
+	vecNormal.reserve( 65535 );
+	vecTexCoord.reserve( 65535 );
 
 	uint32 nCurPos = 0;
 	for( uint32 i = 0; i < nSize; ++i )
@@ -46,12 +49,12 @@ void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, 
 		nCurPos = i + 1;
 		if( szString[nCurSize - 1] == '\r' )
 			--nCurSize;
-		cstring sString( szString, nCurSize );
+		string sString( szString, nCurSize );
 
 		if( nCurSize == 0 )
 			continue;
 
-		cstring aryParam[10];
+		string aryParam[10];
 		uint32 nParamSize = partition( sString, ' ', aryParam );
 		if( nParamSize == 0 )
 			continue;
@@ -67,7 +70,7 @@ void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, 
 		}
 		else if ( !strncmp( aryParam[0].c_str(), "vt", aryParam[0].size() ) )
 		{
-			Assert( nParamSize == 3 );
+			Assert( nParamSize >= 3 );
 			vecTexCoord.push_back( (float)atof( aryParam[1].c_str() ) );
 			vecTexCoord.push_back( (float)atof( aryParam[2].c_str() ) );
 		}
@@ -93,7 +96,8 @@ void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, 
 			Assert( pFile );
 			OnLoadMtllib( pFile->m_strFileName.c_str(), pFile->m_pBuffer, pFile->m_nSize, mapMaterial );
 		}
-		else if ( !strncmp( aryParam[0].c_str(), "o", aryParam[0].size() ) )
+		else if ( !strncmp( aryParam[0].c_str(), "o", aryParam[0].size() ) 
+			|| !strncmp( aryParam[0].c_str(), "g", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 2 );
 			SObjectIndex sIndex;
@@ -120,14 +124,14 @@ void CDecodeModel::OnFileLoaded( const char* szFileName, const byte * szBuffer, 
 		else if ( !strncmp( aryParam[0].c_str(), "f", aryParam[0].size() ) )
 		{
 			Assert( nParamSize == 4 );
-			cstring aryIndex[5];
+			string aryIndex[5];
 			for( uint32 i = 1; i < nParamSize; ++i )
 			{
 				uint32 nIndexSize = partition( aryParam[i], '/', aryIndex );
 				Assert( nIndexSize == 3 );
-				uint32 nVertexIndex		= (uint32)atol( aryIndex[0].c_str() );
-				uint32 nNormalIndex		= (uint32)atol( aryIndex[1].c_str() );
-				uint32 nTexCoordIndex	= (uint32)atol( aryIndex[2].c_str() );
+				uint32 nVertexIndex		= (uint32)atol( aryIndex[0].c_str() ) - 1;
+				uint32 nTexCoordIndex	= (uint32)atol( aryIndex[1].c_str() ) - 1;
+				uint32 nNormalIndex		= (uint32)atol( aryIndex[2].c_str() ) - 1;
 
 				SVectexData data;
 				memcpy( &data.m_vVectex[0], &vecVertex[ nVertexIndex * 3 ], sizeof( float ) * 3 );

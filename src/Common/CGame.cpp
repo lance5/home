@@ -117,7 +117,7 @@ void CGame::Render()
 	/* «Â¿Ì÷˜ª∫¥Ê */
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 	CheckError();
-	glClearColor( 1.0f, 1.0f, 1.0f, 1.0f ); 
+	glClearColor( 0.2f, 0.3f, 0.3f, 1.0f ); 
 	CheckError();
 	glClear( GL_COLOR_BUFFER_BIT );
 	CheckError();

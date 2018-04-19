@@ -10,6 +10,7 @@ public:
 		DataType value[3];
 	};
 	TVector3() : x(), y(), z() {}
+	TVector3( DataType a ) : x( a ), y( a ), z( a ) {}
 	TVector3( DataType a, DataType b, DataType c ) : x( a ), y( b ), z( c ) {}
 	~TVector3() {}
 
