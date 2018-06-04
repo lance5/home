@@ -15,10 +15,10 @@ class CMaterial
 {
 	DEFAULT_METHOD( CMaterial );
 
-	float						m_fShininess;
 	CVector3f					m_vecAmbient;
 	CVector3f					m_vecDiffuse;
 	CVector3f					m_vecSpecular;
+	float						m_fShininess;
 	float						m_fRefractiveIndex;
 	float						m_fFadeOut;
 	uint8						m_nIllum;

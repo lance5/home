@@ -82,7 +82,7 @@ void CGame::OnRun()
 
 		glfwSwapBuffers( m_pMainWindow );
 
-		uint32 nTheRumTime = (uint32)( (int64)( glfwGetTime() * 1000 ) - nCurrentFrame );
+		int64 nTheRumTime =(int64)( glfwGetTime() * 1000 ) - nCurrentFrame;
 		if ( nTheRumTime <= m_nFrameInterval )
 			Sleep( m_nFrameInterval - nTheRumTime );
 	}
